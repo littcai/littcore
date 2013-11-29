@@ -1,5 +1,10 @@
+*.class
 .settings
 .svn
 .project
 .classpath
-*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
