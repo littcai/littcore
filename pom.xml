@@ -26,11 +26,24 @@
 	
 
 	<repositories>
+		<!-- 
 		<repository>
 			<id>private-nexus</id>
 			<name>local nexus repository</name>
 			<url>http://172.16.10.57:8081/nexus/content/groups/public</url>
-		</repository>		
+		</repository>
+		 -->
+		<repository>
+		    <id>osc</id>
+            <name>OSC</name>
+            <url>http://maven.oschina.net/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>				
 	</repositories>
 	
 	<distributionManagement>
@@ -75,13 +88,6 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

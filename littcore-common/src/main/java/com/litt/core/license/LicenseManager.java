@@ -14,10 +14,10 @@ import org.dom4j.io.SAXReader;
 
 import com.litt.core.common.Utility;
 import com.litt.core.format.FormatDateTime;
-import com.litt.core.security.Algorithm;
 import com.litt.core.security.DecryptFailedException;
-import com.litt.core.security.DigitalSignatureTools;
+import com.litt.core.security.DigitalSignatureTool;
 import com.litt.core.security.ISecurity;
+import com.litt.core.security.algorithm.Algorithm;
 import com.litt.core.security.algorithm.DESTool;
 import com.litt.core.util.XmlUtils;
 import com.litt.core.version.Version;
@@ -217,8 +217,8 @@ public final class LicenseManager
 	{
 		try 
 		{	
-			DigitalSignatureTools tools = new DigitalSignatureTools(pubKey);
-			validateLicense(license, tools);			
+			DigitalSignatureTool tool = new DigitalSignatureTool(pubKey);
+			validateLicense(license, tool);			
 		}
 		catch (FileNotFoundException e) 
 		{
@@ -246,7 +246,7 @@ public final class LicenseManager
 	{		
 		try 
 		{	
-			DigitalSignatureTools tools = new DigitalSignatureTools(pubKeyFile);
+			DigitalSignatureTool tools = new DigitalSignatureTool(pubKeyFile);
 			validateLicense(license, tools);			
 		}
 		catch (FileNotFoundException e) 
@@ -271,7 +271,7 @@ public final class LicenseManager
 	 * 
 	 * @throws LicenseException 未通过认证则引发此异常
 	 */
-	private static void validateLicense(License license, DigitalSignatureTools tools) throws LicenseException
+	private static void validateLicense(License license, DigitalSignatureTool tools) throws LicenseException
 	{
 		if(license==null)
 			throw new LicenseException("License is not exist!");
@@ -433,7 +433,7 @@ public final class LicenseManager
 			validateLicense(license, pubKeyFilePath);
 			//如果已存在旧证书，还要比较新旧证书的区别 		
 			getInstance().license = license;	//更新到内存
-			getInstance().pubKey = DigitalSignatureTools.readPubKey(new File(pubKeyFilePath));
+			getInstance().pubKey = DigitalSignatureTool.readPubKey(new File(pubKeyFilePath));
 		}
 		catch (FileNotFoundException e)
 		{

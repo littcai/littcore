@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import com.litt.core.util.BeanCopier;
+
 /**
  * .
  * 
@@ -19,7 +21,34 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @since 2012-2-2
  * @version 1.0
  */
-public class BasePo implements Serializable {
+public class BasePo implements Serializable {	
+	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * To vo.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @return the t
+	 */
+	public <T> T toVo(Class<T> clazz)
+	{
+		return BeanCopier.copy(this, clazz);
+	}
+	
+	/**
+	 * To vo.
+	 *
+	 * @param <T> the generic type
+	 * @param instance the instance
+	 * @return the t
+	 */
+	public <T> T toVo(T instance)
+	{
+		return BeanCopier.copy(this, instance);
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

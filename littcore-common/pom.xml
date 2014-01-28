@@ -186,6 +186,11 @@
   		<artifactId>hibernate-core</artifactId>
   		<version>3.6.10.Final</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.litt.core</groupId>
+  		<artifactId>littcore-security</artifactId>
+  		<version>3.2.2-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
   <build>
   	<plugins>

@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Build-Jdk: 1.6.0_27
-Built-By: Administrator
-Created-By: Maven Integration for Eclipse
-Copyright: Copyright (c) 2004-2013 The LITT-CORE.  All rights reserved
- .
-Built-At: 
-Version: 3.2.2-SNAPSHOT
-

@@ -1,6 +1,9 @@
 
 package com.litt.core.dao.datasource;
 
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
+
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
@@ -22,6 +25,8 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  * @version 1.0
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
+	
+	private Logger logger = Logger.getLogger(DynamicDataSource.class.getName());
 
 	/* (non-Javadoc)
 	 * @see org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource#determineCurrentLookupKey()
@@ -29,6 +34,11 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 	@Override
 	protected Object determineCurrentLookupKey() {		
 		return RoutingDataSourceContextHolder.getContext();
+	}
+
+	@Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {		
+		return logger;
 	}
 
 }

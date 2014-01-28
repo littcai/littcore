@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import com.litt.core.common.Utility;
 import com.litt.core.exception.CheckedBusiException;
-import com.litt.core.security.Algorithm;
 import com.litt.core.security.DecryptFailedException;
 import com.litt.core.security.EncryptFailedException;
 import com.litt.core.security.ISecurity;
 import com.litt.core.security.MessageDigestTool;
+import com.litt.core.security.algorithm.Algorithm;
 import com.litt.core.security.algorithm.DESTool;
 import com.litt.core.util.StringUtils;
 

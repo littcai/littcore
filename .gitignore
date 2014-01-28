@@ -9,3 +9,9 @@ target/
 *.jar
 *.war
 *.ear
+target
+/littcore-io/target
+/littcore-log/target
+/littcore-osgi/target
+/littcore-security/target
+/littcore-net/target

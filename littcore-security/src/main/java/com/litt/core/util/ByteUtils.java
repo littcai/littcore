@@ -1,5 +1,7 @@
 package com.litt.core.util;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * 
@@ -15,6 +17,35 @@ package com.litt.core.util;
  */
 public final class ByteUtils 
 {
+	/**
+     * The high digits lookup table.
+     */
+    private static final byte[] highDigits;
+
+    /**
+     * The low digits lookup table.
+     */
+    private static final byte[] lowDigits;
+
+    /**
+     * Initialize lookup tables.
+     */
+    static {
+        final byte[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
+                '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+
+        int i;
+        byte[] high = new byte[256];
+        byte[] low = new byte[256];
+
+        for (i = 0; i < 256; i++) {
+            high[i] = digits[i >>> 4];
+            low[i] = digits[i & 0x0F];
+        }
+
+        highDigits = high;
+        lowDigits = low;
+    }
 	
 	/** 隐藏构造函数，避免生成实例 */
 	private ByteUtils(){};
@@ -60,41 +91,112 @@ public final class ByteUtils
 	 * 
 	 * @return 16进制字符串(当高位值为0时，字符串中补0)
 	 */
-	public static String byteArrayToHexString(byte[] byteArray) {
-	    StringBuffer sb = new StringBuffer(byteArray.length);
-	    String sTemp;
-	    for (int i = 0; i < byteArray.length; i++) {
-	     sTemp = Integer.toHexString(0xFF & byteArray[i]);
-	     if (sTemp.length() < 2)
-	      sb.append(0);
-	     sb.append(sTemp.toUpperCase());
+	public static String toHexString(byte[] byteArray) 
+	{
+		int size = byteArray.length;
+		if(size==0)
+			return "";
+	    StringBuffer out = new StringBuffer(size);
+	    //fill first
+	    int byteValue = byteArray[0] & 0xFF;
+        out.append((char) highDigits[byteValue]);
+        out.append((char) lowDigits[byteValue]);        
+	    
+	    for (int i = 1; i < size; i++) 
+	    {	    	 
+	    	 byteValue = byteArray[i] & 0xFF;
+	         out.append((char) highDigits[byteValue]);
+	         out.append((char) lowDigits[byteValue]);
+	            
 	    }
-	    return sb.toString();
+	    return out.toString();
 	}
 
 	/**
-	 * 字节转换成字符串.
+	 * 把字节数组转换成16进制字符串.
+	 * 
+	 * @param byteArray
+	 *            字节数组
+	 * 
+	 * @return 16进制字符串(当高位值为0时，字符串中补0)
+	 */
+	public static String toHexString(ByteBuffer buffer) 
+	{		
+		StringBuffer out = new StringBuffer(buffer.remaining() * 3 - 1);
+		int mark = buffer.position();
+		buffer.flip();	//跳回开始位置
+		int size = buffer.remaining();
+		if(size==0)
+			return "";
+		//fill the first
+        int byteValue = buffer.get() & 0xFF;
+        out.append((char) highDigits[byteValue]);
+        out.append((char) lowDigits[byteValue]);
+        size--;
+
+        // and the others, too
+        for (; size > 0; size--) 
+        {           
+            byteValue = buffer.get() & 0xFF;
+            out.append((char) highDigits[byteValue]);
+            out.append((char) lowDigits[byteValue]);
+        }
+
+        buffer.position(mark);
+
+        return out.toString();
+	}
+	
+
+	/**
+	 * 字节转换成16进制字符串.
 	 * 
 	 * @param b 字节
 	 * 
-	 * @return 字符串
+	 * @return 16进制字符串
 	 */
-	public static String byteToString(byte b) 
+	public static String toHexString(byte b) 
 	{
-		byte high, low;
-		byte maskHigh = (byte) 0xf0;
-		byte maskLow = 0x0f;
+		int byteValue = b & 0xFF;
+		
+		StringBuffer out = new StringBuffer();
+		out.append((char) highDigits[byteValue]);
+		out.append((char) lowDigits[byteValue]);
 
-		high = (byte) ((b & maskHigh) >> 4);
-		low = (byte) (b & maskLow);
-
-		StringBuffer buf = new StringBuffer();
-		buf.append(findHex(high));
-		buf.append(findHex(low));
-
-		return buf.toString();
+		return out.toString();
 	}
+	
+	/**
+     * Dumps an {@link IoBuffer} to a hex formatted string.
+     * 
+     * @param in the buffer to dump
+     * @param lengthLimit the limit at which hex dumping will stop
+     * @return a hex formatted string representation of the <i>in</i> {@link Iobuffer}.
+     */
+    public static String getHexdump(byte[] data) 
+    {
+    	if (data==null || data.length == 0) {
+            return "";
+        }
+        int size = data.length;        
+        
+        StringBuffer out = new StringBuffer(size * 3 - 1);
+        // fill the first
+        int byteValue = data[0] & 0xFF;
+        out.append((char) highDigits[byteValue]);
+        out.append((char) lowDigits[byteValue]);
 
+
+        // and the others, too
+        for (int i=1;i<size; i++) {
+            out.append(' ');
+            byteValue = data[i] & 0xFF;
+            out.append((char) highDigits[byteValue]);
+            out.append((char) lowDigits[byteValue]);
+        }
+        return out.toString();
+    }
+	
 	/**
 	 * 字节转换为16进制字符.
 	 * 
@@ -320,7 +422,6 @@ public final class ByteUtils
 	{
 		// System.out.println(ByteUtils.hexStringToByte("68H"));
 
-		System.out.println(ByteUtils.byteToString((byte)0x68));	
 		
 		System.out.println(Integer.toBinaryString(68));
 		System.out.println(Byte.parseByte("01000100", 2));

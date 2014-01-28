@@ -55,6 +55,12 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	/** 用户语言. */
 	private String locale = Locale.SIMPLIFIED_CHINESE.toString();
 	
+	/** 时区. */
+	private int timezone;
+	
+	/** 主题. */
+	private String theme;
+	
 	/** 全局唯一索引号(用来区分同一用户不同设备登录). */
 	private String guid = new RandomGUID().toString();
 	
@@ -62,22 +68,29 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	private String autoLoginToken;
 	
 	/** 用户拥有权限队列. */
-	private String[] permissionCodes;	
+	private String[] permissionCodes = new String[0];	
 	
 	/**
 	 * 用户所属角色列表.
 	 */
-	private long[] roleIds;	
+	private long[] roleIds = new long[0];	
 	
 	/**
 	 * 用户所属组织列表.
 	 */
-	private long[] groupIds;	
+	private long[] groupIds = new long[0];		
 	
 	/** 会话ID. */
 	private String sessionId;
 	
-	/** 用户状态. */
+	/** 用户状态.
+	 * 状态(1001)
+	 *       0：未审核
+	 *       1：正常
+	 *       2：注销
+	 *       3：删除
+	 *       4：锁定.
+	 */
 	private int status;
 	
 	/** 是否强制下线. */
@@ -165,7 +178,19 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	 */
 	public void removeRoleId(long roleId)
 	{
-		ArrayUtils.removeElement(roleIds, roleId);
+		roleIds = ArrayUtils.removeElement(roleIds, roleId);
+	}
+	
+	/**
+	 * Removes the role id.
+	 *
+	 * @param roleIds the role ids
+	 */
+	public void removeRoleIds(long[] roleIds)
+	{
+		for (long roleId : roleIds) {
+			this.removeRoleId(roleId);
+		}
 	}
 	
 	/**
@@ -185,7 +210,19 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	 */
 	public void removeGroupId(long groupId)
 	{
-		ArrayUtils.removeElement(groupIds, groupId);
+		groupIds = ArrayUtils.removeElement(groupIds, groupId);
+	}
+	
+	/**
+	 * Removes the group ids.
+	 *
+	 * @param groupIds the group ids
+	 */
+	public void removeGroupIds(long[] groupIds)
+	{
+		for (long groupId : groupIds) {
+			this.removeGroupId(groupId);
+		}
 	}
 	
 	/**
@@ -250,7 +287,14 @@ public class BaseLoginVo implements ILoginVo, Serializable
 			}
 		}    		
     }
-
+    
+    public void removePermissions(String[] permissions)
+	{   	
+		for (String permissionCode : permissions) {
+			permissionCodes = (String[])ArrayUtils.removeElement(permissionCodes, permissionCode);
+		}
+	}
+    
 	/**
 	 * 检查是否拥有指定权限（常用在没有权限则跳转到异常页面的情况）.
 	 * 
@@ -449,5 +493,54 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	 */
 	public String[] getPermissionCodes() {
 		return permissionCodes;
+	}
+
+	/**
+	 * @param loginId the loginId to set
+	 */
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
+
+	/**
+	 * @param opName the opName to set
+	 */
+	public void setOpName(String opName) {
+		this.opName = opName;
+	}
+
+	/**
+	 * @param loginIp the loginIp to set
+	 */
+	public void setLoginIp(String loginIp) {
+		this.loginIp = loginIp;
+	}
+
+	/**
+	 * @return the timezone
+	 */
+	public int getTimezone() {
+		return timezone;
+	}
+
+	/**
+	 * @param timezone the timezone to set
+	 */
+	public void setTimezone(int timezone) {
+		this.timezone = timezone;
+	}
+
+	/**
+	 * @return the theme
+	 */
+	public String getTheme() {
+		return theme;
+	}
+
+	/**
+	 * @param theme the theme to set
+	 */
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 }
