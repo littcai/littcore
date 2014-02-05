@@ -1,22 +1,17 @@
 package com.litt.core.security.algorithm;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Random;
-import java.util.Vector;
+import java.security.SecureRandom;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
+
+import org.apache.commons.codec.binary.StringUtils;
 
 import com.litt.core.security.DecryptFailedException;
 import com.litt.core.security.EncryptFailedException;
@@ -87,13 +82,16 @@ public class DESTool implements ISecurity
 		// SecretKey securekey = keyFactory.generateSecret(dks);
 
 		// 生成密钥
+		SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");  
+	    secureRandom.setSeed(StringUtils.getBytesUtf8(securityKey));  
+		
 		KeyGenerator generator = KeyGenerator.getInstance(algorithm);		
 		if(Algorithm.TRIPLE_DES.equals(this.algorithm))		
-			generator.init(168);
+			generator.init(168, secureRandom);
 		else if(Algorithm.BLOWFISH.equals(this.algorithm))	
-			generator.init(128);
+			generator.init(128, secureRandom);
 		else if(Algorithm.AES.equals(this.algorithm))	
-			generator.init(128);
+			generator.init(128, secureRandom);
 			
 		key = generator.generateKey();		
 		
@@ -165,7 +163,7 @@ public class DESTool implements ISecurity
 	 */
 	public String encrypt(String strIn) throws EncryptFailedException
 	{
-		return ByteUtils.toHexString(encrypt(strIn.getBytes()));
+		return ByteUtils.toHexString(encrypt(StringUtils.getBytesUtf8(strIn)));
 	}
 	
 
@@ -236,7 +234,7 @@ public class DESTool implements ISecurity
 	 */
 	public String decrypt(String strIn) throws DecryptFailedException
 	{
-		return new String(decrypt(ByteUtils.hexStringToByteArray(strIn)));
+		return StringUtils.newStringUtf8(decrypt(ByteUtils.hexStringToByteArray(strIn)));
 	}
 
 
