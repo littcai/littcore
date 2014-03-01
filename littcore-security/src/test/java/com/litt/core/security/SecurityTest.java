@@ -1,5 +1,8 @@
 package com.litt.core.security;
 
+import java.io.File;
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +51,46 @@ public class SecurityTest {
 		System.out.println(sign);
 		boolean result = decoder.verify(source, sign);
 		Assert.assertTrue(result);
+	}
+	
+	public void testRSASign()throws Exception
+	{
+		String ori = "mobile=15800379850&content=测试发送短消息&appCode=xwremote&username=xwremote&password=xwremote4855";
+		String signed = "MOrmTxQC2T7FfaD6YwE%2BORANYXJYM9VcZIF7adkeg8gjDu67aN7ohYpv1sp0MEmLn%2B4gMCrjI%2BLjpAxrRdYW0jIuro4BYNHFpvUArnB%2F3Hmb5T%2FSStv90sxO%2F40UpvbNiXuFlENhQUJveWCZuVamKFoIvmgUkIiIc8HgZ%2FpBKho%3D";
+				
+		File file = new File("c:\\xwremote-pub.key");			
+		ISecurityDecoder decoder = SecurityFactory.genRSADecoder(file.getAbsolutePath());
+			
+		boolean isValid = decoder.verify(ori, signed);
+		Assert.assertTrue(isValid);						
+	}
+	
+	@Test
+	public void testDes() throws Exception
+	{
+		ISecurity security = SecurityFactory.genDES();
+		String encrypted = security.encrypt("This is a test.");
+		System.out.println(encrypted);
+		String decrypted = security.decrypt(encrypted);
+		
+		Assert.assertEquals("This is a test.", decrypted);		
+	}
+	
+	@Test
+	public void testDes2() throws Exception
+	{
+		ISecurity security = SecurityFactory.genDES();		
+		String ret = String.format("%s;%s;%s;%s;%s;%s",
+				"123", "192.168.1.1", "littcai@sina.com", "123456",
+				new Date().getTime(), 1);	
+		System.out.println(ret);		
+		ret = "30bb657f-8e47-4dda-adb1-fa60713a2527;0:0:0:0:0:0:0:1;littcai@sina.com;E10ADC3949BA59ABBE56E057F20F883E;1391592484218;1209600000";
+		String encrypted = security.encrypt(ret);	
+		
+		ISecurity security2 = SecurityFactory.genDES();
+		
+		String decrypted = security2.decrypt(encrypted);
+		Assert.assertEquals(ret, decrypted);		
 	}
 
 }

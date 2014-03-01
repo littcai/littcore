@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -18,7 +19,6 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -37,6 +37,7 @@ import com.litt.core.security.EncryptFailedException;
 import com.litt.core.security.ISecurity;
 import com.litt.core.security.ISecurityDecoder;
 import com.litt.core.security.ISecurityEncoder;
+import com.litt.core.security.SecurityFactory;
 import com.litt.core.util.ByteUtils;
 
 /** 
@@ -462,14 +463,22 @@ public class RSATool implements ISecurity, ISecurityEncoder, ISecurityDecoder
 	 */
 	public static void main(String[] args) throws Exception
 	{		
-//		ISecurityEncoder encoder = SecurityFactory.genRSAEncoder("C:\\shgc-pri.key");			
+		ISecurityEncoder encoder = SecurityFactory.genRSAEncoder("C:\\xwremote-pri.key");			
 //		/*
 //		 * 需要做数据签名的内容
 //		 */
-//		String source = "mobile=13818143407&content=短信认证测试&appCode=shgc&username=shgc&password=shgc2013";	
-//		//对数据源进行一次加密，获得数据签名
-//		String sign = encoder.sign(source);
-//		System.out.println(sign);
+		//String source = "mobile=13818143407&content=短信认证测试&appCode=shgc&username=shgc&password=shgc2013";
+		String source = "mobile=15901976098&content=测试发送短消息&appCode=xwremote&username=xwremote&password=xwremote4855";
+		//对数据源进行一次加密，获得数据签名
+		String sign = encoder.sign(source);
+		System.out.println(sign);
+		String encodedSign = URLEncoder.encode(sign, "utf-8");
+		System.out.println("URL编码后的字符串："+ encodedSign);
+		
+		ISecurityDecoder decoder = SecurityFactory.genRSADecoder("C:\\xwremote-pub.key");
+		boolean isValid = decoder.verify(source, sign);
+		System.out.println(isValid);		
+
 		
 //			String test = "mobile=13818143407&content=短信认证测试&appCode=shgc&username=shgc&password=shgc2013";
 //			
@@ -484,12 +493,12 @@ public class RSATool implements ISecurity, ISecurityEncoder, ISecurityDecoder
 //			
 //			String sign = rsa.sign(test);
 //			System.out.println(sign);
-////			
+//			
 //			boolean isValid = rsa.verify(test, sign);
 //			System.out.println(isValid);
 			
-			RSATool rsa = new RSATool("xwremote", Algorithm.RSA);	//默认密钥	
-			rsa.store("C:\\xwremote-pri.key", "C:\\xwremote-pub.key");
+			//RSATool rsa = new RSATool("xwremote", Algorithm.RSA);	//默认密钥	
+			//rsa.store("C:\\xwremote-pri.key", "C:\\xwremote-pub.key");
 			
 			
 		
