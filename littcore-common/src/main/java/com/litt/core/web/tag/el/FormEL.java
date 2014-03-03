@@ -1,6 +1,7 @@
 package com.litt.core.web.tag.el;
 
 import com.litt.core.common.Utility;
+import com.litt.core.util.ArrayUtils;
 
 
 /** 
@@ -22,6 +23,18 @@ import com.litt.core.common.Utility;
  */
 public class FormEL
 {	
+	
+	/**
+	 * Contains.
+	 *
+	 * @param array the array
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
+	public static boolean contains(Object[] array, Object obj)
+	{
+		return ArrayUtils.contains(array, obj);
+	}
 	
 	/**
 	 * 处理单选框的选中状态.
