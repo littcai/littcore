@@ -142,5 +142,6 @@ public class HibernatePageList implements IPageList {
 	 */
 	public void setResultsetTransformer(IResultsetTransformer resultsetTransformer) {
 		this.resultsetTransformer = resultsetTransformer;
+		this.rsList = this.resultsetTransformer.transform(this.rsList);
 	}
 }
