@@ -195,8 +195,8 @@ public class JdbcPageList implements IPageList {
 	 */
 	@Override
 	public void setResultsetTransformer(IResultsetTransformer resultsetTransformer) {
-		// TODO Auto-generated method stub
-		
+		this.resultsetTransformer = resultsetTransformer;
+		this.rsList = this.resultsetTransformer.transform(this.rsList);		
 	}
 
 	/* (non-Javadoc)
@@ -204,7 +204,6 @@ public class JdbcPageList implements IPageList {
 	 */
 	@Override
 	public IResultsetTransformer getResultsetTransformer() {
-		// TODO Auto-generated method stub
-		return null;
+		return resultsetTransformer;
 	}
 }
