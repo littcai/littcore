@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -186,9 +187,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
 				Query query = session.createQuery(temp);
 				for(int i=0;i<fParams.length;i++)
 	              {    
-	            	  if(fParams[i] instanceof java.util.Date)	//对日期型的特别处理
-	            		  query.setParameter(i, fParams[i],Hibernate.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
-	                  else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
+//	            	  if(fParams[i] instanceof java.util.Date)	//对日期型的特别处理
+//	            		  query.setParameter(i, fParams[i], StandardBasicTypes.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
+//	                  else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
 	                	  query.setParameter(i, fParams[i]);
 	              }
 				query.setMaxResults(1);				
@@ -218,9 +219,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
 				Query query = session.createQuery(temp);
 				for(int i=0;i<fParams.length;i++)
 	              {    
-	            	  if(fParams[i] instanceof java.util.Date)	//对日期型的特别处理
-	            		  query.setParameter(i, fParams[i],Hibernate.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
-	                  else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
+//	            	  if(fParams[i] instanceof java.util.Date)	//对日期型的特别处理
+//	            		  query.setParameter(i, fParams[i], StandardBasicTypes.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
+//	                  else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
 	                	  query.setParameter(i, fParams[i]);
 	              }
 				query.setMaxResults(1);				
@@ -716,9 +717,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
               Query q  =  session.createQuery(fHql);
               for(int i=0;i<fParams.length;i++)
               {    
-            	  if(fParams[i] instanceof java.util.Date)	//对日期型的特别处理
-                	  q.setParameter(i, fParams[i],Hibernate.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
-                  else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
+//            	  if(fParams[i] instanceof java.util.Date)	//对日期型的特别处理
+//                	  q.setParameter(i, fParams[i], StandardBasicTypes.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
+//                  else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
                 	  q.setParameter(i, fParams[i]);
               }
               q.setFirstResult(fStartRow);
@@ -871,9 +872,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
                   {
                 	  for(int i=0;i<params.length;i++)
                 	  {
-                		  if(params[i] instanceof java.util.Date)	//对日期型的特别处理
-                        	  q.setParameter(i, params[i],Hibernate.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
-                          else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
+//                		  if(params[i] instanceof java.util.Date)	//对日期型的特别处理
+//                        	  q.setParameter(i, params[i], StandardBasicTypes.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
+//                          else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
                         	  q.setParameter(i, params[i]);
                 	  }
                 	  
