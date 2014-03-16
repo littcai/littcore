@@ -111,6 +111,17 @@ public interface ILoginVo extends Serializable
 	 * @return the locale
 	 */
 	public String getLocale();	
+	
+	/**
+	 * Gets Timezone.
+	 * @return the timezone
+	 */
+	public int getTimezone() ;
+	
+	/**
+	 * @return the theme
+	 */
+	public String getTheme();
 
 	/**
 	 * Gets the status.
