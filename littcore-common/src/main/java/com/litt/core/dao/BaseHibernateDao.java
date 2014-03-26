@@ -346,6 +346,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
      */
 	public void saveBatch(Object[] objs)
 	{
+		if(objs == null || objs.length==0)
+			return; 
 		final Object[] temp = objs;
 		
 		getHibernateTemplate().execute(new HibernateCallback() {
@@ -375,6 +377,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
      */
 	public void saveBatch(List objs)
 	{
+		if(objs == null || objs.isEmpty())
+			return; 
 		final List temp = objs;
 		
 		getHibernateTemplate().execute(new HibernateCallback() {
@@ -414,6 +418,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
      */
 	public void updateBatch(Object[] objs)
 	{
+		if(objs == null || objs.length == 0)
+			return; 
 		final Object[] temp = objs;
 		
 		getHibernateTemplate().execute(new HibernateCallback() {
@@ -443,6 +449,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
      */
 	public void updateBatch(List objs)
 	{
+		if(objs == null || objs.isEmpty())
+			return; 
 		final List temp = objs;
 		
 		getHibernateTemplate().execute(new HibernateCallback() {
@@ -496,6 +504,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	
 	public void saveOrUpdateAll(Collection entities)
     {
+		if(entities == null || entities.isEmpty())
+			return; 
         getHibernateTemplate().saveOrUpdateAll(entities);
     }
 	
@@ -510,6 +520,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	
 	public void deleteAll(Collection objs)
     {
+		if(objs == null || objs.isEmpty())
+			return; 
         getHibernateTemplate().deleteAll(objs);
     } 
 	
