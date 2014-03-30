@@ -228,7 +228,7 @@
   <properties>
   	<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<org.slf4j.version>1.5.10</org.slf4j.version>
+  	<org.slf4j.version>1.7.6</org.slf4j.version>
   </properties>
   <name>littcore-common</name>
   

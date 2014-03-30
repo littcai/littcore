@@ -1,3 +1,6 @@
+2014-03-30
+1、[new] BeanCopier增加对象变更属性获取，可取到变更前的原值
+
 
 Date:2013-09-29
 1、[new] 增加AutoLoginToken，用于记录自动登录信息
