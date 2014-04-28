@@ -397,10 +397,10 @@ implements java.io.Serializable, Comparable {
      * @return  a string representation of this <tt>UUID</tt>.
      */
     public String toString() {
-	return (digits(mostSigBits >> 32, 8) + "-" +
-		digits(mostSigBits >> 16, 4) + "-" +
-		digits(mostSigBits, 4) + "-" +
-		digits(leastSigBits >> 48, 4) + "-" +
+	return (digits(mostSigBits >> 32, 8) +
+		digits(mostSigBits >> 16, 4) +
+		digits(mostSigBits, 4) +
+		digits(leastSigBits >> 48, 4) +
 		digits(leastSigBits, 12));
     }
 

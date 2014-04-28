@@ -60,7 +60,7 @@ public class BeanCopier {
 		}
 		return destList;
 	}
-	
+		
 	/**
 	 * 获得Bean拷贝时变更的属性及原始属性值.
 	 *

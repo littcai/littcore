@@ -1,5 +1,10 @@
 package com.litt.core.io.fileupload;
 
+import org.apache.commons.io.FilenameUtils;
+
+import com.litt.core.io.util.FileUtils;
+import com.litt.core.uid.UUID;
+
 /** 
  * 
  * 上传文件信息.
@@ -19,6 +24,14 @@ package com.litt.core.io.fileupload;
  */
 public class UploadFile
 {	
+	public static final String ILLEGAL_MIME_TYPE = "ILLEGAL_MIME_TYPE";	//非法的文件类型
+	
+	public static final String OUT_OF_SIZE_LIMIT = "OUT_OF_SIZE_LIMIT";		//文件大小超限
+	
+	public static final String STORE_FAILED = "STORE_FAILED";		//保存文件失败
+	
+	private String uid;
+	
 	private String fieldName;
 	
 	/** 原文件名. */
@@ -40,6 +53,34 @@ public class UploadFile
 	 * 文件大小.
 	 */
 	private long fileSize;
+	
+	/** 错误编号. */	
+	private String errorCode;
+	
+	/** 错误详情. */
+	private String errorMessage;	
+
+	/**
+	 * @return the isSuccess
+	 */
+	public boolean isSuccess() {
+		return errorCode==null;
+	}
+	
+	public String getSimpleFileName()
+	{
+		return FilenameUtils.getBaseName(fileName);
+	}
+	
+	/**
+	 * 获得用于显示的文件大小.
+	 *
+	 * @return the display file size
+	 */
+	public String getDisplayFileSize()
+	{
+		return FileUtils.humanReadableByteCount(fileSize);
+	}
 
 	/**
 	 * @return the fileName
@@ -150,4 +191,47 @@ public class UploadFile
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
 	}
+
+	/**
+	 * @return the errorCode
+	 */
+	public String getErrorCode() {
+		return errorCode;
+	}
+
+	/**
+	 * @param errorCode the errorCode to set
+	 */
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	/**
+	 * @return the errorMessage
+	 */
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	/**
+	 * @param errorMessage the errorMessage to set
+	 */
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	/**
+	 * @return the uid
+	 */
+	public String getUid() {
+		return uid;
+	}
+
+	/**
+	 * @param uid the uid to set
+	 */
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+	
 }

@@ -1,5 +1,7 @@
 package com.litt.core.util;
 
+import java.math.BigDecimal;
+
 import com.litt.core.common.Utility;
 
 /** 
@@ -156,5 +158,23 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return ret;
 	}	
 	
+	/**
+	 * 字符串数组转BigDecimal数组.
+	 * 转换失败则对应位置置NULL
+	 * 
+	 * @param array 字符串数组
+	 * @return BigDecimal数组
+	 */
+	public static BigDecimal[] toBigDecimal(String[] array)
+	{		
+		if(array==null || array.length==0)
+			return new BigDecimal[0];
+		BigDecimal[] ret = new BigDecimal[array.length];
+		for(int i=0;i<array.length;i++)
+		{
+			ret[i] = Utility.parseBigDecimal(array[i], null);
+		}
+		return ret;
+	}
 	
 }

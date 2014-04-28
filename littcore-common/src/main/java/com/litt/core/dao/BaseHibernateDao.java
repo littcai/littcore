@@ -502,7 +502,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
         getHibernateTemplate().saveOrUpdate(entity);
     }
 	
-	public void saveOrUpdateAll(Collection entities)
+	public void saveOrUpdateBatch(Collection entities)
     {
 		if(entities == null || entities.isEmpty())
 			return; 
@@ -518,7 +518,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
         getHibernateTemplate().delete(obj);
     } 
 	
-	public void deleteAll(Collection objs)
+	public void deleteBatch(Collection objs)
     {
 		if(objs == null || objs.isEmpty())
 			return; 

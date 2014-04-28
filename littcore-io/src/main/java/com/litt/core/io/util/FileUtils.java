@@ -17,7 +17,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.litt.core.common.Utility;
 import com.litt.core.format.FormatDateTime;
-import com.litt.core.io.FileConstants;
 import com.litt.core.util.ValidateUtils;
 
 /**
@@ -25,6 +24,10 @@ import com.litt.core.util.ValidateUtils;
  * <b>标题：</b>文件操作辅助类.
  * <pre><b>描述：</b>
  *    本地文件处理，常用操作：创建、删除、列表，文件编码转换
+ * </pre>
+ * <pre><b>变更日志：</b>
+ * 	2014-04-28：移除byteCountToDisplaySize，直接用commons-io里的
+ * 
  * </pre>
  * 
  * @author <a href="mailto:littcai@hotmail.com">蔡源</a>
@@ -40,13 +43,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	private static final Log logger = LogFactory.getLog(FileUtils.class);
 	
 	/**
-     * 返回当前日期时间字符串+3位随机数，格式'20030809161245001'作为文件名的唯一标识(用途：文件唯一标识).
+     * 返回当前日期时间字符串+3位随机数，格式'20030809161245321001'作为文件名的唯一标识(用途：文件唯一标识).
      * 
      * @return String 日期时间+3位随机数字符串
      */
     public static String currentToFileName()
     {
-        String fileName = FormatDateTime.format(new Date(), "yyyyMMddHHmmss");        
+        String fileName = FormatDateTime.format(new Date(), "yyyyMMddHHmmssSSS");        
         //取随机产生的认证码(4位数字)
         String choose = "0123456789";
         Random random = new Random();
@@ -342,28 +345,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils
     }
     
     /**
-     * Returns a human-readable version of the file size, where the input
-     * represents a specific number of bytes.
-     *
-     * @param size  the number of bytes
-     * @return a human-readable display value (includes units)
-     */
-    public static String byteCountToDisplaySize(long size) {
-        String displaySize;
-
-        if (size / FileConstants.ONE_GB > 0) {
-            displaySize = String.valueOf(size / FileConstants.ONE_GB) + " GB";
-        } else if (size / FileConstants.ONE_MB > 0) {
-            displaySize = String.valueOf(size / FileConstants.ONE_MB) + " MB";
-        } else if (size / FileConstants.ONE_KB > 0) {
-            displaySize = String.valueOf(size / FileConstants.ONE_KB) + " KB";
-        } else {
-            displaySize = String.valueOf(size) + " bytes";
-        }
-        return displaySize;
-    }
-    
-    /**
      * Implements the same behaviour as the "touch" utility on Unix. It creates
      * a new file with size 0 or, if the file exists already, it is opened and
      * closed without modifying it, but updating the file date and time.
@@ -386,6 +367,32 @@ public class FileUtils extends org.apache.commons.io.FileUtils
         }
     }
     
+    /**
+     * Human readable byte count.
+     *
+     * @param bytes the bytes
+     * @return the string
+     */
+    public static String humanReadableByteCount(long bytes)
+    {
+    	return humanReadableByteCount(bytes, false);
+    }
+    
+    
+    /**
+     * Human readable byte count.
+     *
+     * @param bytes the bytes
+     * @param si the si
+     * @return the string
+     */
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    }
 	
 	/**
 	 * @param args

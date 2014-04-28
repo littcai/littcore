@@ -2,12 +2,12 @@ package com.litt.core.web.tag.el;
 
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import com.litt.core.common.Utility;
 import com.litt.core.format.FormatDateTime;
 import com.litt.core.util.IPUtils;
-import com.litt.core.util.StringUtils;
 import com.litt.core.util.ValidateUtils;
 import com.litt.core.web.util.HtmlUtils;
 
@@ -210,5 +210,24 @@ public class FormatEL
 		else
 			return str2;
 	}	
+	
+	/**
+	 * 将字节为单位的文件大小格式化为用户友好的呈现.
+	 *
+	 * @param bytes the bytes
+	 * @param si the si
+	 * @return the string
+	 */
+	public static String formatFileSize(Long bytes, boolean si)
+	{
+		if(bytes==null)
+			return "0B";
+		int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+	}
+	
 	
 }

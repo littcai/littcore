@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.litt.core.common.Utility;
 import com.litt.core.io.util.FileUtils;
+import com.litt.core.util.ArrayUtils;
 
 /**
  * 
@@ -43,6 +44,9 @@ import com.litt.core.io.util.FileUtils;
  * </pre>
  * 
  * <pre><b>修改记录：</b>
+ * 	  2014-04-24 v2.0
+ * 			1、增加failedFiles记录上传失败的文件而不仅仅是记个名字，这样可以在返回时显示更详细信息
+ * 
  *    2010-11-28 v1.1 
  *    		1、原处理parseRequest时就完成了文件的保存操作，这在uploadPath需要从requst中获取参数相违背，因此特增加upload方法，分离文件保存的操作
  *    		2、去除自动生成年月文件夹
@@ -98,9 +102,12 @@ public class HttpFileUpload extends ServletFileUpload
     private List<FileItem> tempFileItem = new ArrayList<FileItem>();
     
     private Map parameterMap = new HashMap();			//表单字段映射
+    
+    private List<UploadFile> fileList = new ArrayList<UploadFile>();	//所有文件
     private List<UploadFile> succeedFiles = new ArrayList<UploadFile>();		//UploadFile
-    private List failedFileNames = new ArrayList();		//上传失败文件
-    private List invalidFileNames = new ArrayList();	//非法的上传文件	
+    private List<UploadFile> failedFiles = new ArrayList<UploadFile>();		//UploadFile
+    private List<String> failedFileNames = new ArrayList<String>();		//上传失败文件
+    private List<String> invalidFileNames = new ArrayList<String>();	//非法的上传文件	
     
     /**
      * 构造函数初始化.
@@ -244,11 +251,10 @@ public class HttpFileUpload extends ServletFileUpload
         long sizeMax = getSizeMax();
         if (sizeMax >= 0 && requestSize > sizeMax)
         {
-            throw new SizeLimitExceededException("由于文件总大小 [ " + requestSize
-                    + " ] 超出限定 [ " + sizeMax + " ]，上传被终止！", requestSize,
+            throw new SizeLimitExceededException("Total size[" + requestSize
+                    + "] is out of limit[ " + sizeMax + " ], Upload terminated", requestSize,
                 sizeMax);
-        }                 	
-           
+        }              
         List /* FileItem */ items = super.parseRequest(request); 
         
         FileItem item = null;           
@@ -297,19 +303,38 @@ public class HttpFileUpload extends ServletFileUpload
            
             if (!isAllowFileType(fileContentType)) // 不属于允许上传的文件类型
             {
-            	invalidFileNames.add(fileSimpleName);  
-            	throw new InvalidFileUploadException(
-                        "非法的文件上传类型 [ " + fileContentType + " ]",
-                        invalidFileNames);
+            	UploadFile failedFile = new UploadFile();
+            	failedFile.setErrorCode(UploadFile.ILLEGAL_MIME_TYPE);
+            	failedFile.setFieldName(fieldName);
+            	failedFile.setSrcFileName(fileName);
+            	failedFile.setFileName(fileSimpleName);
+            	failedFile.setFileSuffix(fileSuffix);
+            	failedFile.setFileSize(sizeInBytes);
+            	failedFile.setMimeType(fileContentType);  
+            	failedFile.setErrorMessage("Illegal mime type [ " + fileContentType + " ]");
+            	failedFiles.add(failedFile);  
+            	fileList.add(failedFile);
+            	
+            	invalidFileNames.add(fileSimpleName);              	
             }                   
             if (sizeInBytes > this.fileLimitSize)
             {
+            	UploadFile failedFile = new UploadFile();
+            	failedFile.setErrorCode(UploadFile.OUT_OF_SIZE_LIMIT);
+            	failedFile.setFieldName(fieldName);
+            	failedFile.setSrcFileName(fileName);
+            	failedFile.setFileName(fileSimpleName);
+            	failedFile.setFileSuffix(fileSuffix);
+            	failedFile.setFileSize(sizeInBytes);
+            	failedFile.setMimeType(fileContentType);
+            	failedFile.setErrorMessage("[ "
+                        + fileSimpleName + " ] is out of size limit, file size[ "
+                        + sizeInBytes + " ], limit is[ "
+                        + this.fileLimitSize + " ] ");
+            	failedFiles.add(failedFile);   
+            	fileList.add(failedFile);
+            	
             	invalidFileNames.add(fileSimpleName);
-                throw new InvalidFileUploadException("[ "
-                        + fileSimpleName + " ]超过单个文件大小限制，文件大小[ "
-                        + sizeInBytes + " ]，限制为[ "
-                        + this.fileLimitSize + " ] ",
-                        invalidFileNames);
             }   
             //写文件   
             String actualFileName;
@@ -319,28 +344,34 @@ public class HttpFileUpload extends ServletFileUpload
             	actualFileName = fileSimpleName;
             if(logger.isDebugEnabled())
             {
-            	logger.debug("文件保存路径："+uploadPath+"，文件名："+actualFileName);
+            	logger.debug("File store path:"+uploadPath+", file name:"+actualFileName);
             }
             String finalPath = homePath + File.separator + uploadPath;
             FileUtils.createDirectory(new File(finalPath));
             File uploadedFile  = new File(finalPath, actualFileName);  
             
+            UploadFile uploadFile = new UploadFile();
+			uploadFile.setFieldName(fieldName);
+			uploadFile.setSrcFileName(fileSimpleName);	//原文件名
+			uploadFile.setFileSuffix(fileSuffix);		//文件后缀名
+			uploadFile.setFileName(actualFileName);		//现文件名					
+			uploadFile.setFilePath(finalPath);			//绝对路径
+			uploadFile.setMimeType(fileContentType);
+			uploadFile.setFileSize(sizeInBytes);
+            
             try
 			{
-				item.write(uploadedFile);
-				UploadFile uploadFile = new UploadFile();
-				uploadFile.setFieldName(fieldName);
-				uploadFile.setSrcFileName(fileSimpleName);	//原文件名
-				uploadFile.setFileSuffix(fileSuffix);		//文件后缀名
-				uploadFile.setFileName(actualFileName);		//现文件名					
-				uploadFile.setFilePath(finalPath);			//绝对路径
-				uploadFile.setMimeType(fileContentType);
-				uploadFile.setFileSize(sizeInBytes);
+				item.write(uploadedFile);	
 				succeedFiles.add(uploadFile);
+				fileList.add(uploadFile);
 			}
 			catch (Exception e)
 			{
-				logger.error("文件写入失败！", e);
+				logger.error("Store file failed.", e);
+				uploadFile.setErrorCode(UploadFile.STORE_FAILED);
+				uploadFile.setErrorMessage(e.getMessage());
+				failedFiles.add(uploadFile);
+				fileList.add(uploadFile);
 				failedFileNames.add(fileSimpleName);
 			}
 			finally
@@ -381,50 +412,7 @@ public class HttpFileUpload extends ServletFileUpload
             return allowFileTypes.indexOf(fileType.toLowerCase()) != -1;
         else
             return false;
-    }
-
-    /**
-     * 
-     * 
-     * 无效的文件上传异常.
-     * 
-     * <pre><b>描述：</b>
-     *    无效的文件上传异常 
-     * </pre>
-     * 
-     * <pre><b>修改记录：</b>
-     *    
-     * </pre>
-     * 
-     * @author <a href="mailto:littcai@hotmail.com">蔡源</a>
-     * @since 2009-4-17
-     * @version 1.0
-     *
-     */
-    public class InvalidFileUploadException extends FileUploadException
-    {
-        private static final long serialVersionUID = 5458085280561303071L;
-        
-        /** 无效的文件列表. */
-        private List invalidFileList;
-
-        public List getInvalidFileList()
-        {
-            return invalidFileList;
-        }
-
-        public InvalidFileUploadException(List list)
-        {
-            invalidFileList = list;
-        }
-
-        public InvalidFileUploadException(String message, List list)
-        {
-            super(message);
-            invalidFileList = list;
-        }
-    }
-    
+    }    
 
     public long getFileLimitSize()
     {
@@ -455,17 +443,9 @@ public class HttpFileUpload extends ServletFileUpload
 	/**
 	 * @return the failedFileNames
 	 */
-	public List getFailedFileNames()
+	public List<String> getFailedFileNames()
 	{
 		return failedFileNames;
-	}
-
-	/**
-	 * @param failedFileNames the failedFileNames to set
-	 */
-	public void setFailedFileNames(List failedFileNames)
-	{
-		this.failedFileNames = failedFileNames;
 	}
 
 	/**
@@ -480,7 +460,7 @@ public class HttpFileUpload extends ServletFileUpload
 	/**
 	 * @return the invalidFileNames
 	 */
-	public List getInvalidFileNames()
+	public List<String> getInvalidFileNames()
 	{
 		return invalidFileNames;
 	}
@@ -515,6 +495,20 @@ public class HttpFileUpload extends ServletFileUpload
 	public String getHomePath()
 	{
 		return homePath;
+	}
+
+	/**
+	 * @return the failedFiles
+	 */
+	public List<UploadFile> getFailedFiles() {
+		return failedFiles;
+	}
+
+	/**
+	 * @return the fileList
+	 */
+	public List<UploadFile> getFileList() {
+		return fileList;
 	}
 
 }
