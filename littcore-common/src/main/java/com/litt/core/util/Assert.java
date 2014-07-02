@@ -131,7 +131,7 @@ public abstract class Assert {
 	 * @throws IllegalArgumentException if the object is <code>null</code>
 	 */
 	public static void notEmpty(String object, String message) {
-		if (object == null || ValidateUtils.isEmpty(object)) {
+		if (object == null || StringUtils.isEmpty(object)) {
 			throw new IllegalArgumentException(message);
 		}
 	}	
@@ -155,7 +155,7 @@ public abstract class Assert {
 	 * @see StringUtils#hasLength
 	 */
 	public static void hasLength(String text, String message) {
-		if (!ValidateUtils.isBlank(text)) {
+		if (!StringUtils.isBlank(text)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -181,7 +181,7 @@ public abstract class Assert {
 	 * @see StringUtils#hasText
 	 */
 	public static void hasText(String text, String message) {
-		if (ValidateUtils.isBlank(text)) {
+		if (StringUtils.isBlank(text)) {
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -206,7 +206,7 @@ public abstract class Assert {
 	 * @param message the exception message to use if the assertion fails
 	 */
 	public static void doesNotContain(String textToSearch, String substring, String message) {
-		if (ValidateUtils.isBlank(textToSearch) && ValidateUtils.isBlank(substring) &&
+		if (StringUtils.isBlank(textToSearch) && StringUtils.isBlank(substring) &&
 				textToSearch.indexOf(substring) != -1) {
 			throw new IllegalArgumentException(message);
 		}

@@ -127,7 +127,7 @@ public class HibernatePageList implements IPageList {
      */
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
-        countPages(); //根据总结果集大小计算总的页面数        
+        //countPages(); //根据总结果集大小计算总的页面数        
     }
 
 	/**
