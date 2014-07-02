@@ -9,8 +9,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import com.litt.core.common.BeanManager;
-import com.litt.core.common.Utility;
-import com.litt.core.util.ValidateUtils;
 
 
 /**

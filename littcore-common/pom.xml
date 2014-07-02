@@ -9,6 +9,11 @@
   <artifactId>littcore-common</artifactId>
   <dependencies>
   	<dependency>
+  		<groupId>com.litt.core</groupId>
+  		<artifactId>littcore-security</artifactId>
+  		<version>3.2.2-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
   		<groupId>commons-beanutils</groupId>
   		<artifactId>commons-beanutils</artifactId>
   		<version>1.8.3</version>
@@ -22,6 +27,11 @@
   		<groupId>commons-lang</groupId>
   		<artifactId>commons-lang</artifactId>
   		<version>2.5</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>commons-configuration</groupId>
+  		<artifactId>commons-configuration</artifactId>
+  		<version>1.8</version>
   	</dependency>
   	<dependency>
   		<groupId>org.slf4j</groupId>
@@ -185,12 +195,7 @@
   		<groupId>org.hibernate</groupId>
   		<artifactId>hibernate-core</artifactId>
   		<version>3.6.10.Final</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.litt.core</groupId>
-  		<artifactId>littcore-security</artifactId>
-  		<version>3.2.2-SNAPSHOT</version>
-  	</dependency>
+  	</dependency>  	
   </dependencies>
   <build>
   	<plugins>

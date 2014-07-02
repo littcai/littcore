@@ -129,7 +129,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 	 */
 	public static String[] splitStringAll(String string,int count)
 	{	
-		if(ValidateUtils.isEmpty(string))
+		if(StringUtils.isEmpty(string))
 			return new String[0];
 		if(count<=0)
 			throw new IllegalArgumentException("分割长度必须大于1");   

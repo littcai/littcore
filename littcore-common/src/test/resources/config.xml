@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<system />
+	<properties fileName="init.properties" />
+	<xml fileName="system-config.xml" />
+</configuration>

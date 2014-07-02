@@ -22,6 +22,10 @@ package com.litt.core.common;
 public abstract class CoreConstants
 {	
 	//静态变量
+  /** 是否开启DEBUG模式. */
+  public static boolean IS_DEBUG = false;     
+  
+  
 	/** 默认一页显示行数. */
 	public static final int DEFAULT_PAGE_SIZE = 15;         
     

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<systemConfig>
+	<baseInfo>
+		<code>SYS-SAAS-0001</code>
+		<name>SaaS平台</name>		
+		<companyName>LITTCORE</companyName>
+		<copyright></copyright>
+		<version>0.1.0</version>
+		<lastUpdateDatetime>2013-09-01 00:00:00</lastUpdateDatetime>
+	</baseInfo>
+	<smtpServer>
+		<host>smtp.qq.com</host>
+		<port>25</port>
+		<username>service@webestlife.com</username>
+		<password enctypted="true">Service810802</password>
+	</smtpServer>
+	<smsServer>
+		<sender></sender>	<!-- 发件人手机号 -->
+	</smsServer>
+	<globalization>
+		<dateFormat>yyyy-MM-dd hh:mm:ss</dateFormat>
+		<currencyFormat>#####.###</currencyFormat>
+	</globalization>
+	<security>
+		<cookieEncryptKey>saap</cookieEncryptKey>	<!-- 用于cookie加密，在SaaS环境下可将tenant信息加到key中实现安全隔离 -->
+	</security>
+</systemConfig>
