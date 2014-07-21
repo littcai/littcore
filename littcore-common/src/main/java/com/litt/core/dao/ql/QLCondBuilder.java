@@ -30,9 +30,11 @@ import com.litt.core.util.ValidateUtils;
  *    	-- AND LOGIN_ID={loginId}
  *    	-- AND OP_NAME LIKE {opName}
  *    	-- AND STATUS=1
+ *      -- ORDER BY LOGIN_ID ASC
  * </pre>
  * 
  * <pre><b>修改记录：</b>
+ *    2014-07-21 1、重构排序条件的处理，默认排序改用静态。若不存在传入的动态排序条件，则使用默认排序。
  * 	  2013-07-25 1、动态SQL的顺序问题，WHERE\ORDER BY\OTHER仍需要按照原始顺序组装
  * 	  2010-02-26 1、原值占位符[]的功能性变更，使用[]占位符作用与{}相同，生成SQL时都以?替换，唯一的区别是[]占位符所定义的查询条件为必选条件，值为空时将抛出IllegalArgumentException异常。
  * 	  2009-12-24 1、增加动态SQL解析及静态generateQlResult方法，简化SQL的处理
@@ -48,8 +50,8 @@ import com.litt.core.util.ValidateUtils;
  * </pre>
  * 
  * @author <a href="mailto:littcai@hotmail.com">蔡源</a>
- * @since 2008-11-28, 2008-12-11, 2009-04-03, 2009-04-16, 2009-12-24, 2010-02-26
- * @version 1.0, 1.1, 1.2, 1.3, 1.4, 1.5
+ * @since 2008-11-28, 2008-12-11, 2009-04-03, 2009-04-16, 2009-12-24, 2010-02-26, 2013-07-25, 2014-07-21
+ * @version 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7
  *
  */
 public class QLCondBuilder implements IQLCondBuilder
@@ -278,48 +280,22 @@ public class QLCondBuilder implements IQLCondBuilder
 		/*
 		 * 存在排序时处理排序
 		 */
-		if(!ValidateUtils.isEmpty(orderSql))	
-		{			
-//			Pattern pattern = compiler.compile("(\\[(.*?)\\])");
-//			PatternMatcher matcherBracket = new Perl5Matcher();
-//			while(matcherBracket.contains(orderSql, pattern))
-//			{
-//				MatchResult result = matcherBracket.getMatch();
-//				String sortField = result.group(2);
-//				String replaceContent = StringUtils.substringBefore(sortField, "_") + " " + pageParam.getSort(sortField);	
-
-//				orderSql = Util.substitute(matcherBracket, pattern, new Perl5Substitution(replaceContent), orderSql);			
-//			}
-			String tmpSql = orderSql;
+		if(condParam.hasSort())
+		{
 			StringBuilder sbOrder = new StringBuilder(" ORDER BY ");
-			Matcher matcherBracket = findBracket(tmpSql);	
-			int index = 0;
-			boolean hasPlaceholder = false;
-			while(matcherBracket.find())	//只要发现一次，但是替换时是全部替换
-			{
-				hasPlaceholder = true;
-				String sortField = tmpSql.substring(matcherBracket.start()+1, matcherBracket.end()-1);			
-				if(condParam.hasSort(sortField))
-				{
-					//排序字段名即为传入参数以横线分隔的前部分
-					String replaceContent = StringUtils.substringBefore(sortField, "_") + " " + condParam.getSort(sortField);	
-					if(index>0)
-						sbOrder.append(", ");
-					sbOrder.append(replaceContent);				
-					tmpSql = matcherBracket.replaceFirst(replaceContent);	
-					index++;
-				}
-				else {
-					tmpSql = matcherBracket.replaceFirst("");	
-				}
-				matcherBracket = findBracket(tmpSql);	//再次匹配	
-			}	
-			if(hasPlaceholder)
-				qlResult.setOrderQl(sbOrder.toString());
-			else {
-				qlResult.setOrderQl(tmpSql);
+			String[] sortFields = condParam.getSortFields();
+			sbOrder.append(sortFields[0]).append(" ").append(condParam.getSortOrder(sortFields[0]));
+			for (int i=1;i<sortFields.length;i++) {
+				String sortField = sortFields[i];
+				sbOrder.append(", ").append(sortField).append(" ").append(condParam.getSortOrder(sortField));
 			}
+			this.orderSql = sbOrder.toString();
 		}
+		else 	//不存在则使用原始语句中的默认排序
+		{
+			
+		}
+		qlResult.setOrderQl(this.orderSql);
 		qlResult.setCondQl(sql.toString());
 		qlResult.setParams(paramList.toArray());
 		return qlResult;

@@ -2,10 +2,12 @@ package com.litt.core.dao.ql;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.litt.core.util.ArrayUtils;
 import com.litt.core.util.DateUtils;
 
 /** 
@@ -13,7 +15,8 @@ import com.litt.core.util.DateUtils;
  * Map式参数传递对象.
  * 
  * <pre><b>描述：</b>
- * 2013-07-23 1、重构对排序的支持，支持多重排序   
+ * 2013-07-23 1、重构对排序的支持，支持多重排序  
+ * 2014-07-21 1、增加排序字段数组保存排序的默认顺序 
  *    
  * 注意事项：   
  *    1、不支持重复的键值（若重复，新值将替换旧值）
@@ -24,8 +27,8 @@ import com.litt.core.util.DateUtils;
  * </pre>
  * 
  * @author <a href="mailto:littcai@hotmail.com">蔡源</a>
- * @since 2009-12-23,2013-07-23
- * @version 1.0,1.1
+ * @since 2009-12-23,2013-07-23,2014-07-21
+ * @version 1.0,1.1,1.2
  *
  */
 public class CondParam
@@ -36,6 +39,9 @@ public class CondParam
 	 * VALUE:参数值 
 	 */
 	private Map<String, Object> condMap = new HashMap<String, Object>();
+	
+	/** 排序字段（有顺序）. */
+	private String[] sortFields = new String[0];
 	
 	/** 
 	 * 排序映射.
@@ -48,11 +54,6 @@ public class CondParam
 	
 	public CondParam(Map<String, Object> condMap){
 		this.condMap = condMap;		
-	}
-	
-	public CondParam(Map<String, Object> condMap, Map<String, String> sortMap){
-		this.condMap = condMap;		
-		this.sortMap = sortMap;
 	}
 	
     /**
@@ -141,6 +142,7 @@ public class CondParam
 	 */
     public void addSort(String sortField, String sortOrder)
     {
+    	this.sortFields = (String[])ArrayUtils.add(sortFields, sortField);
     	this.sortMap.put(sortField, sortOrder);
     }
     
@@ -151,10 +153,10 @@ public class CondParam
      */
     public String getSortField()
     {
-    	if(sortMap.isEmpty())
-    		return null;
+    	if(sortFields.length==0)
+    		return "";
     	else {
-    		return sortMap.entrySet().iterator().next().getKey();
+    		return sortFields[0];
 		}
     }
     
@@ -165,10 +167,10 @@ public class CondParam
      */
     public String getSortOrder()
     {
-    	if(sortMap.isEmpty())
-    		return null;
+    	if(sortFields.length==0)
+    		return "";
     	else {
-    		return sortMap.entrySet().iterator().next().getValue();
+    		return sortMap.get(sortFields[0]);
 		}
     }
     
@@ -179,7 +181,7 @@ public class CondParam
      * 
      * @return String 排序方式(不存在返回NULL)
      */
-    public String getSort(String sortField)
+    public String getSortOrder(String sortField)
     {
         return sortMap.get(sortField);       
     }	
@@ -200,18 +202,8 @@ public class CondParam
      */
     public String[] getSortFields()
     {
-    	return this.sortMap.keySet().toArray(new String[this.sortMap.size()]);    	
-    }   
-    
-    /**
-     * 返回所有排序.
-     * 
-     * @return 所有排序
-     */
-    public Map<String, String> getSorts()
-    {
-    	return this.sortMap;    	
-    }
+    	return this.sortFields;    	
+    }  
     
     /**
      * 是否有排序字段
@@ -219,7 +211,7 @@ public class CondParam
      */
     public boolean hasSort()
     {
-        return !sortMap.isEmpty();
+        return sortFields.length>0;
     }  
     
     /**
