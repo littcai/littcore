@@ -3,15 +3,13 @@ package com.litt.core.dao.ql;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.litt.core.common.Utility;
 import com.litt.core.util.StringUtils;
@@ -56,7 +54,7 @@ import com.litt.core.util.ValidateUtils;
  */
 public class QLCondBuilder implements IQLCondBuilder
 {
-	private final static Log logger = LogFactory.getLog(QLCondBuilder.class);
+	private final static Logger logger = LoggerFactory.getLogger(QLCondBuilder.class);
 	
 	public static final Pattern PATTERN_BRACKETS = Pattern.compile("(\\{(.*?)\\})"); 
 	
@@ -231,17 +229,21 @@ public class QLCondBuilder implements IQLCondBuilder
 		for(int i=0;i<sqlCondList.size();i++)
 		{
 			String condQl = (String)sqlCondList.get(i);
-			if(logger.isDebugEnabled())
-			{
-				logger.debug("处理查询条件："+condQl);
-			}			
 			if(!StringUtils.startsWithIgnoreCase(condQl, " AND") && !StringUtils.startsWithIgnoreCase(condQl, " OR"))	//判断是否为条件语句，即以AND或OR开头
 			{
+				if(logger.isDebugEnabled())
+				{
+					logger.debug("handle where filter:"+condQl);
+				}	
 				sql.append(condQl);
 				continue;
 			}
 			else if(StringUtils.startsWithIgnoreCase(condQl, " ORDER BY"))	//判断是否为排序条件
 			{
+				if(logger.isDebugEnabled())
+				{
+					logger.debug("handle order by:"+condQl);
+				}	
 				this.orderSql = condQl;
 				continue;
 			}				
@@ -282,6 +284,10 @@ public class QLCondBuilder implements IQLCondBuilder
 		 */
 		if(condParam.hasSort())
 		{
+			if(logger.isDebugEnabled())
+			{
+				logger.debug("find dynamic order by:{}", new Object[]{condParam.getSortFields()});
+			}	
 			StringBuilder sbOrder = new StringBuilder(" ORDER BY ");
 			String[] sortFields = condParam.getSortFields();
 			sbOrder.append(sortFields[0]).append(" ").append(condParam.getSortOrder(sortFields[0]));

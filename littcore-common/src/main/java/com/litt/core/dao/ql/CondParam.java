@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.litt.core.util.ArrayUtils;
 import com.litt.core.util.DateUtils;
+import com.litt.core.util.StringUtils;
 
 /** 
  * 
@@ -142,6 +143,8 @@ public class CondParam
 	 */
     public void addSort(String sortField, String sortOrder)
     {
+    	if(StringUtils.isEmpty(sortField) || StringUtils.isEmpty(sortOrder))
+    		return;
     	this.sortFields = (String[])ArrayUtils.add(sortFields, sortField);
     	this.sortMap.put(sortField, sortOrder);
     }
