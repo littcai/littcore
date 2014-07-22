@@ -1,6 +1,5 @@
 package com.litt.core.dao.ql;
 
-import java.util.Map;
 
 
 public interface IQLCondBuilder

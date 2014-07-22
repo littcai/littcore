@@ -31,7 +31,7 @@ public class QlTest extends TestCase
 {
 	public void testCond()
 	{
-		PageParam pageParam = new PageParam(1, 10, "opId_order", "asc");
+		PageParam pageParam = new PageParam(1, 10);
 		pageParam.addCond("loginId", "admin");
 		String dynamicHql = "select operator from Operator operator"
 			+"-- and roleId={roleId}"
@@ -46,46 +46,60 @@ public class QlTest extends TestCase
 	
 	public void testSort() throws Exception
 	{
-		PageParam pageParam = new PageParam(1, 10, "opId_order", "asc");
+		PageParam pageParam = new PageParam(1, 10);
 		
 		String dynamicHql = "select operator from Operator operator"
 				+"-- and roleId={roleId}"
 				+"-- and loginId like {%loginId%}"
 				+"-- and opName like {%opName%}"
-				+"-- order by [opId_order], [opName_order]"
+				+"-- order by opId asc"
 				;
 
 		IQLResult listResult = QLCondBuilder.generate(dynamicHql, pageParam);	
 		String orderSql = listResult.getOrderQl();
-		super.assertEquals(" ORDER BY opId asc", orderSql);
+		super.assertEquals(" order by opId asc", orderSql);
 	}
 	
 	public void testSort2() throws Exception
 	{
-		PageParam pageParam = new PageParam(1, 10, "opName_order", "asc");
+		PageParam pageParam = new PageParam(1, 10, "opName", "desc");
 		
 		String dynamicHql = "select operator from Operator operator"
 				+"-- and roleId={roleId}"
 				+"-- and loginId like {%loginId%}"
 				+"-- and opName like {%opName%}"
-				+"-- order by [opId_order], [opName_order]"
+				+"-- order by opId asc"
 				;
 
 		IQLResult listResult = QLCondBuilder.generate(dynamicHql, pageParam);	
 		String orderSql = listResult.getOrderQl();
-		super.assertEquals(" ORDER BY opName asc", orderSql);
+		super.assertEquals(" ORDER BY opName desc", orderSql);
 	}
 	
-	public void testSortMulti() throws Exception
+	public void testSort3() throws Exception
 	{
-		PageParam pageParam = new PageParam(1, 10, "opId_order", "asc");
-		pageParam.addSort("opName_order", "desc");
+		PageParam pageParam = new PageParam(1, 10, "loginId", "asc");
 		
 		String dynamicHql = "select operator from Operator operator"
 				+"-- and roleId={roleId}"
 				+"-- and loginId like {%loginId%}"
 				+"-- and opName like {%opName%}"
-				+"-- order by [opId_order], [opName_order]"
+				;
+
+		IQLResult listResult = QLCondBuilder.generate(dynamicHql, pageParam);	
+		String orderSql = listResult.getOrderQl();
+		super.assertEquals(" ORDER BY loginId asc", orderSql);
+	}
+	
+	public void testSortMulti() throws Exception
+	{
+		PageParam pageParam = new PageParam(1, 10, "opId", "asc");
+		pageParam.addSort("opName", "desc");
+		
+		String dynamicHql = "select operator from Operator operator"
+				+"-- and roleId={roleId}"
+				+"-- and loginId like {%loginId%}"
+				+"-- and opName like {%opName%}"
 				;
 
 		IQLResult listResult = QLCondBuilder.generate(dynamicHql, pageParam);	

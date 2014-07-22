@@ -1,6 +1,8 @@
 package com.litt.core.web.query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,12 +48,7 @@ public class QueryFilter {
 	/** 查询条件. */
 	private Map<String, Object> paramMap = new HashMap<String, Object>();
 	
-	/** 
-	 * 排序映射.
-	 * KEY:排序字段名
-	 * VALUE:排序方式 
-	 */
-	private Map<String, String> sortMap = new HashMap<String, String>();	
+	private List<Sort> sorts = new ArrayList<QueryFilter.Sort>();
 	
 	/** 当前的页码. */
 	private int pageIndex = 1;
@@ -106,7 +103,7 @@ public class QueryFilter {
 	 */
 	public CondParam toCondParam()
 	{
-		CondParam condParam = new CondParam(this.paramMap, this.sortMap);
+		CondParam condParam = new CondParam(this.paramMap);
 		return condParam;
 	}
 	
@@ -117,7 +114,7 @@ public class QueryFilter {
 	 */
 	public PageParam toPageParam()
 	{
-		PageParam pageParam = new PageParam(this.paramMap, this.sortMap);
+		PageParam pageParam = new PageParam(this.paramMap);
 		return pageParam;
 	}
 
@@ -183,9 +180,45 @@ public class QueryFilter {
 				continue;
 			}
 			
-			this.sortMap.put(key, value.toString());
+			this.sorts.add(new Sort(key, value.toString()));
 		}		
 		return this;
+	}
+	
+	private class Sort{
+		private String field;
+		private String order;
+		
+		public Sort(String field, String order) {
+			super();
+			this.field = field;
+			this.order = order;
+		}
+		/**
+		 * @return the field
+		 */
+		public String getField() {
+			return field;
+		}
+		/**
+		 * @param field the field to set
+		 */
+		public void setField(String field) {
+			this.field = field;
+		}
+		/**
+		 * @return the order
+		 */
+		public String getOrder() {
+			return order;
+		}
+		/**
+		 * @param order the order to set
+		 */
+		public void setOrder(String order) {
+			this.order = order;
+		}
+		
 	}
 
 	/**
@@ -263,13 +296,6 @@ public class QueryFilter {
 	 */
 	public void setSortPrefix(String sortPrefix) {
 		this.sortPrefix = sortPrefix;
-	}
-
-	/**
-	 * @return the sorts
-	 */
-	public Map<String, String> getSortMap() {
-		return sortMap;
 	}
 
 }

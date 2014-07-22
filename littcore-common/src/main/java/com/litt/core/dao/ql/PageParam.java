@@ -110,16 +110,6 @@ public class PageParam extends CondParam
     public PageParam(Map<String, Object> condMap){
 		super(condMap);
 	}
-	
-	/**
-	 * Instantiates a new page param.
-	 *
-	 * @param condMap the cond map
-	 * @param sortMap the sort map
-	 */
-	public PageParam(Map<String, Object> condMap, Map<String, String> sortMap){
-		super(condMap, sortMap);
-	}
     
     /**
      * @return the pageIndex
