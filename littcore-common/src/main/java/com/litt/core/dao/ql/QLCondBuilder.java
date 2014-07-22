@@ -302,7 +302,7 @@ public class QLCondBuilder implements IQLCondBuilder
 				if(condParam.hasSort(sortField))
 				{
 					//排序字段名即为传入参数以横线分隔的前部分
-					String replaceContent = StringUtils.substringBefore(sortField, "_") + " " + condParam.getSort(sortField);	
+					String replaceContent = StringUtils.substringBefore(sortField, "_") + " " + condParam.getSortOrder(sortField);	
 					if(index>0)
 						sbOrder.append(", ");
 					sbOrder.append(replaceContent);				

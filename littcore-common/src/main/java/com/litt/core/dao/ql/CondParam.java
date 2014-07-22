@@ -145,6 +145,28 @@ public class CondParam
     }
     
     /**
+     * Gen sort ql.
+     *
+     * @return the string
+     */
+    public String genSortQL()
+    {
+      if(this.hasSort())
+      {
+        String[] sortFields = this.getSortFields();
+        StringBuilder order = new StringBuilder().append(" ORDER BY ");
+        order.append(sortFields[0]).append(" ").append(this.getSortOrder(sortFields[0]));
+        for (int i=1; i<sortFields.length; i++)
+        {
+          String sortField = sortFields[i];
+          order.append(", ").append(sortField).append(" ").append(this.getSortOrder(sortField));
+        }
+        return order.toString();
+      }
+      return "";
+    }
+    
+    /**
      * 获得排序字段名(只有一个字段排序时使用).
      *
      * @return the sort field
@@ -179,7 +201,7 @@ public class CondParam
      * 
      * @return String 排序方式(不存在返回NULL)
      */
-    public String getSort(String sortField)
+    public String getSortOrder(String sortField)
     {
         return sortMap.get(sortField);       
     }	
