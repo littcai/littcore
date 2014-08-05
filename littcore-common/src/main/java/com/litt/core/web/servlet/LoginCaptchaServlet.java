@@ -2,6 +2,7 @@ package com.litt.core.web.servlet;
 
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +13,6 @@ import javax.servlet.http.HttpSession;
 import com.litt.core.common.CoreConstants;
 import com.litt.core.common.Utility;
 import com.litt.core.security.Captcha;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * 用户登录认证码验证.
@@ -93,10 +92,8 @@ public class LoginCaptchaServlet extends HttpServlet
 		session.setAttribute(sessionCaptchaName, captcha.getCaptchaCode());
 		//图片处理
 		ServletOutputStream out = response.getOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		encoder.encode(captcha.getCaptchaImage());
-		out.flush();
-		out.close();
+		ImageIO.write(captcha.getCaptchaImage(), "jpg", out);
+		
 	}
 	
 	/**

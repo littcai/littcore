@@ -7,10 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
 import com.litt.core.common.Utility;
 import com.litt.core.random.StringRandom;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 
 /**
@@ -148,14 +148,13 @@ public class Captcha extends StringRandom
     public static void main(String[] args) throws Exception
     {
     	Captcha captchaCode = new Captcha();    	
-		captchaCode.setLength(4);
-		captchaCode.setCharset("CHARSET_LETTER_NUM");
-		BufferedImage image = captchaCode.generate(captchaCode.getRandom());
-		FileOutputStream out = new FileOutputStream("d:\\test.jpg");
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		encoder.encode(image);
-		out.flush();
-		out.close();
+    	captchaCode.setLength(4);
+    	captchaCode.setCharset("CHARSET_LETTER_NUM");
+    	BufferedImage image = captchaCode.generate(captchaCode.getRandom());
+    	FileOutputStream out = new FileOutputStream("d:\\test.jpg");
+		
+    	ImageIO.write(image, "jpg", out);
+		
     }
 
 
