@@ -173,8 +173,8 @@
 		        <configuration> 		
 		           <tagBase>https://github.com/littcai/littcore/tags</tagBase> 	
 		           <branchBase>https://github.com/littcai/littcore/branches</branchBase>	
-		           <username>littcai@gmail.com</username> 		
-		           <password>Cai810802</password> 		
+		           <username>${git.username}</username> 		
+		           <password>${git.password}</password> 		
 		           <releaseProfiles>release</releaseProfiles> 		
 		           <autoVersionSubmodules>true</autoVersionSubmodules>
 		        </configuration> 		
