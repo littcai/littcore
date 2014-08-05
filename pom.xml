@@ -116,7 +116,7 @@
 	                       <manifestEntries>
 				                <Built-At>${maven.build.timestamp}</Built-At>
 				                <Version>${project.version}</Version>
-				                <Copyright>Copyright (c) 2004-2013 The LITT-CORE.  All rights reserved.</Copyright>
+				                <Copyright>Copyright (c) 2004-2014 The LITTCORE.  All rights reserved.</Copyright>
 				            </manifestEntries>
 	                    </archive>
 	                </configuration>
@@ -169,12 +169,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId> 
 		       	<artifactId>maven-release-plugin</artifactId> 
-		        <version>2.2.1</version> 
+		        <version>2.5</version> 
 		        <configuration> 		
-		           <tagBase>http://127.0.0.1:9999/svn/littcore-3.0/tags/littcore</tagBase> 	
-		           <branchBase>http://127.0.0.1:9999/svn/littcore-3.0/branches/littcore</branchBase>	
-		           <username>caiyuan</username> 		
-		           <password>caiyuan</password> 		
+		           <tagBase>https://github.com/littcai/littcore/tags</tagBase> 	
+		           <branchBase>https://github.com/littcai/littcore/branches</branchBase>	
+		           <username>littcai@gmail.com</username> 		
+		           <password>Cai810802</password> 		
 		           <releaseProfiles>release</releaseProfiles> 		
 		           <autoVersionSubmodules>true</autoVersionSubmodules>
 		        </configuration> 		
@@ -213,9 +213,10 @@
 	</build>
 	
 	<scm>
-		<url>http://127.0.0.1:9999/svn/littcore-3.0/trunk/littcore/</url>
-		<developerConnection>scm:svn:http://127.0.0.1:9999/svn/littcore-3.0/trunk/littcore</developerConnection>
-		<connection>scm:svn:http://127.0.0.1:9999/svn/littcore-3.0/trunk/littcore</connection>
+		<url>https://github.com/littcai/littcore</url>
+		<developerConnection>scm:git:https://github.com/littcai/littcore</developerConnection>
+		<connection>scm:git:https://github.com/littcai/littcore</connection>
+		<tag>scm:git:https://github.com/littcai/littcore/tags</tag>
 	</scm>
 	
 	<reporting>
