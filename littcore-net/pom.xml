@@ -3,7 +3,7 @@
   <parent>
     <artifactId>littcore</artifactId>
     <groupId>com.litt.core</groupId>
-    <version>3.2.2</version>
+    <version>3.3.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-net</artifactId>
@@ -13,7 +13,7 @@
   <dependency>
   	<groupId>com.litt.core</groupId>
   	<artifactId>littcore-common</artifactId>
-  	<version>3.2.2</version>
+  	<version>3.3.0-SNAPSHOT</version>
   	<exclusions>
   		<exclusion>
   			<artifactId>dwr</artifactId>
@@ -24,7 +24,7 @@
   <dependency>
   	<groupId>com.litt.core</groupId>
   	<artifactId>littcore-io</artifactId>
-  	<version>3.2.2</version>
+  	<version>3.3.0-SNAPSHOT</version>
   </dependency>
   <dependency>
   	<groupId>commons-net</groupId>
