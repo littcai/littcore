@@ -3,7 +3,7 @@
   <parent>
     <artifactId>littcore</artifactId>
     <groupId>com.litt.core</groupId>
-    <version>3.2.3-SNAPSHOT</version>
+    <version>3.3.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-common</artifactId>
@@ -11,7 +11,7 @@
   	<dependency>
   		<groupId>com.litt.core</groupId>
   		<artifactId>littcore-security</artifactId>
-  		<version>3.2.3-SNAPSHOT</version>
+  		<version>3.3.0-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>commons-beanutils</groupId>
