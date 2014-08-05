@@ -4,7 +4,7 @@
 	<groupId>com.litt.core</groupId>
 	<artifactId>littcore</artifactId>
 	<packaging>pom</packaging>
-	<version>3.2.2-SNAPSHOT</version>
+	<version>3.2.2</version>
 	<name>littcore</name>
 	<url>http://172.16.10.57/staging</url>
 	
@@ -216,7 +216,7 @@
 		<url>https://github.com/littcai/littcore</url>
 		<developerConnection>scm:git:https://github.com/littcai/littcore</developerConnection>
 		<connection>scm:git:https://github.com/littcai/littcore</connection>
-		<tag>scm:git:https://github.com/littcai/littcore/tags</tag>
+		<tag>littcore-3.2.2</tag>
 	</scm>
 	
 	<reporting>

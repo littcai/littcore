@@ -3,7 +3,7 @@
   <parent>
     <artifactId>littcore</artifactId>
     <groupId>com.litt.core</groupId>
-    <version>3.2.2-SNAPSHOT</version>
+    <version>3.2.2</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-security</artifactId>
