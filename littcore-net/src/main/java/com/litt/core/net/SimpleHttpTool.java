@@ -12,10 +12,9 @@ import java.net.Proxy;
 import java.net.SocketAddress;
 import java.net.URL;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import sun.misc.BASE64Encoder;
 
 import com.litt.core.common.Utility;
 
@@ -135,7 +134,8 @@ public class SimpleHttpTool {
 					logger.debug("代理服务器需要用户认证，用户名："+proxyAuthUser+"，密码："+proxyAuthPassword);
 				}
 		    	String password = proxyAuthUser+":"+proxyAuthPassword;
-			    String encodedPassword = "Basic " + new BASE64Encoder().encode(password.getBytes());
+		    	Base64 base64 = new Base64();
+			    String encodedPassword = "Basic " + base64.encode(password.getBytes());
 			    urlConnection.setRequestProperty( "Proxy-Authorization", encodedPassword);
 		    }
 		}
