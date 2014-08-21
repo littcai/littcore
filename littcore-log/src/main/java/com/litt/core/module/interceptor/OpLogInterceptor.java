@@ -49,6 +49,8 @@ import com.litt.core.web.interceptor.BaseControllerInterceptor;
  *    2013-02-05 [bugfix] 从URL中获取methodName的方法有误，导致没有取到方法名
  * </pre>
  * 
+ * @deprecated 可使用集成的FuncInterceptor
+ * 
  * @author <a href="mailto:littcai@hotmail.com">蔡源</a>
  * @since 2009-1-12
  * @version 1.0

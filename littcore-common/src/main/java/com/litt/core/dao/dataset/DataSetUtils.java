@@ -11,14 +11,11 @@ import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.MirrorList;
 import net.vidageek.mirror.set.dsl.FieldSetter;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.litt.core.dao.dataset.annotation.MapColumn;
 import com.litt.core.util.DateUtils;
-import com.litt.core.util.PropertiesUtils;
 
 public abstract class DataSetUtils {
 	/**

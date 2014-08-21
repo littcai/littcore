@@ -2,8 +2,6 @@ package com.litt.core.exception;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.LocaleUtils;
-
 /**
  * 业务异常编码异常类.
  * 
@@ -12,7 +10,7 @@ import org.apache.commons.lang.LocaleUtils;
  * </pre>
  * 
  * <pre><b>修改记录：</b>
- *    
+ *    2014-08-21 增加defaultMessage，在无法国际化时可取默认消息
  * </pre>
  * 
  * @author <a href="mailto:littcai@hotmail.com">蔡源</a>
@@ -28,6 +26,9 @@ public class BusiCodeException extends BusiException {
 	private String errorCode;
 	
 	private Object[] params;
+	
+	/** 默认消息，当无法国际化时取该值. */
+	private String defaultMessage;
 	
 	/** 语言. */
 	private Locale locale = Locale.getDefault();
@@ -144,6 +145,25 @@ public class BusiCodeException extends BusiException {
 	public Locale getLocale() {
 		return locale;
 	}
+
+  
+  /**
+   * @return the defaultMessage
+   */
+  public String getDefaultMessage()
+  {
+    return defaultMessage;
+  }
+
+  
+  /**
+   * @param defaultMessage the defaultMessage to set
+   */
+  public BusiCodeException setDefaultMessage(String defaultMessage)
+  {
+    this.defaultMessage = defaultMessage;
+    return this;
+  }
 	
 
 }

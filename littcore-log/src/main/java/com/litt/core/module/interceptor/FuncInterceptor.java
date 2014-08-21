@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.litt.core.common.Utility;
+import com.litt.core.exception.BusiCodeException;
 import com.litt.core.exception.BusiException;
 import com.litt.core.log.Appender;
 import com.litt.core.log.OpLogVo;
@@ -288,14 +289,14 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 	{
 		ILoginVo loginVo = this.getLoginVo();
 		if(loginVo==null)
-			throw new BusiException("User not login.");
+			throw new BusiCodeException("error.login.notLogin");
 		else
 		{
-			boolean isPermitted = loginVo.withPermission(moduleCode+funcCode);
+			boolean isPermitted = loginVo.withPermission(moduleCode + "." + funcCode);
 			if(!isPermitted)
 			{
 				logger.error("Operator:{} access module:{} func:{} without permission.", new Object[]{loginVo.getLoginId(), moduleCode, funcCode});
-				throw new BusiException("Permission denied.");
+				throw new BusiCodeException("error.permission.denied");
 			}			
 		}
 	}	
