@@ -98,7 +98,12 @@ public class HibernatePageList implements IPageList {
     	if(resultsetTransformer==null)
     		this.rsList = rsList;
     	else 
-    		this.rsList = resultsetTransformer.transform(rsList);		
+    	{
+    	  this.rsList = resultsetTransformer.transform(rsList);		
+    	  //重新计算分页
+        this.totalSize = rsList.size();
+        this.countPages();
+    	}
     }
 
     /**
@@ -127,7 +132,7 @@ public class HibernatePageList implements IPageList {
      */
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
-        //countPages(); //根据总结果集大小计算总的页面数        
+        countPages(); //根据总结果集大小计算总的页面数        
     }
 
 	/**
@@ -143,5 +148,8 @@ public class HibernatePageList implements IPageList {
 	public void setResultsetTransformer(IResultsetTransformer resultsetTransformer) {
 		this.resultsetTransformer = resultsetTransformer;
 		this.rsList = resultsetTransformer.transform(rsList);
+		//重新计算分页
+		this.totalSize = rsList.size();
+		this.countPages();
 	}
 }

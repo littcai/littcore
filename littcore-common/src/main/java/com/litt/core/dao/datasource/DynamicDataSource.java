@@ -35,10 +35,5 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 	protected Object determineCurrentLookupKey() {		
 		return RoutingDataSourceContextHolder.getContext();
 	}
-
-	@Override
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {		
-		return logger;
-	}
-
+	
 }
