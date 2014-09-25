@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unit-converter-config>
+	<converter-type from="mm" to="inch" rate="0.0394"></converter-type>
+	<converter-type from="inch" to="mm" rate="25.4"></converter-type>
+</unit-converter-config>
