@@ -7,6 +7,13 @@
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-common</artifactId>
+  <name>littcore-common</name>
+  
+  <properties>
+  	<org.springframework.version>3.1.4.RELEASE</org.springframework.version>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  	
+  </properties>
+  
   <dependencies>
   	<dependency>
   		<groupId>com.litt.core</groupId>
@@ -152,11 +159,6 @@
   		<scope>test</scope>
   	</dependency>
   	<dependency>
-  		<groupId>commons-logging</groupId>
-  		<artifactId>commons-logging</artifactId>
-  		<version>1.1.1</version>
-  	</dependency>
-  	<dependency>
   		<groupId>org.freemarker</groupId>
   		<artifactId>freemarker</artifactId>
   		<version>2.3.18</version>
@@ -230,11 +232,6 @@
 	</plugin>
 </plugins>
   </build>
-  <properties>
-  	<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
-  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<org.slf4j.version>1.7.6</org.slf4j.version>
-  </properties>
-  <name>littcore-common</name>
+  
   
 </project>

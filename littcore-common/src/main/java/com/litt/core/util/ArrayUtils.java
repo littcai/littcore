@@ -1,6 +1,9 @@
 package com.litt.core.util;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import com.litt.core.common.Utility;
 
@@ -177,4 +180,110 @@ public class ArrayUtils extends org.apache.commons.lang.ArrayUtils
 		return ret;
 	}
 	
+	/**
+   * Checks if is same array.
+   * 注：数组中不允许有null值，否则无法排序
+   *
+   * @param a the a
+   * @param b the b
+   * @return true, if is same array
+   */
+  public static boolean isSame(Integer[] a, Integer[] b)
+  {
+    if(a==null && b==null)
+      return true;
+    if(a==null || b==null) //这里有一个null肯定就不等了
+      return false;
+    if(a.length!=b.length)
+      return false;
+    if(ArrayUtils.contains(a, null) || ArrayUtils.contains(b, null)) //null无法排序
+      return false;
+    Arrays.sort(a);
+    Arrays.sort(b);
+    return Arrays.equals(a, b);
+  }
+  
+  public static boolean isSame(int[] a, int[] b)
+  {
+    if(a==null && b==null)
+      return true;
+    if(a==null || b==null) //这里有一个null肯定就不等了
+      return false;
+    if(a.length!=b.length)
+      return false;
+
+    Arrays.sort(a);
+    Arrays.sort(b);
+    return Arrays.equals(a, b);
+  }
+	
+  public static boolean isSame(String[] a, String[] b)
+  {
+    if(a==null && b==null)
+      return true;
+    if(a==null || b==null) //这里有一个null肯定就不等了
+      return false;
+    if(a.length!=b.length)
+      return false;
+    if(ArrayUtils.contains(a, null) || ArrayUtils.contains(b, null)) //null无法排序
+      return false;
+    Arrays.sort(a);
+    Arrays.sort(b);
+    return Arrays.equals(a, b);
+  }
+  
+  /**
+   * 将一个数组按指定长度切分成一个二维数组.
+   *
+   * @param array the array
+   * @param count the count
+   * @return the int[][]
+   */
+  public static int[][] split(int[] array, int count)
+  {
+    int length = array.length;
+    int tail = length%count;
+    int splitSize = length/count;
+    int[][] b = new int[splitSize + (tail>0?1:0)][];
+    for(int i=0; i<array.length; i++) {
+       int m = i/count;
+       int n = i%count;
+       if(b[m]==null)
+         b[m] = new int[m<splitSize?count:tail];
+       b[m][n] = array[i];
+    }
+    return b;
+  }
+  
+  public static String[][] split(String[] array, int count)
+  {
+    int length = array.length;
+    int tail = length%count;
+    int splitSize = length/count;
+    String[][] b = new String[splitSize + (tail>0?1:0)][];
+    for(int i=0; i<array.length; i++) {
+       int m = i/count;
+       int n = i%count;
+       if(b[m]==null)
+         b[m] = new String[m<splitSize?count:tail];
+       b[m][n] = array[i];
+    }
+    return b;
+  }
+  
+  public static Integer[][] split(Integer[] array, int count)
+  {
+    int length = array.length;
+    int tail = length%count;
+    int splitSize = length/count;
+    Integer[][] b = new Integer[splitSize + (tail>0?1:0)][];
+    for(int i=0; i<array.length; i++) {
+       int m = i/count;
+       int n = i%count;
+       if(b[m]==null)
+         b[m] = new Integer[m<splitSize?count:tail];
+       b[m][n] = array[i];
+    }
+    return b;
+  }
 }

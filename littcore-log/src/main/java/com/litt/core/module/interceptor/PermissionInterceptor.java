@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.litt.core.common.Utility;
+import com.litt.core.exception.BusiCodeException;
 import com.litt.core.exception.BusiException;
 import com.litt.core.module.annotation.Func;
 import com.litt.core.module.annotation.Permission;
@@ -122,14 +123,14 @@ public class PermissionInterceptor extends BaseControllerInterceptor implements 
 	{
 		ILoginVo loginVo = this.getLoginVo();
 		if(loginVo==null)
-			throw new BusiException("Permission denied.");
+			throw new BusiCodeException("error.permission.denied");
 		else
 		{
-			boolean isPermitted = loginVo.withPermission(moduleCode+funcCode);
+			boolean isPermitted = loginVo.withPermission(moduleCode + "." + funcCode);
 			if(!isPermitted)
 			{
 				logger.error("Operator:{} access module:{} func:{} without permission.", new Object[]{loginVo.getLoginId(), moduleCode, funcCode});
-				throw new BusiException();
+				throw new BusiCodeException("error.permission.denied");
 			}			
 		}
 	}	
