@@ -291,7 +291,7 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 			throw new BusiException("User not login.");
 		else
 		{
-			boolean isPermitted = loginVo.withPermission(moduleCode+funcCode);
+			boolean isPermitted = loginVo.withPermission(moduleCode+"."+funcCode);
 			if(!isPermitted)
 			{
 				logger.error("Operator:{} access module:{} func:{} without permission.", new Object[]{loginVo.getLoginId(), moduleCode, funcCode});
