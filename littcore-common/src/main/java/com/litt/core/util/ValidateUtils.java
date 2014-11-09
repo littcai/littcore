@@ -76,6 +76,19 @@ public class ValidateUtils
 		return true;
 	}
 	
+	/**
+	 * Checks if is decimal.
+	 * 包含整数、小数
+	 *
+	 * @param value the value
+	 * @return true, if is decimal
+	 */
+	public static boolean isDecimal(String value)
+	{
+	  if(isEmpty(value))
+      return false;
+	  return RegexUtils.validate(value, "^[-\\+]?[.\\d]*$");
+	}
 	
 	/**
 	 * 检查文件后缀名是否匹配.
