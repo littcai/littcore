@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,6 +40,8 @@ import com.litt.core.pojo.ISystemInfoVo;
 import com.litt.core.shield.security.SecurityContext;
 import com.litt.core.shield.security.SecurityContextHolder;
 import com.litt.core.shield.vo.ILoginVo;
+import com.litt.core.web.mvc.editor.DateEditor;
+import com.litt.core.web.mvc.editor.StringEscapeEditor;
 
 /**
  * Web控制器基类.
@@ -73,6 +78,16 @@ public class BaseController
 
 	/** 二进制文件下载. */
 	public static final String CONTENT_TYPE_BINARY = "application/x-download,charset=utf-8";
+	
+	@InitBinder  
+	protected void initBinder(WebDataBinder binder) throws Exception {  
+	  //防止XSS攻击
+	  //binder.registerCustomEditor(String.class, new StringEscapeEditor(true, false));
+	  
+	  //对于需要转换为Date类型的属性，使用DateEditor进行处理  
+	  binder.registerCustomEditor(Date.class, new DateEditor());
+       
+	}  
 
 	/**
 	 * 获得项目运行根目录的实际路径.

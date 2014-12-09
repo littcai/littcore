@@ -3,10 +3,12 @@ package com.litt.core.web.listener;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.litt.core.common.CoreConstants;
+import com.litt.core.converter.beanutils.DateConverter;
 
 /**
  *  
@@ -59,5 +61,7 @@ public class InitSystemListener extends BeanLoaderListener {
 		ServletContext application = event.getServletContext();
 		CoreConstants.ROOT_PATH = application.getRealPath("/");	
 		logger.info("Run-time root path - "+CoreConstants.ROOT_PATH);		
+		//register date converter
+		ConvertUtils.register(new DateConverter(), java.util.Date.class);  
 	}
 }

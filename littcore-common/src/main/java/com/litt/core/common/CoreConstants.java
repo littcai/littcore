@@ -69,6 +69,10 @@ public abstract class CoreConstants
     /** 默认查询条件字段前缀. */
     public static final String DEFAULT_SEARCH_PREFIX = "s_";		
     
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";  
+    public static final String DEFAULT_TIME_FORMAT = " HH:mm:ss";  
+    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";  
+    
     //动态，需运行时设置
     
     /** 项目根目录的绝对路径，需要在项目启动时设置，使用监听器方式注入. */
