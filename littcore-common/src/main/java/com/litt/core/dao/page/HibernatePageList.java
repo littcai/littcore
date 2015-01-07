@@ -148,8 +148,8 @@ public class HibernatePageList implements IPageList {
 	public void setResultsetTransformer(IResultsetTransformer resultsetTransformer) {
 		this.resultsetTransformer = resultsetTransformer;
 		this.rsList = resultsetTransformer.transform(rsList);
-		//重新计算分页
-		this.totalSize = rsList.size();
-		this.countPages();
+		//不用重新计算分页，否则由于之前已经分过页，这里的size就不对了
+		//this.totalSize = rsList.size();
+		//this.countPages();
 	}
 }
