@@ -1021,8 +1021,11 @@ public final class Utility
 	 */
 	public static BigDecimal parseBigDecimal(String string)
 	{
+	  if(com.litt.core.util.StringUtils.isEmpty(string))
+	    return new BigDecimal(0);
 		try 
 		{
+		  string = com.litt.core.util.StringUtils.remove(string, ',');
 			return new java.math.BigDecimal(string);	
 		}
 		catch(Exception e)
@@ -1041,10 +1044,13 @@ public final class Utility
 	 * 
 	 * @return the big decimal
 	 */
-	public static BigDecimal parseBigDecimal(String string,BigDecimal defaultValue)
+	public static BigDecimal parseBigDecimal(String string, BigDecimal defaultValue)
 	{
+	  if(com.litt.core.util.StringUtils.isEmpty(string))
+      return defaultValue;
 		try 
 		{
+		  string = com.litt.core.util.StringUtils.remove(string, ',');
 			return new java.math.BigDecimal(string);	
 		}
 		catch(Exception e)

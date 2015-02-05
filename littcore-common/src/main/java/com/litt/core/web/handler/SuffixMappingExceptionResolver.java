@@ -143,9 +143,9 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 		{
 			BusiCodeException busiCodeException = (BusiCodeException)ex;
 			//根据BusiCode获得国际化内容，再转换为
-			Locale locale = busiCodeException.getLocale();
+			Locale locale = com.litt.core.web.util.WebUtils.getLocale(request);
 			if(locale==null)
-				locale = com.litt.core.web.util.WebUtils.getLocale(request);
+				locale = busiCodeException.getLocale();
 			String message = BeanManager.getMessage(busiCodeException.getErrorCode(), busiCodeException.getParams(), locale);
 			ex = new RuntimeException(message);
 		}
