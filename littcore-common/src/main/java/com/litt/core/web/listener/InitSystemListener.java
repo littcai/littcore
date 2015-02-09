@@ -62,6 +62,6 @@ public class InitSystemListener extends BeanLoaderListener {
 		CoreConstants.ROOT_PATH = application.getRealPath("/");	
 		logger.info("Run-time root path - "+CoreConstants.ROOT_PATH);		
 		//register date converter
-		ConvertUtils.register(new DateConverter(), java.util.Date.class);  
+		ConvertUtils.register(new DateConverter(), java.util.Date.class); 
 	}
 }

@@ -60,7 +60,7 @@ public class BusiCodeException extends BusiException {
 	 * @param errorCode the error code
 	 */
 	public BusiCodeException(String errorCode, Object[] params) {
-		super(errorCode);
+		super(errorCode, params);
 		this.errorCode = errorCode;
 		this.params = params;
 	}
@@ -71,7 +71,7 @@ public class BusiCodeException extends BusiException {
 	 * @param errorCode the error code
 	 */
 	public BusiCodeException(String errorCode, Object[] params, Locale locale) {
-		super(errorCode);
+		super(errorCode, params);
 		this.errorCode = errorCode;
 		this.params = params;
 		this.locale = locale;

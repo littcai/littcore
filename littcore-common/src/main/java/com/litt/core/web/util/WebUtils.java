@@ -34,6 +34,8 @@ import com.google.common.net.HttpHeaders;
 import com.litt.core.common.CoreConstants;
 import com.litt.core.common.Utility;
 import com.litt.core.dao.ql.PageParam;
+import com.litt.core.util.ArrayUtils;
+import com.litt.core.util.StringUtils;
 import com.litt.core.util.ValidateUtils;
 
 /** 
@@ -168,6 +170,38 @@ public class WebUtils
 		} catch (UnsupportedEncodingException e) {
 		}
 	}
+	
+	/**
+	 * 获取参数数组.
+	 * 参数值为用逗号分隔的字符串
+	 *
+	 * @param request the request
+	 * @param name the name
+	 * @return the parameter value array
+	 */
+	public static Integer[] getSimpleParameterValueArray(WebRequest request, String name)
+	{
+	  String value = request.getParameter(name);
+	  if(StringUtils.isEmpty(value))
+	    return ArrayUtils.EMPTY_INTEGER_OBJECT_ARRAY;
+	  return ArrayUtils.toInteger(StringUtils.split(value, ','));
+	}
+	
+	/**
+   * 获取参数数组.
+   * 参数值为用逗号分隔的字符串
+   *
+   * @param request the request
+   * @param name the name
+   * @return the parameter value array
+   */
+  public static Integer[] getParameterValueArray(WebRequest request, String name)
+  {
+    String[] values = request.getParameterValues(name);
+    if(values==null || values.length==0)
+      return ArrayUtils.EMPTY_INTEGER_OBJECT_ARRAY;
+    return ArrayUtils.toInteger(values);
+  }
 
 	/**
 	 * 取得带相同前缀的Request Parameters, copy from spring WebUtils.
