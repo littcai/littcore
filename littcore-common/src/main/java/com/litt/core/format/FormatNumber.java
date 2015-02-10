@@ -16,8 +16,8 @@ import com.litt.core.util.StringUtils;
  * </pre>
  * 
  * @author <a href="mailto:littcai@hotmail.com">空心大白菜</a>
- * @since 2006-08-30
- * @version 1.0
+ * @since 2006-08-30,2015-02-10
+ * @version 1.0,1.1
  * 
  */
 public class FormatNumber 
@@ -33,8 +33,20 @@ public class FormatNumber
 	 */
 	public static String format(BigDecimal value)
 	{			
-		return format(value,DEFAULT_SCALE);
+		return format(value,DEFAULT_SCALE, true);
 	}
+	
+	/**
+	 * Format.
+	 *
+	 * @param value the value
+	 * @param groupingUsed the grouping used
+	 * @return the string
+	 */
+	public static String format(BigDecimal value, boolean groupingUsed)
+  {     
+    return format(value,DEFAULT_SCALE, groupingUsed);
+  }
 	
 	/**
 	 * 将金额格式化成系统标准字符串.
@@ -43,7 +55,7 @@ public class FormatNumber
 	 * @param scale 保留小数的位数
 	 * @return 例如：1,234.5678 
 	 */
-	public static String format(BigDecimal value,int scale)
+	public static String format(BigDecimal value, int scale, boolean groupingUsed)
 	{
 		StringBuffer p = new StringBuffer(); 
 		if(scale>0)	//有小数位的时候加上小数点
@@ -55,7 +67,7 @@ public class FormatNumber
 		for(int i=0;i<scale;i++)
 			p.append('#');
 		
-		DecimalFormat  df = new DecimalFormat(",###"+p.toString());		
+		DecimalFormat  df = groupingUsed?new DecimalFormat("###"+p.toString()):new DecimalFormat(",###"+p.toString());		
 		return df.format(value);
 	}
 	
@@ -227,7 +239,7 @@ public class FormatNumber
 	 */
 	public static void main(String[] args) {
 		System.out.println(format(new BigDecimal(1113.1231)));
-		System.out.println(format(new BigDecimal(1113.1231),5));
+		System.out.println(format(new BigDecimal(1113.1231), 5, true));
 		System.out.println(format(new Double(1113.1231)));
 		System.out.println(format(new Double(1113.1231),5));
 		System.out.println(formatPercent(new BigDecimal(11.43551)));
