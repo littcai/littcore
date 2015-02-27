@@ -35,5 +35,5 @@ public class SpringEventBus extends EventBus implements IEventBus {
 	public void register(IEventBusListener listener) {
 		super.register(listener);		
 	}
-
+  
 }

@@ -409,30 +409,30 @@ public class WebUtils
  	 * 
  	 * @return the remote ip
  	 */
-     public static String getRemoteIp(HttpServletRequest request) 
-     {
-       String ip = request.getHeader("X-Forwarded-For");
-       if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-               ip = request.getHeader("Proxy-Client-IP");
-       }
-       if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-               ip = request.getHeader("WL-Proxy-Client-IP");
-       }
-       if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-               ip = request.getHeader("HTTP_CLIENT_IP");
-       }
-       if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-               ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-       }
-       if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-               ip = request.getRemoteAddr();
-       }
-       if(StringUtils.contains(ip, ","))  //如果存在多个反向代理，获得的IP是一个用逗号分隔的IP集合，取第一个
-       {
-         ip = StringUtils.substringBefore(ip, ",");
-       }
-       return ip;
+   public static String getRemoteIp(HttpServletRequest request) 
+   {
+     String ip = request.getHeader("X-Forwarded-For");
+     if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+             ip = request.getHeader("Proxy-Client-IP");
      }
+     if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+             ip = request.getHeader("WL-Proxy-Client-IP");
+     }
+     if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+             ip = request.getHeader("HTTP_CLIENT_IP");
+     }
+     if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+     }
+     if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+             ip = request.getRemoteAddr();
+     }
+     if(StringUtils.contains(ip, ","))  //如果存在多个反向代理，获得的IP是一个用逗号分隔的IP集合，取第一个
+     {
+       ip = StringUtils.substringBefore(ip, ",");
+     }
+     return ip;
+   }
      
      /**
  	 * 输出二进制流内容

@@ -30,7 +30,7 @@
 		<repository>
 			<id>private-nexus</id>
 			<name>local nexus repository</name>
-			<url>http://172.16.10.57:8081/nexus/content/groups/public</url>
+			<url>http://nexus.littcore.com:8081/nexus/content/groups/public</url>
 		</repository>
 		 -->
 		<repository>
@@ -49,11 +49,11 @@
 	<distributionManagement>
 		<repository>
 			<id>nexus-releases</id>
-			<url>http://172.16.10.57:8081/nexus/content/repositories/releases</url>
+			<url>http://nexus.littcore.com:8081/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
-			<url>http://172.16.10.57:8081/nexus/content/repositories/snapshots</url>
+			<url>http://nexus.littcore.com:8081/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<site>
 			<id>littcore</id>
