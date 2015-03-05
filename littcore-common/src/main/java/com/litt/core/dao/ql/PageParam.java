@@ -14,6 +14,7 @@ import com.litt.core.common.CoreConstants;
  * </pre>
  * 
  * <pre><b>修改记录：</b>
+ *    2015-03-05 1、增加边界检查的启用开关，某些分页若越限无需返回最后一页
  *    2013-07-23 1、排序条件合入CondParam处理
  *    2009-12-23 1、增加CondParam用于统一管理查询条件，PageParam继承于该类
  *    			 2、屏蔽了底层存储实现，避免今后结构更改导致上层代码的更改
@@ -34,6 +35,8 @@ public class PageParam extends CondParam
     private int pageIndex = 1; // 当前的页码
     private int pageSize = CoreConstants.DEFAULT_PAGE_SIZE; // 一页显示的记录数，如果为0则对应全部结果
     private int totalSize = 0; //总记录数  
+    private boolean enableEdgeCheck = true; //是否启用边界检查，启用时若分页超出边界取最后一页数据
+    
     
     /**
      * 默认构造函数（查询全部）.
@@ -166,6 +169,20 @@ public class PageParam extends CondParam
     public void setTotalSize(int totalSize)
     {
         this.totalSize = totalSize;
+    }
+
+
+    
+    public boolean isEnableEdgeCheck()
+    {
+      return enableEdgeCheck;
+    }
+
+
+    
+    public void setEnableEdgeCheck(boolean enableEdgeCheck)
+    {
+      this.enableEdgeCheck = enableEdgeCheck;
     }
 
 }

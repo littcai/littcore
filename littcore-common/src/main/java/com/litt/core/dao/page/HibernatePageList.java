@@ -33,25 +33,24 @@ public class HibernatePageList implements IPageList {
  
     /**
      * 根据总的结果集数量计算页面数.
+     *
+     * @return 页数
      */
-    private void countPages()
+    private int countPages()
     {
         // 如果一页显示数小于等于0
         if (pageSize <= 0)
         {   
             totalPage = 1;
             pageSize = this.totalSize;
-            return;
+            return totalPage;
         }
         //计算总的页面数
         this.totalPage = this.totalSize / this.pageSize;
         if ((this.totalSize % this.pageSize) != 0)
             this.totalPage++; 
-        //如果输入的页面超过最大页面则跳转到最后一页
-        if(pageIndex>totalPage)
-        {
-            pageIndex = totalPage;
-        }
+        
+        return totalPage;
     }    
     
     /**
@@ -103,6 +102,11 @@ public class HibernatePageList implements IPageList {
     	  //重新计算分页
         this.totalSize = rsList.size();
         this.countPages();
+        //如果输入的页面超过最大页面则跳转到最后一页
+        if(pageIndex>totalPage)
+        {
+            pageIndex = totalPage;
+        }
     	}
     }
 

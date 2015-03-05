@@ -3,11 +3,13 @@ package com.litt.core.dao;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -803,9 +805,20 @@ public class BaseHibernateDao extends HibernateDaoSupport
      */
     public IPageList listPage(String listHql,String countHql,Object[] params,int pageIndex,int pageSize)
     {
-        int totalSize = count(countHql, params);
-        return this.listPage(listHql, totalSize, params, pageIndex, pageSize);
+      int totalSize = count(countHql, params);
+      return this.listPage(listHql, totalSize, params, pageIndex, pageSize, true);
     } 
+    
+    public IPageList listPage(String listHql,String countHql,Object[] params,int pageIndex,int pageSize, boolean enableEdgeCheck)
+    {
+      int totalSize = count(countHql, params);
+      return this.listPage(listHql, totalSize, params, pageIndex, pageSize, enableEdgeCheck);
+    }
+    
+    public IPageList listPage(String listHql, int totalSize,Object[] params,int pageIndex,int pageSize)
+    {
+      return this.listPage(listHql, totalSize, params, pageIndex, pageSize, true);
+    }
     
     /**
      * Hibernate分页查询.
@@ -818,13 +831,27 @@ public class BaseHibernateDao extends HibernateDaoSupport
      * 
      * @return IPageList分页对象
      */
-    public IPageList listPage(String listHql, int totalSize,Object[] params,int pageIndex,int pageSize)
+    public IPageList listPage(String listHql, int totalSize,Object[] params,int pageIndex,int pageSize, boolean enableEdgeCheck)
     {
         IPageList page = new HibernatePageList();
         page.setPageIndex(pageIndex);
         page.setPageSize(pageSize);
-        page.setTotalSize(totalSize);   //该方法将计算pageIndex是否超出最大页数
-        page.setRsList(listPage(listHql,params,page.getPageIndex(),pageSize));
+        page.setTotalSize(totalSize);   //该方法将计算同时页数
+        /*
+         * 检查记录数的分页结果是否越限，若不启动边界检查，则无需执行实际查询
+         */
+        //如果输入的页面超过最大页面则跳转到最后一页
+        int totalPage = page.getTotalPage();
+        if(!enableEdgeCheck && pageIndex > totalPage)
+        {
+          page.setRsList(ListUtils.EMPTY_LIST);
+        }
+        else
+        {
+          if(pageIndex > totalPage)
+            page.setPageIndex(totalPage);
+          page.setRsList(listPage(listHql,params,page.getPageIndex(),pageSize));
+        }
         return page;
     }    
     
@@ -858,7 +885,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
     	IQLResult listResult = QLCondBuilder.generate(dynamicHql, pageParam);
     	//通过分析原始语句及子查询嵌套的方式，直接生成统计语句
     	String dynamicCountHql = listResult.generateCount();
-    	return this.listPage(listResult.generate(), dynamicCountHql, listResult.getParams(), pageParam.getPageIndex(), pageParam.getPageSize());
+    	return this.listPage(listResult.generate(), dynamicCountHql, listResult.getParams(), pageParam.getPageIndex(), pageParam.getPageSize(), pageParam.isEnableEdgeCheck());
     }  
     
     /**
