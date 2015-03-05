@@ -58,7 +58,7 @@ import com.litt.core.util.ValidateUtils;
 public class WebUtils
 {
 	/** 日志. */
-	public Log logger = LogFactory.getLog(this.getClass());
+	public static final Log logger = LogFactory.getLog(WebUtils.class);
 
 	/** JSON 内容类型. */
 	public static final String CONTENT_TYPE_JSON = "text/javascript;charset=UTF-8";
@@ -440,7 +440,7 @@ public class WebUtils
  	 * @param contentType
  	 * @param data
  	 */
- 	public final void responseBinaryStream(HttpServletResponse response, String contentType, InputStream input)
+ 	public static final void responseBinaryStream(HttpServletResponse response, String contentType, InputStream input)
  	{
  		OutputStream output = null;
  		try
@@ -496,7 +496,7 @@ public class WebUtils
  	 * @param fileName 文件名
  	 * @param file 文件
  	 */
- 	public final void download(HttpServletResponse response, String fileName, File file)
+ 	public static final void download(HttpServletResponse response, String fileName, File file)
  	{
  		try
  		{

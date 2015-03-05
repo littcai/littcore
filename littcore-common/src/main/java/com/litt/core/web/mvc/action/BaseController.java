@@ -11,12 +11,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +43,6 @@ import com.litt.core.shield.security.SecurityContext;
 import com.litt.core.shield.security.SecurityContextHolder;
 import com.litt.core.shield.vo.ILoginVo;
 import com.litt.core.web.mvc.editor.DateEditor;
-import com.litt.core.web.mvc.editor.StringEscapeEditor;
 
 /**
  * Web控制器基类.
@@ -532,4 +533,6 @@ public class BaseController
     public ModelAndView handleBusiCodeException(BusiCodeException e, Locale locale) {  
         return new ModelAndView().addObject("error", BeanManager.getMessage("error."+e.getErrorCode(), e.getParams(), locale));  
     }  
+    
+    
 }
