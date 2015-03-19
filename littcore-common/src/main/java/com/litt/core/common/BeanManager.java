@@ -81,6 +81,16 @@ public final class BeanManager
 		return BeanManager.application.getBean(beanName, beanClass);
 	}	
 	
+	   /**
+     * 从容器中获得一个Bean的实例.
+     * @param beanName Bean的名称
+     * @return Object Bean的实例
+     */
+	public static <T> T getBean (Class<T> beanClass)
+	{	
+		return BeanManager.application.getBean(beanClass);
+	}
+	
     /**
      * 从容器中获得国际化消息.
      * 需配置messageSource，且ID=messageSource

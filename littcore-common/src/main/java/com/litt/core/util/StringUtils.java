@@ -218,4 +218,25 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 	    String after = m.replaceAll("");    
 	    return after;
 	}
+	
+	/**
+	 * 16进制转换中文字符.
+	 */
+	public static String toChinese(String octetString) 
+	{
+		if (null == octetString || octetString.indexOf(":") != 2) {
+			return octetString;
+		}
+		try {
+			String[] temps = octetString.split(":");
+			byte[] bs = new byte[temps.length];
+			for (int i = 0; i < temps.length; i++)
+				bs[i] = (byte) Integer.parseInt(temps[i], 16);
+
+			return new String(bs, "GBK");
+		} catch (Exception e) {
+			return octetString;
+		}
+	}
+	
 }

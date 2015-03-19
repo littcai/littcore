@@ -410,6 +410,22 @@ public class IPUtils
             }
         }
     }
+    
+	/**
+	 * 将20000000C9BA2A00转成20:00:00:00::C9:BA:2A:00
+	 */
+	public static  String createPhysicalAddress(String str)
+    {
+        StringBuilder result = new StringBuilder(str);
+        
+        for(int i = str.length() - 2; i > 0; i -= 2)
+        {
+            result.insert(i, ':');
+        }
+        
+        return result.toString();
+    }
+	
 
     
 }
