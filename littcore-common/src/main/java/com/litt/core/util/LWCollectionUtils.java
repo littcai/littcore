@@ -25,7 +25,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  *@since:Jan 31, 2012
  */
 
-public class CollectionUtils extends org.apache.commons.collections.CollectionUtils{
+public class LWCollectionUtils extends org.apache.commons.collections.CollectionUtils{
 
 	/**
 	 *根据对象中的属性名称和属性值，返回list对象中所有符合该属性==value的对象
@@ -168,4 +168,16 @@ public class CollectionUtils extends org.apache.commons.collections.CollectionUt
 		return false;
 	}
 
+	
+	public static <T> T[] convertListToArray(List<T> list){
+		if(isEmptyArrayList(list)){
+			return (T[])new Object[0];
+		}
+		Object[] array=new Object[list.size()];
+
+		for(int i=0;i<list.size();i++){
+			array[i]=list.get(i);
+		}
+		return (T[])array;
+	}
 }
