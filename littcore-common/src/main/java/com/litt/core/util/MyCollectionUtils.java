@@ -25,7 +25,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  *@since:Jan 31, 2012
  */
 
-public class LWCollectionUtils extends org.apache.commons.collections.CollectionUtils{
+public class MyCollectionUtils extends org.apache.commons.collections.CollectionUtils{
 
 	/**
 	 *根据对象中的属性名称和属性值，返回list对象中所有符合该属性==value的对象

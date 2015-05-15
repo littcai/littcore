@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -908,6 +909,20 @@ public class BaseHibernateDao extends HibernateDaoSupport
     	String dynamicCountHql = listResult.generateCount();
     	return this.listPage(listResult.generate(), dynamicCountHql, listResult.getParams(), pageParam.getPageIndex(), pageParam.getPageSize(), pageParam.isEnableEdgeCheck());
     }  
+    
+    /**
+     * hibernate 的count 查询
+     * @param dynamicHql
+     * @param pageParam
+     * @return
+     */
+    public int count(String dynamicHql, CondParam condParam)
+    {
+    	IQLResult listResult = QLCondBuilder.generate(dynamicHql, condParam);
+    	//通过分析原始语句及子查询嵌套的方式，直接生成统计语句
+    	String dynamicCountHql = listResult.generateCount();
+    	return this.count(dynamicCountHql,listResult.getParams());
+      } 
     
     /**
      * 属性查询.
