@@ -28,7 +28,7 @@ public class ConfigManagerTest {
   public void test_init()
   {
     Configuration config = ConfigManager.getInstance().getConfig();
-    Assert.assertEquals("/usr/local/cidp/saapData", config.getString("home.path"));
+    Assert.assertEquals("/usr/local/userData2", config.getString("home.path"));
     
     Assert.assertEquals("SYS-SAAS-0001", config.getString("baseInfo.code"));
     

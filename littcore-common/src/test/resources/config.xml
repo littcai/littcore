@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+	<!-- 先加载的优先级高  -->
 	<system />
-	<properties fileName="init.properties" />
+	<properties fileName="local.properties"  />
+	<properties fileName="init.properties" />	
 	<xml fileName="system-config.xml" />
 </configuration>

@@ -50,11 +50,12 @@ public class ConfigManager {
     {
       File configFile = ResourceUtils.getFile("classpath:config.xml");
       DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder(configFile);
+      
       Configuration config = builder.getConfiguration();
       globalConfig.addConfiguration(config);
     } catch (FileNotFoundException e)
     {
-      
+      logger.error("Can't find config.xml", e);
     } 
     catch (ConfigurationException e)
     {
@@ -148,9 +149,10 @@ public class ConfigManager {
    */
   public static void main(String[] args) throws Exception
   {
-    Configuration config = ConfigManager.getInstance().loadItem(ResourceUtils.getFile("classpath:system-config.xml"));
+    //Configuration config = ConfigManager.getInstance().loadItem(ResourceUtils.getFile("classpath:system-config.xml"));
     //XMLConfiguration config = new XMLConfiguration(ResourceUtils.getFile("classpath:system-config.xml"));   
-    System.out.println(config.getString("baseInfo.code"));
+    Configuration config = ConfigManager.getInstance().getConfig();
+    System.out.println(config.getString("home.path"));
   }
   
   private static class SingletonClassInstance { 
