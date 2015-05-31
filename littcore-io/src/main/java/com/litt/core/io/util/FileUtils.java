@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -387,11 +388,16 @@ public class FileUtils extends org.apache.commons.io.FileUtils
      * @return the string
      */
     public static String humanReadableByteCount(long bytes, boolean si) {
-        int unit = si ? 1000 : 1024;
+        int unit = si ? 1000 : 1024;        
         if (bytes < unit) return bytes + " B";
         int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
-        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+        String pre = (si ? "KMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "i": "");
+        DecimalFormat df = new DecimalFormat("#.##");       
+        return new StringBuilder()
+          .append(df.format(bytes / Math.pow(unit, exp)))
+          .append(" ")
+          .append(pre)
+          .append("B").toString();
     }
 	
 	/**
@@ -401,7 +407,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	{
 		//FileUtils.cleanDirectory(new File("D:\\temp"));
 		//FileUtils.deleteDirectory(new File("D:\\temp"));
-
+	  System.out.println(FileUtils.humanReadableByteCount(1000));
+	  System.out.println(FileUtils.humanReadableByteCount(1024));
 
 	}
 	
