@@ -176,7 +176,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
         }
         try {
             if (file.isDirectory()) {
-                cleanDirectory(file);
+              deleteDirectory(file);
             }
         } catch (Exception e) {
         }

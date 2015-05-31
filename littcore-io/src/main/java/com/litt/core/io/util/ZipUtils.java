@@ -57,6 +57,18 @@ public class ZipUtils
 		zip(new File(srcFileOrPath), new File(targetFileNamePath));
 	}
 	
+	/**
+	 * 压缩文件或目录.
+	 *
+	 * @param srcFile the src file
+	 * @param targetFileNamePath the target file name path
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public static void zip(File srcFile, String targetFileNamePath) throws IOException
+  {
+    zip(srcFile, new File(targetFileNamePath));
+  }
+	
 	public static void zip(File srcFileOrPath, File targetFileNamePath) throws IOException
 	{
 		//使用输出流检查
