@@ -108,9 +108,9 @@ public class IdGenerator {
   {
     IdGenerator worker2 = new IdGenerator(2);
     long start = System.currentTimeMillis();
-    for (long i = 0; i < 1000000; i++)
+    //for (long i = 0; i < 1000000; i++)
     {
-      worker2.nextId();
+      System.out.println(worker2.nextId());
     }
     System.out.println(System.currentTimeMillis() - start);
 

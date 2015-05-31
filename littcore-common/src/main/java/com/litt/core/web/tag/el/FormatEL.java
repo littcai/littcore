@@ -1,5 +1,6 @@
 package com.litt.core.web.tag.el;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
@@ -215,18 +216,19 @@ public class FormatEL
 	 * 将字节为单位的文件大小格式化为用户友好的呈现.
 	 *
 	 * @param bytes the bytes
-	 * @param si the si
 	 * @return the string
 	 */
-	public static String formatFileSize(Long bytes, boolean si)
+	public static String formatFileSize(Long bytes)
 	{
-		if(bytes==null)
-			return "0B";
-		int unit = si ? 1000 : 1024;
-        if (bytes < unit) return bytes + " B";
-        int exp = (int) (Math.log(bytes) / Math.log(unit));
-        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
-        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+	  int unit = 1024;        
+    if (bytes==null || bytes < unit) return bytes + " B";
+    int exp = (int) (Math.log(bytes) / Math.log(unit));
+    DecimalFormat df = new DecimalFormat("#.##");       
+    return new StringBuilder()
+      .append(df.format(bytes / Math.pow(unit, exp)))
+      .append(" ")
+      .append("KMGTPE".charAt(exp-1))
+      .append("B").toString();
 	}
 	
 	
