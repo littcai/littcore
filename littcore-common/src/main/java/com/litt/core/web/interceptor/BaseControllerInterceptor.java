@@ -102,7 +102,10 @@ public abstract class BaseControllerInterceptor extends HandlerInterceptorAdapte
 		String className = handler.getClass().getSimpleName();	//类名
 		//logger.debug("类名：{}", new Object[]{className});
 		//类名去掉Controller并且首字母小写即为映射路径
-		className = className.substring(0, className.lastIndexOf("Controller"));
+		int index = className.lastIndexOf("Controller");
+		if(index<0)
+		  index = className.lastIndexOf("Rest");
+		className = className.substring(0, index);
 		className = StringUtils.uncapitalize(className);
 		//logger.debug("映射类名：{}", new Object[]{className});
 		//从requestURI找到路径映射，从而截取出后缀字符串到.为方法名
