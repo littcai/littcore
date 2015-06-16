@@ -88,9 +88,9 @@ public class MyCollectionUtils extends org.apache.commons.collections.Collection
 		return addedList;
 	}
 
-	public static boolean compareHasUnionSet(List<String> listA, List<String> listZ) {
-		for (String a : listA) {
-			for (String z : listZ) {
+	public static <T> boolean  compareHasUnionSet(List<T> listA, List<T> listZ) {
+		for (T a : listA) {
+			for (T z : listZ) {
 				if (a.equals(z)) {
 					return true;
 				}
@@ -99,12 +99,12 @@ public class MyCollectionUtils extends org.apache.commons.collections.Collection
 		return false;
 	}
 
-	public static boolean compareEqual(List<String> listA, List<String> listZ) {
+	public static <T> boolean compareEqual(List<T> listA, List<T> listZ) {
 		if (listA.size() != listZ.size())
 			return false;
 		int i = 0;
-		for (String a : listA) {
-			for (String z : listZ) {
+		for (T a : listA) {
+			for (T z : listZ) {
 				if (a.equals(z)) {
 					i = i + 1;
 					continue;
