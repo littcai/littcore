@@ -1434,14 +1434,6 @@ public final class Utility
     } 
     
     
-    public static Integer[] parseIntArray(String[] strArray){
-    	Integer[] datas=new Integer[strArray.length];
-    	for(int i=0;i<strArray.length;i++){
-    		datas[i]=parseInt(strArray[i]);
-    	}
-    	return datas;
-    }
-    
     
 
 
