@@ -150,7 +150,7 @@ public class MessageDigestTool
 	 */
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println(MessageDigestTool.encryptMD5("0000001"));
+		System.out.println(MessageDigestTool.encryptMD5("a=1&b=3&c=2&app_id=8934e7d15453e97507ef794cf7b0519d").toUpperCase());
 		System.out.println(MessageDigestTool.encryptSHA("000000"));
 		System.out.println(MessageDigestTool.encryptSHA("000000"));
 	}

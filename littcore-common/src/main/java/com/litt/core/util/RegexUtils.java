@@ -756,7 +756,17 @@ public final class RegexUtils
       return expList;
   }
 
-
+  public static String escapeExprSpecialWord(String keyword) {  
+    if (StringUtils.isNotBlank(keyword)) {  
+        String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };  
+        for (String key : fbsArr) {  
+            if (keyword.contains(key)) {  
+                keyword = keyword.replace(key, "\\" + key);  
+            }  
+        }  
+    }  
+    return keyword;
+  }  
 
 
     public static void main(String a[])
