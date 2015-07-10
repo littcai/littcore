@@ -11,9 +11,9 @@
   <dependencies>
 
   <dependency>
-  	<groupId>com.litt.core</groupId>
+  	<groupId>com.littcore</groupId>
   	<artifactId>littcore-common</artifactId>
-  	<version>3.2.3-SNAPSHOT</version>
+  	<version>3.2.4-SNAPSHOT</version>
   	<exclusions>
   		<exclusion>
   			<artifactId>dwr</artifactId>
@@ -22,9 +22,9 @@
   	</exclusions>
   </dependency>
   <dependency>
-  	<groupId>com.litt.core</groupId>
+  	<groupId>com.littcore</groupId>
   	<artifactId>littcore-io</artifactId>
-  	<version>3.2.3-SNAPSHOT</version>
+  	<version>3.2.4-SNAPSHOT</version>
   </dependency>
   <dependency>
   	<groupId>commons-net</groupId>

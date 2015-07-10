@@ -16,9 +16,9 @@
   
   <dependencies>
   	<dependency>
-  		<groupId>com.litt.core</groupId>
+  		<groupId>com.littcore</groupId>
   		<artifactId>littcore-security</artifactId>
-  		<version>3.2.3-SNAPSHOT</version>
+  		<version>3.2.4-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>commons-beanutils</groupId>
