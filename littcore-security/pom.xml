@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>littcore</artifactId>
-    <groupId>com.litt.core</groupId>
-    <version>3.2.3-SNAPSHOT</version>
+    <groupId>com.littcore</groupId>
+    <version>3.2.4-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-security</artifactId>
