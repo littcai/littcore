@@ -1,0 +1,76 @@
+package com.littcore.web.filter;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+import com.littcore.web.util.HtmlUtils;
+
+
+/**
+ * XssHttpServletRequestWrapper.
+ * 
+ * <pre><b>Descr:</b>
+ *    
+ * </pre>
+ * 
+ * <pre><b>Changelog:</b>
+ *    
+ * </pre>
+ * 
+ * @author <a href="mailto:littcai@hotmail.com">Caiyuan</a>
+ * @since 2014年12月9日
+ * @version 1.0
+ */
+public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
+
+  /** 
+   * 封装http请求 
+   * @param request 
+   */  
+  public XssHttpServletRequestWrapper(HttpServletRequest request) {  
+      super(request);  
+  }  
+  
+  @Override  
+  public String getParameter(String name) {  
+      String value = super.getParameter(name);  
+      // 若开启特殊字符替换，对特殊字符进行替换  
+      value = HtmlUtils.htmlEscape(value);
+      return value;  
+  }
+
+  /**
+   * @return
+   * @see javax.servlet.ServletRequestWrapper#getParameterMap()
+   */
+  @Override
+  public Map getParameterMap()
+  {
+    Map<String, Object> paramMap = super.getParameterMap();
+    Iterator<Entry<String, Object>> iterator = paramMap.entrySet().iterator();
+    while (iterator.hasNext())
+    {
+      Map.Entry<String, Object> entry = iterator.next();
+      if(entry.getValue()==null)
+        continue;
+      if(entry.getValue() instanceof String)
+      {  
+        String value = HtmlUtils.htmlEscape((String)entry.getValue());
+        entry.setValue(value);
+      }
+      else if(entry.getValue() instanceof String[])
+      {  
+        String value = HtmlUtils.htmlEscape(((String[])entry.getValue())[0]);
+        entry.setValue(value);
+      }
+    }
+    return paramMap;
+  }  
+  
+  
+  
+}

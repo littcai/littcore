@@ -8,7 +8,7 @@
 		</layout>		
 	</appender>
 		
-	<category name="com.litt">
+	<category name="com.littcore">
 		<level value="DEBUG" />
 	</category>
 	
