@@ -47,6 +47,9 @@ public class MyCollectionUtils extends org.apache.commons.collections.Collection
 			M property;
 			try {
 				property = (M) PropertyUtils.getProperty(t, propertyName);
+				if(property==null){
+					continue;
+				}
 				if (property.equals(value))
 					returnList.add(t);
 			} catch (Exception e) {
