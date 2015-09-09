@@ -534,6 +534,10 @@ public final class Utility
         else if(string.equalsIgnoreCase("no"))
         	return false;
 		
+        else if(string.equalsIgnoreCase("on"))
+        	return true;
+        else if(string.equalsIgnoreCase("off"))
+        	return false;
 		try
 		{
 			return Boolean.valueOf(string).booleanValue();
@@ -564,6 +568,10 @@ public final class Utility
         	return true;
         else if(string.equalsIgnoreCase("no"))
         	return false;
+        else if(string.equalsIgnoreCase("on"))
+        	return true;
+        else if(string.equalsIgnoreCase("off"))
+        	return false;
 		try
 		{
 			return Boolean.valueOf(string).booleanValue();
@@ -593,6 +601,10 @@ public final class Utility
         	return Boolean.valueOf(true);
         else if(string.equalsIgnoreCase("no"))
         	return Boolean.valueOf(false);
+        else if(string.equalsIgnoreCase("on"))
+        	return true;
+        else if(string.equalsIgnoreCase("off"))
+        	return false;
 		try
 		{
 			return Boolean.valueOf(string);
