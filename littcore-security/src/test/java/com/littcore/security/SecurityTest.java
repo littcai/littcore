@@ -33,8 +33,8 @@ public class SecurityTest {
 	@Before
 	public void init() throws Exception
 	{
-		RSATool tool = SecurityFactory.genRSA("shgc");
-		tool.store("C:\\priKey.key", "C:\\pubKey.key");
+		RSATool tool = SecurityFactory.genRSA("jfqmt");
+		tool.store("E:\\jfqmt-pri.key", "E:\\jfqmt-pub.key");
 	}
 	
 	@Test

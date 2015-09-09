@@ -3,7 +3,7 @@
   <parent>
     <artifactId>littcore</artifactId>
     <groupId>com.littcore</groupId>
-    <version>3.2.4</version>
+    <version>3.2.5-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-net</artifactId>
@@ -13,7 +13,7 @@
   <dependency>
   	<groupId>com.littcore</groupId>
   	<artifactId>littcore-common</artifactId>
-  	<version>3.2.4</version>
+  	<version>3.2.5-SNAPSHOT</version>
   	<exclusions>
   		<exclusion>
   			<artifactId>dwr</artifactId>
@@ -24,7 +24,7 @@
   <dependency>
   	<groupId>com.littcore</groupId>
   	<artifactId>littcore-io</artifactId>
-  	<version>3.2.4</version>
+  	<version>3.2.5-SNAPSHOT</version>
   </dependency>
   <dependency>
   	<groupId>commons-net</groupId>
@@ -36,12 +36,12 @@
   	<groupId>commons-httpclient</groupId>
   	<artifactId>commons-httpclient</artifactId>
   	<version>3.1</version>
-  </dependency>
-  <dependency>
-  	<groupId>junit</groupId>
-  	<artifactId>junit</artifactId>
-  	<version>4.8.2</version>
-  	<scope>test</scope>
+  	<exclusions>
+  		<exclusion>
+  			<artifactId>commons-logging</artifactId>
+  			<groupId>commons-logging</groupId>
+  		</exclusion>
+  	</exclusions>
   </dependency>
   </dependencies>
 </project>
