@@ -23,12 +23,13 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.littcore.common.Utility;
 import com.littcore.exception.BusiException;
-import com.littcore.shield.vo.ILoginVo;
-import com.littcore.web.interceptor.BaseControllerInterceptor;
+import com.littcore.exception.NotLoginException;
 import com.littcore.log.Appender;
 import com.littcore.log.OpLogVo;
 import com.littcore.log.impl.JDBCAppender;
 import com.littcore.module.annotation.Func;
+import com.littcore.shield.vo.ILoginVo;
+import com.littcore.web.interceptor.BaseControllerInterceptor;
 
 /** 
  * 
@@ -108,6 +109,8 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
 	{
+	  boolean isExcluded = super.isExcluded(request);
+	  
 		String requestURI = request.getRequestURI();
 		logger.debug("Request URI:{}", new Object[]{requestURI});
 		String methodName = getMethodNameFromURI(handler, requestURI);
@@ -119,7 +122,7 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 		}
 		
 		boolean isFunction = method.isAnnotationPresent(Func.class);	//是否找到功能注解		
-		if(isFunction)
+		if(!isExcluded && isFunction)
 		{
 			Func function = method.getAnnotation(Func.class);	
 			//1、检查操作权限
@@ -146,7 +149,7 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 //				}
 //			}						
 		}			
-		return true;
+		return super.preHandle(request, response, handler);
 	}	
 	
 	/**
@@ -288,7 +291,7 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 	{
 		ILoginVo loginVo = this.getLoginVo();
 		if(loginVo==null)
-			throw new BusiException("User not login.");
+			throw new NotLoginException();
 		else
 		{
 			boolean isPermitted = loginVo.withPermission(moduleCode+"."+funcCode);

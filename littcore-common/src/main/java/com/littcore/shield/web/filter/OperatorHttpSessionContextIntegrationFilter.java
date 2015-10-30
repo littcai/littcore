@@ -1,11 +1,11 @@
 package com.littcore.shield.web.filter;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +22,7 @@ import com.littcore.shield.security.SecurityContextHolder;
 import com.littcore.shield.vo.ILoginVo;
 import com.littcore.util.StringUtils;
 import com.littcore.util.ValidateUtils;
+import com.littcore.web.util.WebUtils;
 
 
 /**
@@ -91,14 +92,21 @@ public class OperatorHttpSessionContextIntegrationFilter extends OncePerRequestF
 		boolean isExcluded = StringUtils.startsWithAny(lookupPath, this.excludeUrlPattern);
 		if(!isExcluded && currentLoginVo==null)
 		{
-			logger.debug("Url:{} needs login", new Object[]{lookupPath});
-			session.setAttribute("timeout", "true");
-			response.sendRedirect(request.getContextPath()+this.failRedirect);
+			logger.debug("Url:{} needs login", new Object[]{lookupPath});				
+			/*
+			 * 对于Ajax的请求，用户未登录的，需要返回未登录异常，由前台捕获并做相应处理
+			 * 注意：由于Ajax是异步的，对于一个界面上有多个Ajax请求的，只有第一个需要处理，其他的同样返回异常，但不需要处理
+			 * 如果是ajax请求响应头会有，x-requested-with  
+			 */			
+			if(!WebUtils.isAjaxRequest(request))
+			{
+			  response.sendRedirect(request.getContextPath()+this.failRedirect); //非AJAX请求直接重定向
+			  return;
+			}
 //			RequestDispatcher dispatcher = request.getRequestDispatcher("/system/login/index.do");
 //			dispatcher.forward(request, response);
-			return;
-		}
-		
+			
+		}		
 		if(currentLoginVo!=null)
 		{
 			//将登录信息存入安全管理容器并绑定到当前线程
@@ -114,7 +122,7 @@ public class OperatorHttpSessionContextIntegrationFilter extends OncePerRequestF
 		}		
 		finally
 		{
-            SecurityContextHolder.clear();  //清理线程中存放的安全上下文
+      SecurityContextHolder.clear();  //清理线程中存放的安全上下文
 		}
 	}
 

@@ -4,21 +4,27 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.util.UrlPathHelper;
 
+import com.littcore.exception.NotLoginException;
 import com.littcore.shield.security.SecurityContext;
 import com.littcore.shield.security.SecurityContextHolder;
 import com.littcore.shield.vo.ILoginVo;
 import com.littcore.util.StringUtils;
+import com.littcore.web.util.WebUtils;
 
 /** 
  * 
  * SpringMVC拦截器基础类.
  * 
  * <pre><b>描述：</b>
- *   
+ *   2015-10-30 增加对Ajax请求未登录用户的特殊处理，抛出异常到客户端，有客户端处理
  * </pre>
  * 
  * <pre><b>修改记录：</b>
@@ -33,6 +39,9 @@ import com.littcore.util.StringUtils;
 public abstract class BaseControllerInterceptor extends HandlerInterceptorAdapter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BaseControllerInterceptor.class);	
+	
+	/** 排除URL模式. */
+  private String[] excludeUrlPattern = new String[0];
 	
 	/**
 	 * 方法缓存.
@@ -127,6 +136,58 @@ public abstract class BaseControllerInterceptor extends HandlerInterceptorAdapte
 		else 
 			return null;
 	}
+
+  /* (non-Javadoc)
+   * @see org.springframework.web.servlet.handler.HandlerInterceptorAdapter#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
+   */
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
+  {
+    boolean isExcluded = isExcluded(request);
+    /*
+     * 对于Ajax的请求，用户未登录的，需要返回未登录异常，由前台捕获并做相应处理
+     * 注意：由于Ajax是异步的，对于一个界面上有多个Ajax请求的，只有第一个需要处理，其他的同样返回异常，但不需要处理
+     * 如果是ajax请求响应头会有，x-requested-with  
+     */
+    if(!isExcluded && WebUtils.isAjaxRequest(request))
+    { 
+      if(this.getLoginVo()==null)
+      {
+        throw new NotLoginException();
+      }
+    }
+    return super.preHandle(request, response, handler);
+  }
+
+  /**
+   * @param request
+   * @return
+   */
+  protected boolean isExcluded(HttpServletRequest request)
+  {
+    String lookupPath = new UrlPathHelper().getLookupPathForRequest(request);
+    
+    boolean isExcluded = StringUtils.startsWithAny(lookupPath, this.excludeUrlPattern);
+    return isExcluded;
+  }
+
+  
+  /**
+   * @return the excludeUrlPattern
+   */
+  public String[] getExcludeUrlPattern()
+  {
+    return excludeUrlPattern;
+  }
+
+  
+  /**
+   * @param excludeUrlPattern the excludeUrlPattern to set
+   */
+  public void setExcludeUrlPattern(String[] excludeUrlPattern)
+  {
+    this.excludeUrlPattern = excludeUrlPattern;
+  }
 	
 	
 }

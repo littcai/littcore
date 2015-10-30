@@ -285,8 +285,7 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 		if (this.statusCodes.containsKey(viewName)) {
 			return this.statusCodes.get(viewName);
 		}
-		String uri = request.getRequestURI();
-		if(uri.endsWith(".json"))
+		if(com.littcore.web.util.WebUtils.isAjaxRequest(request))
 		{
 			return HttpServletResponse.SC_BAD_REQUEST;
 			
@@ -339,9 +338,9 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 		ModelAndView mv = new ModelAndView(viewName);
 		if (this.exceptionAttribute != null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("Exposing Exception as model attribute '" + this.exceptionAttribute + "'");
+				logger.debug("Exposing Exception as model attribute '" + this.exceptionAttribute + "'", ex);
 			}
-			ex.printStackTrace();
+			mv.addObject("className", ex.getClass().getName());
 			mv.addObject(this.exceptionAttribute, ex.getMessage());
 		}
 		return mv;

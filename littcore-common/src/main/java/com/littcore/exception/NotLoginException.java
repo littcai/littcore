@@ -30,7 +30,7 @@ public class NotLoginException extends BusiException
      * Instantiates a new not login exception.
      */
     public NotLoginException() {
-		super("");		
+		super("用户尚未登录或登录已超时！");		
 	}
 
 	/**

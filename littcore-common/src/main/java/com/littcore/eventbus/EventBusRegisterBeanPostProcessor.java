@@ -42,6 +42,7 @@ public class EventBusRegisterBeanPostProcessor implements BeanPostProcessor, App
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName)
 			throws BeansException {
+	  
 		if (bean instanceof IEventBusListener) 
 		{			
 			/*
@@ -65,7 +66,7 @@ public class EventBusRegisterBeanPostProcessor implements BeanPostProcessor, App
 	 */
 	private void registerToEventBus(IEventBusListener bean) {
 		eventBus.register(bean);
-    }
+  }
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
