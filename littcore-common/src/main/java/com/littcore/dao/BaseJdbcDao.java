@@ -8,8 +8,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import com.littcore.dao.page.IPageList;
 import com.littcore.dao.page.JdbcPageList;
@@ -33,7 +33,7 @@ import com.littcore.dao.ql.QLCondBuilder;
  * @since 2007-3-29
  * @version 1.0
  */
-public class BaseJdbcDao extends SimpleJdbcDaoSupport
+public class BaseJdbcDao extends NamedParameterJdbcDaoSupport
 {
     private final static Log logger = LogFactory.getLog(BaseJdbcDao.class);
    
