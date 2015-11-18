@@ -3,10 +3,12 @@ package com.littcore.util;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.MapUtils;
@@ -52,6 +54,21 @@ public class BeanCopier {
 	
 	public static <T,M> List<T> copyList(List<M> srcObjectList, Class<T> clazz) {
 		List<T> destList = new ArrayList<T>();
+		if(srcObjectList==null||srcObjectList.size()==0)
+			return destList;
+		for (M object : srcObjectList) {
+		    if (object != null) {
+                T dest = copy(object, clazz);
+                destList.add(dest);
+            }
+		}
+		return destList;
+	}
+	
+	public static <T,M> Set<T> copySet(Set<M> srcObjectList, Class<T> clazz) {
+		Set<T> destList = new HashSet<T>();
+		if(srcObjectList==null||srcObjectList.size()==0)
+			return destList;
 		for (M object : srcObjectList) {
 		    if (object != null) {
                 T dest = copy(object, clazz);
