@@ -664,4 +664,31 @@ public class WebUtils
     
 	}
 	
+	public static String getContentType(String fileExt) {
+    if ("xls".equalsIgnoreCase(fileExt) || "xlsx".equalsIgnoreCase(fileExt))
+      return "application/vnd.ms-excel";
+    else if ("doc".equalsIgnoreCase(fileExt) || "docx".equalsIgnoreCase(fileExt))
+      return "application/msword";
+    else if ("pdf".equalsIgnoreCase(fileExt))
+      return "application/pdf";
+    else if ("txt".equalsIgnoreCase(fileExt))
+      return "text/plain";
+    else if ("xml".equalsIgnoreCase(fileExt))
+      return "text/xml";
+    else if ("jpg".equalsIgnoreCase(fileExt) || "jpeg".equalsIgnoreCase(fileExt))
+      return "image/jpeg";
+    else if ("gif".equalsIgnoreCase(fileExt))
+      return "image/gif";
+    else if ("png".equalsIgnoreCase(fileExt))
+      return "image/png";
+    else if ("tif".equalsIgnoreCase(fileExt))
+      return "image/tiff";
+    else if ("mp3".equalsIgnoreCase(fileExt))
+      return "audio/mpeg";
+    else if ("mp4".equalsIgnoreCase(fileExt))
+      return "video/mp4";
+    else {
+      return "application/octet-stream";
+    }
+  }
 }

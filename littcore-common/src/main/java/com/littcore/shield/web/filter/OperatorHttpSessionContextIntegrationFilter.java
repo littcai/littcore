@@ -126,4 +126,13 @@ public class OperatorHttpSessionContextIntegrationFilter extends OncePerRequestF
 		}
 	}
 
+  
+  /**
+   * @return the sessionLoginObjName
+   */
+  public String getSessionLoginObjName()
+  {
+    return sessionLoginObjName;
+  }
+
 }
