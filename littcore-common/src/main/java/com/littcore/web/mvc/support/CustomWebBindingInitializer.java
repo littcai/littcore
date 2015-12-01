@@ -35,7 +35,7 @@ public class CustomWebBindingInitializer implements WebBindingInitializer {
   public void initBinder(WebDataBinder binder, WebRequest request)
   {
     //防止XSS攻击
-    binder.registerCustomEditor(String.class, new StringEscapeEditor(true, true));
+    //binder.registerCustomEditor(String.class, new StringEscapeEditor(true, true));
     
     //对于需要转换为Date类型的属性，使用DateEditor进行处理  
     binder.registerCustomEditor(Date.class, new DateEditor());
