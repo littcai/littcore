@@ -123,7 +123,14 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     else 
     {      
       // 若开启特殊字符替换，对特殊字符进行替换  
-      value = HtmlUtils.htmlEscape(value);      
+      try
+      {
+        value = XssUtils.getCleanHtml(value);
+      } catch (CheckedBusiException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }      
     }
     return value;
   }

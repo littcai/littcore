@@ -8,7 +8,6 @@
     <directive name="maxInputSize" value="200000"/>
     <directive name="useXHTML" value="true"/>
     <directive name="formatOutput" value="false"/>
-    <directive name="nofollowAnchors" value="false" />
     <directive name="validateParamAsEmbed" value="true" />
     
     <!--
@@ -471,6 +470,46 @@
       <regexp-list>
         <regexp name="number"/>
       </regexp-list>     
+     </attribute>
+     
+     <!-- H5 VIDEO -->
+     <attribute name="controls">
+      <literal-list>
+        <literal value="controls"/>
+      </literal-list>
+     </attribute>
+     
+     <attribute name="loop">
+      <literal-list>
+        <literal value="loop"/>
+      </literal-list>
+     </attribute>
+     
+     <attribute name="autoplay">
+      <literal-list>
+        <literal value="autoplay"/>
+      </literal-list>
+     </attribute>
+     
+     <attribute name="muted">
+      <literal-list>
+        <literal value="muted"/>
+      </literal-list>
+     </attribute>
+     
+     <attribute name="preload">
+      <literal-list>
+        <literal value="auto"/>
+        <literal value="meta"/>
+        <literal value="none"/>
+      </literal-list>
+     </attribute>
+     
+     <attribute name="poster">
+      <regexp-list>
+        <regexp name="onsiteURL"/>
+        <regexp name="offsiteURL"/>
+      </regexp-list>
      </attribute>
      
   </common-attributes>
@@ -1116,7 +1155,25 @@
         </literal-list>
       </attribute>
     </tag>
-    
+        
+    <tag name="video" action="validate">
+      <attribute name="src">
+        <regexp-list>
+          <regexp name="onsiteURL"/>
+          <regexp name="offsiteURL"/>
+        </regexp-list>
+      </attribute>
+      <attribute name="name"/>      
+      <attribute name="height"/>
+      <attribute name="width"/>
+      <attribute name="border"/>
+      
+      <attribute name="controls"/>      
+      <attribute name="autoplay"/>
+      <attribute name="loop"/>
+      <attribute name="poster"/>
+      <attribute name="muted"/>
+    </tag>
   </tag-rules>
 
 
@@ -2672,7 +2729,8 @@
         <literal value="cursive"/>
         <literal value="verdana"/>
         <literal value="fantasy"/>
-        <literal value="monospace"/>                      
+        <literal value="monospace"/> 
+        <literal value="微软雅黑"/>                      
       </literal-list>
       
             
@@ -2759,6 +2817,7 @@
             <literal value="basefont"/>
             <literal value="col"/>
             <literal value="div"/>
+            <literal value="video"/>
         </literal-list>
     </allowed-empty-tags>
 

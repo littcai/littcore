@@ -41,9 +41,10 @@ public class XssUtilsTest {
       Object[][] objects = { 
           { "<div><a href='document.write(document.cookie);'>link</a></div>", "<div><a>link</a></div>" }
           , { "<script>alert('123');</script>", ""}
-          , { "<video src='video.mp4'></video>", "<video src='video.mp4'></video>"}
-          , { "<span>&nbsp;name</span>", "<span>&nbsp;name</span>"}
-          , { "<span style=\"color:#fff\">&nbsp;name</span>", "<span style=\"color:#fff\">&nbsp;name</span>"}
+          , { "<video src='video.mp4'></video>", "<video src=\"video.mp4\" />"}    
+          , { "<video src='http://www.baidu.com/video.mp4'></video>", "<video src=\"http://www.baidu.com/video.mp4\" />"}       
+          , { "<span style=\"color:#fff\">name</span>", "<span style=\"color: rgb(255,255,255);\">name</span>"}
+          , { "内容中夹了<符号", "内容中夹了&lt;符号"}
       };
       return Arrays.asList(objects);// 将数组转换成集合返回
   }
