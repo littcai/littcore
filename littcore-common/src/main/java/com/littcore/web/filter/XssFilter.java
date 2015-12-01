@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.littcore.common.Utility;
+import com.littcore.util.ArrayUtils;
+import com.littcore.util.StringUtils;
 
 
 /**
@@ -33,6 +35,12 @@ public class XssFilter implements Filter {
   
   /** The enable xss log. */
   private boolean enableXssLog;
+  
+  /** 
+   * 白名单(用逗号分隔).
+   * 参数名称匹配白名单的采用anitsamy进行XSS清洗，返回值仍为HTML
+   */
+  private String[] whitelists = ArrayUtils.EMPTY_STRING_ARRAY;
 
   /**
    * @param filterConfig
@@ -43,6 +51,8 @@ public class XssFilter implements Filter {
   public void init(FilterConfig filterConfig) throws ServletException
   {
     this.enableXssLog = Utility.parseBoolean(filterConfig.getInitParameter("enableXssLog"));
+    this.whitelists = StringUtils.split(filterConfig.getInitParameter("whitelists"), ',');
+    this.whitelists = whitelists==null?ArrayUtils.EMPTY_STRING_ARRAY:whitelists;
   }
 
   /**
@@ -62,7 +72,7 @@ public class XssFilter implements Filter {
     HttpServletRequest httpRequest = (HttpServletRequest) request;  
     HttpServletResponse httpResponse = (HttpServletResponse) response;  
     // http信息封装类  
-    XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper(httpRequest);
+    XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper(httpRequest, this.whitelists);
 
     // 对request信息进行封装并进行校验工作，若校验失败（含非法字符），根据配置信息进行日志记录和请求中断处理
     if(enableXssLog)

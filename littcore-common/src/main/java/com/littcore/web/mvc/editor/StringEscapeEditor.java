@@ -2,6 +2,8 @@ package com.littcore.web.mvc.editor;
 
 import java.beans.PropertyEditorSupport;
 
+import org.owasp.validator.html.AntiSamy;
+import org.owasp.validator.html.Policy;
 import org.springframework.web.util.JavaScriptUtils;
 
 import com.littcore.util.StringUtils;
@@ -29,17 +31,24 @@ public class StringEscapeEditor extends PropertyEditorSupport {
   private boolean escapeHTML;// 编码HTML
 
   private boolean escapeJavaScript;// 编码javascript
+  
+//  private Policy policy;    
+//  
+//  private AntiSamy as;
 
   public StringEscapeEditor()
   {
     super();
+//    policy = Policy.getInstance("D:\\antisamy\\antisamy-slashdot-1.4.4.xml");
+//    as = new AntiSamy();
   }
 
   public StringEscapeEditor(boolean escapeHTML, boolean escapeJavaScript)
   {
-    super();
+    this();
     this.escapeHTML = escapeHTML;
     this.escapeJavaScript = escapeJavaScript;
+    
   }
 
   @Override

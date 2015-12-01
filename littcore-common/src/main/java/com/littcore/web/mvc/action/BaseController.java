@@ -80,15 +80,6 @@ public class BaseController
 	/** 二进制文件下载. */
 	public static final String CONTENT_TYPE_BINARY = "application/x-download,charset=utf-8";
 	
-	@InitBinder  
-	protected void initBinder(WebDataBinder binder) throws Exception {  
-	  //防止XSS攻击
-	  //binder.registerCustomEditor(String.class, new StringEscapeEditor(true, false));
-	  
-	  //对于需要转换为Date类型的属性，使用DateEditor进行处理  
-	  binder.registerCustomEditor(Date.class, new DateEditor());
-       
-	}  
 
 	/**
 	 * 获得项目运行根目录的实际路径.

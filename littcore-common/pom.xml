@@ -189,10 +189,15 @@
   		<version>2.4.7</version>
   	</dependency>  	
   	<dependency>
-		<groupId>com.thoughtworks.xstream</groupId>
-		<artifactId>xstream</artifactId>
-		<version>1.4.8</version>
-	</dependency>
+  		<groupId>com.thoughtworks.xstream</groupId>
+  		<artifactId>xstream</artifactId>
+  		<version>1.4.8</version>
+  	</dependency>
+    <dependency>
+      <groupId>org.owasp.antisamy</groupId>
+      <artifactId>antisamy</artifactId>
+      <version>1.5.3</version>
+    </dependency>
   </dependencies>
   <build>
   	<plugins>

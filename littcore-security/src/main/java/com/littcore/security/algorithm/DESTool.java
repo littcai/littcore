@@ -99,12 +99,9 @@ public class DESTool implements ISecurity
 
 	/**
 	 * 加密字节数组.
-	 * 
+	 *
 	 * @param byteArray 需加密的字节数组
-	 * @param password 加密口令
-	 * 
 	 * @return 加密后的字节数组
-	 * 
 	 * @throws EncryptFailedException the encrypt failed exception
 	 */
 	public byte[] encrypt(byte[] byteArray) throws EncryptFailedException
