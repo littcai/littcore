@@ -13,7 +13,7 @@
   <dependency>
   	<groupId>com.littcore</groupId>
   	<artifactId>littcore-common</artifactId>
-  	<version>3.2.5-SNAPSHOT</version>
+  	<version>3.2.6-SNAPSHOT</version>
   	<exclusions>
   		<exclusion>
   			<artifactId>dwr</artifactId>
@@ -24,7 +24,7 @@
   <dependency>
   	<groupId>com.littcore</groupId>
   	<artifactId>littcore-io</artifactId>
-  	<version>3.2.5-SNAPSHOT</version>
+  	<version>3.2.6-SNAPSHOT</version>
   </dependency>
   <dependency>
   	<groupId>commons-net</groupId>
