@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
@@ -15,9 +17,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.metadata.ClassMetadata;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -54,6 +56,16 @@ import com.littcore.util.StringUtils;
 public class BaseHibernateDao extends HibernateDaoSupport
 {
   private final static Log logger = LogFactory.getLog(BaseHibernateDao.class);
+  
+  /**
+   * annotation方式初始化DAO时优于XML配置，会导致找不到SessionFactory
+   * @param sessionFactory
+   */
+  @Resource
+  private void setHibernateSessionFactory(SessionFactory sessionFactory) {  
+      // 这个方法名可以随便写，@Resource可以通过name 或者type来装载的。  
+      super.setSessionFactory(sessionFactory);  
+  }  
   	
   /**
 	 * 获得Hibernate命名查询的语句.
