@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
@@ -17,10 +15,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.metadata.ClassMetadata;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -56,26 +53,9 @@ import com.littcore.util.StringUtils;
  */
 public class BaseHibernateDao extends HibernateDaoSupport
 {
-    private final static Log logger = LogFactory.getLog(BaseHibernateDao.class);
-    
-    private SessionFactory mySessionFactory;
-	
-	public SessionFactory getMySessionFactory() {
-		return mySessionFactory;
-	}
-	
-	@Autowired
-	public void setMySessionFactory(SessionFactory mySessionFactory) {
-		this.mySessionFactory = mySessionFactory;
-	}
-	
-	@PostConstruct   
-	protected void setSuperSessionFactory(){//BaseDao被初始化里执行这个方法
-
-		super.setSessionFactory(mySessionFactory);
-	}
-	
-    /**
+  private final static Log logger = LogFactory.getLog(BaseHibernateDao.class);
+  	
+  /**
 	 * 获得Hibernate命名查询的语句.
 	 * 
 	 * @param name 查询名称
@@ -998,9 +978,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
 		{
 			throw new DataAccessResourceFailureException("实体对象调用失败！", e);
 		}    	
-		return getHibernateTemplate().findByExample(t);		
+		  return getHibernateTemplate().findByExample(t);		
     }
     
-   
 	
 }

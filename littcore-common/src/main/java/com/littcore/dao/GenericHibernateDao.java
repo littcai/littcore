@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.metadata.ClassMetadata;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import com.littcore.dao.ql.CondParam;
@@ -154,6 +156,16 @@ public class GenericHibernateDao<T extends Serializable,PK extends Serializable>
 	}
 	
 	/**
+	 * 根据主键集合查询.
+	 *
+	 * @param ids the ids
+	 * @return the list
+	 */
+	public List<T> listByIds(PK[] ids) {  
+    return super.getHibernateTemplate().findByCriteria(this.createDetachedCriteria(Restrictions.in(getIdName(), ids)));  
+	}  
+	
+	/**
 	 * 按动态条件查询.
 	 * 
 	 * @param condParam 动态条件
@@ -243,7 +255,15 @@ public class GenericHibernateDao<T extends Serializable,PK extends Serializable>
 	{		
 		return super.listPage("from "+entityClass.getName(), pageIndex, pageSize);
 	}
-
+	
+	 public DetachedCriteria createDetachedCriteria(Criterion... criterions) { 
+	   DetachedCriteria criteria = DetachedCriteria.forClass(this.getEntityClass());  
+     for (Criterion c : criterions) {  
+         criteria.add(c);  
+     }  
+     return criteria;  
+ }  
+	
 	/**
 	 * @return the entityClass.
 	 */
@@ -251,4 +271,12 @@ public class GenericHibernateDao<T extends Serializable,PK extends Serializable>
 	{
 		return entityClass;
 	}	
+	
+	/** 
+   * 取得对象的主键名. 
+   */  
+  public String getIdName() {  
+      ClassMetadata meta = getSessionFactory().getClassMetadata(entityClass);  
+      return meta.getIdentifierPropertyName();  
+  }  
 }
