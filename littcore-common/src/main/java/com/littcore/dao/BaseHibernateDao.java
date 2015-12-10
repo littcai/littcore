@@ -762,10 +762,14 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	public int count(String countHql)
 	{
 		int count = 0;
-        List list = getHibernateTemplate().find(countHql);
-        if(list!=null&&list.size()>0)
-        	count = Utility.parseInt(list.get(0).toString());
-        return count;
+    List list = getHibernateTemplate().find(countHql);
+    if(list!=null&&list.size()>0)
+    {
+      Object obj = list.get(0);
+      if(obj!=null)            
+        count = Utility.parseInt(obj.toString());
+    }
+    return count;
 	}
     
     /**
@@ -781,7 +785,11 @@ public class BaseHibernateDao extends HibernateDaoSupport
         int count = 0;
         List list = getHibernateTemplate().find(countHql,params);
         if(list!=null&&list.size()>0)
-            count = Utility.parseInt(list.get(0).toString());
+        {
+          Object obj = list.get(0);
+          if(obj!=null)            
+            count = Utility.parseInt(obj.toString());
+        }
         return count;
     }    
     

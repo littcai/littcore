@@ -128,8 +128,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         value = XssUtils.getCleanHtml(value);
       } catch (CheckedBusiException e)
       {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        value = e.getMessage();
       }      
     }
     return value;

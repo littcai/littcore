@@ -2,7 +2,6 @@ package com.littcore.web.filter;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -10,6 +9,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.littcore.common.Utility;
 import com.littcore.util.ArrayUtils;
@@ -31,7 +32,7 @@ import com.littcore.util.StringUtils;
  * @since 2014年12月9日
  * @version 1.0
  */
-public class XssFilter implements Filter {
+public class XssFilter extends OncePerRequestFilter {
   
   /** The enable xss log. */
   private boolean enableXssLog;
@@ -42,14 +43,14 @@ public class XssFilter implements Filter {
    */
   private String[] whitelists = ArrayUtils.EMPTY_STRING_ARRAY;
 
-  /**
-   * @param filterConfig
-   * @throws ServletException
-   * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+  /* (non-Javadoc)
+   * @see org.springframework.web.filter.GenericFilterBean#initFilterBean()
    */
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException
-  {
+  protected void initFilterBean() throws ServletException
+  {    
+    super.initFilterBean();
+    FilterConfig filterConfig = super.getFilterConfig();
     this.enableXssLog = Utility.parseBoolean(filterConfig.getInitParameter("enableXssLog"));
     this.whitelists = StringUtils.split(filterConfig.getInitParameter("whitelists"), ',');
     this.whitelists = whitelists==null?ArrayUtils.EMPTY_STRING_ARRAY:whitelists;
@@ -64,10 +65,8 @@ public class XssFilter implements Filter {
    * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
    */
   @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException
   {
-    //判断是否使用HTTP  
-    checkRequestResponse(request, response);  
     // 转型  
     HttpServletRequest httpRequest = (HttpServletRequest) request;  
     HttpServletResponse httpResponse = (HttpServletResponse) response;  
@@ -82,35 +81,5 @@ public class XssFilter implements Filter {
     }   
     chain.doFilter(xssRequest, response);  
   }
-
-  /**
-   * 
-   * @see javax.servlet.Filter#destroy()
-   */
-  @Override
-  public void destroy()
-  {
-   
-
-  }
-  
-  /** 
-   * 判断Request ,Response 类型 
-   * @param request 
-   *            ServletRequest 
-   * @param response 
-   *            ServletResponse 
-   * @throws ServletException  
-   */  
-  private void checkRequestResponse(ServletRequest request,  
-          ServletResponse response) throws ServletException {  
-      if (!(request instanceof HttpServletRequest)) {  
-          throw new ServletException("Can only process HttpServletRequest");  
-
-      }  
-      if (!(response instanceof HttpServletResponse)) {  
-          throw new ServletException("Can only process HttpServletResponse");  
-      }  
-  }  
-
+    
 }
