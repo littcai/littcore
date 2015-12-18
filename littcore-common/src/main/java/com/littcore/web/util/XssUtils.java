@@ -61,5 +61,17 @@ public abstract class XssUtils {
       throw new CheckedBusiException(e);
     }
   }
+  
+//  /**
+//   * 用JSOUP清理HTML避免XSS
+//   * @param html
+//   * @return
+//   */
+//  public static String getCleanHtml(String html)
+//  {
+//    //using jsoup to avoid xss
+//    Whitelist whitelist = Whitelist.relaxed().addTags("embed","object","param","span","div").addAttributes("span", "style","css");
+//    return Jsoup.clean(html, whitelist);
+//  }
 
 }

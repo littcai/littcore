@@ -239,4 +239,42 @@ public class StringUtils extends org.apache.commons.lang.StringUtils
 		}
 	}
 	
+	/**
+   * int数组转字符串，用逗号分隔.
+   * @param array
+   * @return
+   */
+  public static String join(int[] array)
+  {
+    return join(array, ",");
+  }
+  
+  /**
+   * int数组转字符串，用逗号分隔.
+   * @param array
+   * @return
+   */
+  public static String join(int[] array, char seperator)
+  {
+    return join(array, String.valueOf(seperator));
+  }
+	
+	/**
+	 * int数组转字符串，用逗号分隔.
+	 * @param array
+	 * @return
+	 */
+	public static String join(int[] array, String seperator)
+	{
+	  if(array==null || array.length==0)
+	    return "";
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(array[0]);
+	  for (int i = 1; i < array.length; i++)
+    {
+      sb.append(seperator).append(array[i]);
+    }
+	  return sb.toString();
+	}
+	
 }
