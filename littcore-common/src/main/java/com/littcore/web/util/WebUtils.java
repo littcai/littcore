@@ -198,7 +198,7 @@ public class WebUtils
   public static Integer[] getParameterValueArray(WebRequest request, String name)
   {
     String[] values = request.getParameterValues(name);
-    if(values==null || values.length==0)
+    if(values==null || values.length==0 || "".equals(values[0]))
       return ArrayUtils.EMPTY_INTEGER_OBJECT_ARRAY;
     return ArrayUtils.toInteger(values);
   }

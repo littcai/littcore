@@ -65,6 +65,19 @@ public class BeanCopier {
 		return destList;
 	}
 	
+	public static <T,I,M> List<I> copyList(List<M> srcObjectList, Class<T> implClazz, Class<I> interfaceClazz) {
+    List<I> destList = new ArrayList<I>();
+    if(srcObjectList==null||srcObjectList.size()==0)
+      return destList;
+    for (M object : srcObjectList) {
+       if (object != null) {
+         T dest = copy(object, implClazz);
+         destList.add((I)dest);
+       }
+    }
+    return destList;
+  }
+	
 	public static <T,M> Set<T> copySet(Set<M> srcObjectList, Class<T> clazz) {
 		Set<T> destList = new HashSet<T>();
 		if(srcObjectList==null||srcObjectList.size()==0)
