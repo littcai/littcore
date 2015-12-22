@@ -80,8 +80,8 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	 */
 	private long[] groupIds = new long[0];		
 	
-	/** 会话ID. */
-	private String sessionId;
+	/** 统一会话ID. */
+	private String token;
 	
 	/** 用户状态.
 	 * 状态(1001)
@@ -353,8 +353,6 @@ public class BaseLoginVo implements ILoginVo, Serializable
 		return opId != null && opId.longValue() == -1L;
 	}
 	
-	
-	
 	/**
 	 * Gets the login id.
 	 * 
@@ -433,10 +431,10 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	}
 
 	/**
-	 * @return the sessionId
+	 * @return the token
 	 */
-	public String getSessionId() {
-		return sessionId;
+	public String getToken() {
+		return token;
 	}
 
 	/**
@@ -543,4 +541,13 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
+
+  
+  /**
+   * @param token the token to set
+   */
+  public void setToken(String token)
+  {
+    this.token = token;
+  }
 }

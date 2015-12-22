@@ -160,5 +160,19 @@ public interface ILoginVo extends Serializable
 	/**
 	 * @return the groupIds
 	 */
-	public long[] getGroupIds();
+	public long[] getGroupIds();	
+	
+	/**
+	 * Gets the token id.
+	 *
+	 * @return the token id
+	 */
+	public String getToken();
+	
+	/**
+	 * Sets the token id.
+	 *
+	 * @param token the new token id
+	 */
+	public void setToken(String token);
 }
