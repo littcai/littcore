@@ -36,5 +36,20 @@ public class FileUtilsTest {
     Assert.assertEquals("1.1 MB", FileUtils.humanReadableByteCount(1150976));
     Assert.assertEquals("100 MB", FileUtils.humanReadableByteCount(104857600));
   }
+  
+  @Test
+  public void test_cleanFileName()
+  {
+    Assert.assertEquals("name", FileUtils.cleanFileName("na*me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na/me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na|me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na\"me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na?me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na:me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na<me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na>me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na\\me"));
+    Assert.assertEquals("name", FileUtils.cleanFileName("na\\*/|\":<>me"));
+  }
 
 }

@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.littcore.common.Utility;
 import com.littcore.format.FormatDateTime;
+import com.littcore.util.StringUtils;
 import com.littcore.util.ValidateUtils;
 
 /**
@@ -42,6 +43,17 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	 * Logger for this class
 	 */
 	private static final Log logger = LogFactory.getLog(FileUtils.class);
+	
+	/**
+	 * 清理文件名中的保留字.
+	 *
+	 * @param fileName the file name
+	 * @return the string
+	 */
+	public static String cleanFileName(String fileName)
+	{
+	  return fileName.replaceAll("[/*|<>\"?:\\\\]+", "");
+	}
 	
 	/**
      * 返回当前日期时间字符串+3位随机数，格式'20030809161245321001'作为文件名的唯一标识(用途：文件唯一标识).
