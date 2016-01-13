@@ -84,7 +84,6 @@ public class MapBeanConvertUtils {
 					Object value=entry.getValue();
 					  Object[] args = new Object[1]; 
 		                args[0] = value; 
-		                System.out.println("propertyName:"+propertyName+"value:"+value);
 		                descriptor.getWriteMethod().invoke(obj, args); 
 				}
             }
