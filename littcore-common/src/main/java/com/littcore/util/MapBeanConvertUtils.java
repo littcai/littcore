@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class MapBeanConvertUtils { 
    
@@ -49,6 +50,47 @@ public class MapBeanConvertUtils {
         } 
         return obj; 
     } 
+    
+    /** 
+     * 将一个 数据库查询结果Map对象象转化为一个 JavaBean，map字段忽略下划线 
+     * @param type 要转化的类型 
+     * @param map 包含属性值的 map 
+     * @return 转化出来的 JavaBean 对象 
+     * @throws IntrospectionException 
+     *             如果分析类属性失败 
+     * @throws IllegalAccessException 
+     *             如果实例化 JavaBean 失败 
+     * @throws InstantiationException 
+     *             如果实例化 JavaBean 失败 
+     * @throws InvocationTargetException 
+     *             如果调用属性的 setter 方法失败 
+     */ 
+    public static Object convertMapIngoreUnderline(Class type, Map<String,Object> map) 
+            throws IntrospectionException, IllegalAccessException, 
+            InstantiationException, InvocationTargetException { 
+        BeanInfo beanInfo = Introspector.getBeanInfo(type); // 获取类属性 
+        Object obj = type.newInstance(); // 创建 JavaBean 对象 
+
+        // 给 JavaBean 对象的属性赋值 
+        PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
+        for (int i = 0; i< propertyDescriptors.length; i++) { 
+            PropertyDescriptor descriptor = propertyDescriptors[i]; 
+            String propertyName = descriptor.getName(); 
+ 
+            for(Entry<String,Object> entry:map.entrySet()){
+            	String key = (String) entry.getKey();
+				String columnName = StringUtils.replace(key, "_", "");
+				if(propertyName.equalsIgnoreCase(columnName)){
+					Object value=entry.getValue();
+					  Object[] args = new Object[1]; 
+		                args[0] = value; 
+		                System.out.println("propertyName:"+propertyName+"value:"+value);
+		                descriptor.getWriteMethod().invoke(obj, args); 
+				}
+            }
+        } 
+        return obj; 
+    }
 
     /** 
      * 将一个 JavaBean 对象转化为一个  Map 
