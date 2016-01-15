@@ -194,9 +194,10 @@ public class JdbcPageList implements IPageList {
 	 * @see com.littcore.dao.page.IPageList#setResultsetTransformer(com.littcore.dao.IResultsetTransformer)
 	 */
 	@Override
-	public void setResultsetTransformer(IResultsetTransformer resultsetTransformer) {
+	public IPageList setResultsetTransformer(IResultsetTransformer resultsetTransformer) {
 		this.resultsetTransformer = resultsetTransformer;
 		this.rsList = this.resultsetTransformer.transform(this.rsList);		
+		return this;
 	}
 
 	/* (non-Javadoc)

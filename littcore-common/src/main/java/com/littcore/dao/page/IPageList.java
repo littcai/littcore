@@ -66,7 +66,7 @@ public interface IPageList {
      */
     public void setTotalSize(int totalSize);
     
-    public void setResultsetTransformer(IResultsetTransformer resultsetTransformer); 
+    public IPageList setResultsetTransformer(IResultsetTransformer resultsetTransformer); 
     
     public IResultsetTransformer getResultsetTransformer();
 }
