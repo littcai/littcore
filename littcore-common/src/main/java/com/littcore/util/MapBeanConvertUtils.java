@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.littcore.exception.CheckedBusiException;
+
 public class MapBeanConvertUtils { 
    
     /** 
@@ -17,21 +19,19 @@ public class MapBeanConvertUtils {
      * @param type 要转化的类型 
      * @param map 包含属性值的 map 
      * @return 转化出来的 JavaBean 对象 
-     * @throws IntrospectionException 
-     *             如果分析类属性失败 
-     * @throws IllegalAccessException 
-     *             如果实例化 JavaBean 失败 
-     * @throws InstantiationException 
-     *             如果实例化 JavaBean 失败 
-     * @throws InvocationTargetException 
-     *             如果调用属性的 setter 方法失败 
+     * @throws CheckedBusiException
+     *         如果获取Bean属性失败，实例化对象失败，调用setter方法失败
+     *  
      */ 
-    public static Object convertMap(Class type, Map map) 
-            throws IntrospectionException, IllegalAccessException, 
-            InstantiationException, InvocationTargetException { 
-        BeanInfo beanInfo = Introspector.getBeanInfo(type); // 获取类属性 
-        Object obj = type.newInstance(); // 创建 JavaBean 对象 
-
+    public static Object convertMap(Class type, Map map) throws CheckedBusiException { 
+        BeanInfo beanInfo=null;
+        Object obj=null;
+		try {
+			beanInfo = Introspector.getBeanInfo(type);
+			obj = type.newInstance();// 创建 JavaBean 对象 
+		} catch (Exception e){			
+			throw new CheckedBusiException("get instance of bean:{} error",new Object[]{type},e);
+		}
         // 给 JavaBean 对象的属性赋值 
         PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
         for (int i = 0; i< propertyDescriptors.length; i++) { 
@@ -45,7 +45,11 @@ public class MapBeanConvertUtils {
                 Object[] args = new Object[1]; 
                 args[0] = value; 
 
-                descriptor.getWriteMethod().invoke(obj, args); 
+                try {
+					descriptor.getWriteMethod().invoke(obj, args);
+				} catch (Exception e) {
+					throw new CheckedBusiException("invoke method:{} value:{} error",new Object[]{propertyName,value},e);
+				} 
             } 
         } 
         return obj; 
@@ -56,21 +60,20 @@ public class MapBeanConvertUtils {
      * @param type 要转化的类型 
      * @param map 包含属性值的 map 
      * @return 转化出来的 JavaBean 对象 
-     * @throws IntrospectionException 
-     *             如果分析类属性失败 
-     * @throws IllegalAccessException 
-     *             如果实例化 JavaBean 失败 
-     * @throws InstantiationException 
-     *             如果实例化 JavaBean 失败 
-     * @throws InvocationTargetException 
-     *             如果调用属性的 setter 方法失败 
+     * @throws CheckedBusiException
+     *         如果获取Bean属性失败，实例化对象失败，调用setter方法失败
      */ 
     public static Object convertMapIngoreUnderline(Class type, Map<String,Object> map) 
-            throws IntrospectionException, IllegalAccessException, 
-            InstantiationException, InvocationTargetException { 
-        BeanInfo beanInfo = Introspector.getBeanInfo(type); // 获取类属性 
-        Object obj = type.newInstance(); // 创建 JavaBean 对象 
-
+            throws CheckedBusiException{ 
+    	BeanInfo beanInfo=null;
+    	Object obj=null;
+		try {
+			beanInfo = Introspector.getBeanInfo(type); // 获取类属性
+			obj = type.newInstance(); // 创建 JavaBean 对象
+		} catch (Exception e) {
+			throw new CheckedBusiException("get instance of bean:{} error", new Object[] { type }, e);
+		}
+ 
         // 给 JavaBean 对象的属性赋值 
         PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
         for (int i = 0; i< propertyDescriptors.length; i++) { 
@@ -84,7 +87,11 @@ public class MapBeanConvertUtils {
 					Object value=entry.getValue();
 					  Object[] args = new Object[1]; 
 		                args[0] = value; 
+		                try{
 		                descriptor.getWriteMethod().invoke(obj, args); 
+		                } catch (Exception e) {
+							throw new CheckedBusiException("invoke bean:{}  method:{} value:{} error",new Object[]{type,propertyName,value},e);
+						} 
 				}
             }
         } 
@@ -95,23 +102,31 @@ public class MapBeanConvertUtils {
      * 将一个 JavaBean 对象转化为一个  Map 
      * @param bean 要转化的JavaBean 对象 
      * @return 转化出来的  Map 对象 
-     * @throws IntrospectionException 如果分析类属性失败 
-     * @throws IllegalAccessException 如果实例化 JavaBean 失败 
-     * @throws InvocationTargetException 如果调用属性的 setter 方法失败 
+     * @throws checkedBusiException 分析属性失败，获取getter方法失败。。
+   
      */ 
     public static Map convertBean(Object bean) 
-            throws IntrospectionException, IllegalAccessException, InvocationTargetException { 
+    	throws CheckedBusiException{  
         Class type = bean.getClass(); 
         Map returnMap = new HashMap(); 
-        BeanInfo beanInfo = Introspector.getBeanInfo(type); 
-
+        BeanInfo beanInfo=null;
+        try{
+        beanInfo = Introspector.getBeanInfo(type); 
+        } catch (Exception e) {
+			throw new CheckedBusiException("get instance of bean:{} error", new Object[] { type }, e);
+		}
         PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
         for (int i = 0; i< propertyDescriptors.length; i++) { 
             PropertyDescriptor descriptor = propertyDescriptors[i]; 
             String propertyName = descriptor.getName(); 
             if (!propertyName.equals("class")) { 
                 Method readMethod = descriptor.getReadMethod(); 
-                Object result = readMethod.invoke(bean, new Object[0]); 
+                Object result=null;
+                try{
+                result = readMethod.invoke(bean, new Object[0]); 
+                } catch (Exception e) {
+					throw new CheckedBusiException("invoke method:{} bean:{} error",new Object[]{propertyName,bean.toString()},e);
+				} 
                 if (result != null) { 
                     returnMap.put(propertyName, result); 
                 } else { 

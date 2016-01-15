@@ -48,6 +48,7 @@ public class DateEditor extends PropertyEditorSupport {
     if(StringUtils.isEmpty(text))
       super.setValue(null);
     else {
+    	text=text.trim();
       if(text.length()==10)
       {
         super.setValue(Utility.parseDate(text, CoreConstants.DEFAULT_DATE_FORMAT));
