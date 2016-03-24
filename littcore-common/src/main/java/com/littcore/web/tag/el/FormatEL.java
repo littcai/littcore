@@ -204,9 +204,9 @@ public class FormatEL
 	 * 
 	 * @return string
 	 */
-	public static String switchOut(boolean flag, String str, String str2)
+	public static String switchOut(Boolean flag, String str, String str2)
 	{
-		if(flag)
+		if(flag!=null && flag)
 			return str;
 		else
 			return str2;
