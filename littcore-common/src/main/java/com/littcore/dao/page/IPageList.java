@@ -2,6 +2,8 @@ package com.littcore.dao.page;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.littcore.dao.IResultsetTransformer;
 
 /**
@@ -15,6 +17,14 @@ import com.littcore.dao.IResultsetTransformer;
  * @version 1.0
  */
 public interface IPageList {
+  
+  /**
+   * 是否还有下一页.
+   *
+   * @return true, if is checks for next
+   */
+  public boolean isHasNext();
+  
 
     /**
      * @return 返回 pageIndex。
@@ -64,9 +74,10 @@ public interface IPageList {
     /**
      * @param totalSize 设置 totalSize。
      */
-    public void setTotalSize(int totalSize);
+    public void setTotalSize(int totalSize);    
     
     public IPageList setResultsetTransformer(IResultsetTransformer resultsetTransformer); 
     
+    @JsonIgnore
     public IResultsetTransformer getResultsetTransformer();
 }

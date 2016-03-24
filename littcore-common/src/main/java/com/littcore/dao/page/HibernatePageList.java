@@ -53,6 +53,14 @@ public class HibernatePageList implements IPageList {
         return totalPage;
     }    
     
+    /* (non-Javadoc)
+     * @see com.littcore.dao.page.IPageList#isHasNext()
+     */
+    public boolean isHasNext()
+    {
+      return pageIndex < totalPage;
+    }
+    
     /**
      * @return 返回 pageIndex。
      */

@@ -527,9 +527,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
      * @param obj hibernate对象
      */
 	public void delete(Object obj)
-    {
-        getHibernateTemplate().delete(obj);
-    } 
+  {
+	  getHibernateTemplate().delete(obj);
+  } 
 	
 	public void deleteBatch(Collection objs)
     {
