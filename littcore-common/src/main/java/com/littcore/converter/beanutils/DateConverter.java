@@ -42,6 +42,7 @@ public class DateConverter extends DateTimeConverter {
           return null;  
       }  
       else {
+      	text=text.trim();
         if(text.length()==10)
         {
           return Utility.parseDate(text, CoreConstants.DEFAULT_DATE_FORMAT);
