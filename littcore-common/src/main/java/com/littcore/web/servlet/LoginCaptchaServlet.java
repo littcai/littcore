@@ -106,8 +106,20 @@ public class LoginCaptchaServlet extends HttpServlet
 	 */
 	public static boolean validateCaptcha(HttpServletRequest request)
 	{
-		return validateCaptcha(request,CoreConstants.SESSION_CAPTCHA);
+		return validateCaptcha(request,CoreConstants.SESSION_CAPTCHA, false);
 	}
+	
+	/**
+	 * Validate captcha.
+	 *
+	 * @param request the request
+	 * @param 是否重置验证码
+	 * @return true, if successful
+	 */
+	public static boolean validateCaptcha(HttpServletRequest request, boolean reset)
+  {
+    return validateCaptcha(request,CoreConstants.SESSION_CAPTCHA, reset);
+  }
 	
 	/**
 	 * 从请求中获取认证码，并校验.
@@ -118,14 +130,17 @@ public class LoginCaptchaServlet extends HttpServlet
 	 * 
 	 * @return 校验通过返回true，不通过返回false
 	 */
-	public static boolean validateCaptcha(HttpServletRequest request,String sessionCaptchaName)
+	public static boolean validateCaptcha(HttpServletRequest request,String sessionCaptchaName, boolean reset)
 	{
 		String captcha = Utility.trimNull(request.getParameter("captcha"));		
 			
 		HttpSession session = request.getSession();		
 		String sessionCaptcha = getSessionCaptcha(session,sessionCaptchaName);
 		//取出后清理SESSION
-		session.removeAttribute(sessionCaptchaName);		
+		if(reset)
+		{
+		  session.removeAttribute(sessionCaptchaName);		
+		}
 		if(Utility.isEmpty(sessionCaptcha)||Utility.isEmpty(captcha))
 			return false;
 		return captcha.equalsIgnoreCase(sessionCaptcha);
