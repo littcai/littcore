@@ -2,12 +2,13 @@ package com.littcore.shield.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 import org.apache.commons.lang.LocaleUtils;
+import org.mvel2.util.ThisLiteral;
 
 import com.littcore.exception.BusiException;
 import com.littcore.uid.RandomGUID;
@@ -22,7 +23,10 @@ import com.littcore.util.ArrayUtils;
  * 保存登录操作员的最基本信息，实际项目使用中继承于该基类
  * 
  * 2010-12-24 1.1
- * 		1、增加roleIds缓存，在某些需要根据角色查询的地方可以使用该属性
+ * 	1、增加roleIds缓存，在某些需要根据角色查询的地方可以使用该属性
+ * 
+ * 2016-05-19 1.2
+ *  1、增加一个Map用于存储动态的附加属性
  * 	
  * </pre>
  * 
@@ -95,6 +99,9 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	
 	/** 是否强制下线. */
 	private boolean isForceOffline;
+	
+	/** 动态属性. */
+	private Map<String, Object> props = new HashMap<String, Object>();
 	
 	/**
 	 * 构造函数.
@@ -354,6 +361,28 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	}
 	
 	/**
+	 * Adds the prop.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
+	public void addProp(String key, Object value)
+	{
+	  this.props.put(key, value);
+	}
+	
+	/**
+	 * Gets the prop.
+	 *
+	 * @param key the key
+	 * @return the prop
+	 */
+	public Object getProp(String key)
+	{
+	  return this.props.get(key);
+	}
+	
+	/**
 	 * Gets the login id.
 	 * 
 	 * @return the login id
@@ -549,5 +578,23 @@ public class BaseLoginVo implements ILoginVo, Serializable
   public void setToken(String token)
   {
     this.token = token;
+  }
+
+  
+  /**
+   * @return the props
+   */
+  public Map<String, Object> getProps()
+  {
+    return props;
+  }
+
+  
+  /**
+   * @param props the props to set
+   */
+  public void setProps(Map<String, Object> props)
+  {
+    this.props = props;
   }
 }

@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -226,17 +224,22 @@ public class BaseController
 	{
 		OutputStream output = null;
 		try
-		{
+		{		  
 			output = response.getOutputStream();
 			response.setContentType(contentType);
 			int length = FileCopyUtils.copy(input, output);
 			response.setContentLength(length);
 			output.flush();
-		}
+		}		
 		catch (IOException e)
 		{
-			logger.error("response BinaryStream error!", e);
-			throw new RuntimeException(e);
+		  /*
+		   * 在写数据的时候， 对于 ClientAbortException 之类的异常， 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。 尤其是对于迅雷这种吸血的客户端软件， 明明已经有一个线程在读取 bytes=1275856879-1275877358， 如果短时间内没有读取完毕，迅雷会再启第二个、第三个。。。线程来读取相同的字节段， 直到有一个线程读取完毕，迅雷会 KILL 掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。 所以，我们忽略这种异常
+		   */
+		  if(!"ClientAbortException".equals(e.getClass().getSimpleName()))
+		  {
+  			logger.error("response BinaryStream error!", e);
+		  }
 		}
 		finally
 		{
