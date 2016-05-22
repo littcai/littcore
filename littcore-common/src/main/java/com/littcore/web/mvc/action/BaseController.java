@@ -95,7 +95,7 @@ public class BaseController
 	 */
 	protected String getHomePath()
 	{
-		return this.getSystemInfoVo().getHomePath();
+		return CoreConstants.HOME_PATH;
 	}	
 	
 	/**

@@ -77,4 +77,7 @@ public abstract class CoreConstants
     
     /** 项目根目录的绝对路径，需要在项目启动时设置，使用监听器方式注入. */
     public static String ROOT_PATH;		
+    
+    //保存文件路径从配置文件的home.path中获得，需要在项目启动时设置，使用监听器方式注入
+    public static String HOME_PATH;   
 }
