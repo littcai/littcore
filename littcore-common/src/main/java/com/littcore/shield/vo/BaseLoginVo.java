@@ -97,6 +97,9 @@ public class BaseLoginVo implements ILoginVo, Serializable
 	 */
 	private int status;
 	
+	/** 工作状态. */
+	private int workStatus;
+	
 	/** 是否强制下线. */
 	private boolean isForceOffline;
 	
@@ -596,5 +599,23 @@ public class BaseLoginVo implements ILoginVo, Serializable
   public void setProps(Map<String, Object> props)
   {
     this.props = props;
+  }
+
+  
+  /**
+   * @return the workStatus
+   */
+  public int getWorkStatus()
+  {
+    return workStatus;
+  }
+
+  
+  /**
+   * @param workStatus the workStatus to set
+   */
+  public void setWorkStatus(int workStatus)
+  {
+    this.workStatus = workStatus;
   }
 }
