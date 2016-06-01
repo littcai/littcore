@@ -35,7 +35,7 @@ public class PageParam extends CondParam
     private int pageIndex = 1; // 当前的页码
     private int pageSize = CoreConstants.DEFAULT_PAGE_SIZE; // 一页显示的记录数，如果为0则对应全部结果
     private int totalSize = 0; //总记录数  
-    private boolean enableEdgeCheck = true; //是否启用边界检查，启用时若分页超出边界取最后一页数据
+    private boolean enableEdgeCheck = false; //是否启用边界检查，启用时若分页超出边界取最后一页数据
     
     
     /**
