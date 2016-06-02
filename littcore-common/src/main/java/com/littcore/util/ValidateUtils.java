@@ -146,4 +146,20 @@ public class ValidateUtils
 		
 		return false;		
 	}
+	
+	/**
+	 * Checks if is email.
+	 *
+	 * @param value the value
+	 * @return true, if is email
+	 */
+	public static boolean isEmail(String value)
+	{
+	  if(Utility.isEmpty(value))
+      return false;
+    if(RegexUtils.validateSoft(value, RegexUtils.EMAIL_REGEXP))
+      return true;
+    
+    return false;   
+	}
 }
