@@ -162,4 +162,20 @@ public class ValidateUtils
     
     return false;   
 	}
+	
+	/**
+	 * 是否手机号.
+	 *
+	 * @param value the value
+	 * @return true, if is mobile
+	 */
+	public static boolean isMobile(String value)
+  {
+    if(Utility.isEmpty(value))
+      return false;
+    if(RegexUtils.validateSoft(value, RegexUtils.POSITIVE_INT_REGEXP) && value.length()==11)
+      return true;
+    
+    return false;   
+  }
 }
