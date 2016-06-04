@@ -63,40 +63,49 @@ public class MapBeanConvertUtils {
      * @throws CheckedBusiException
      *         如果获取Bean属性失败，实例化对象失败，调用setter方法失败
      */ 
-    public static Object convertMapIngoreUnderline(Class type, Map<String,Object> map) 
-            throws CheckedBusiException{ 
-    	BeanInfo beanInfo=null;
-    	Object obj=null;
-		try {
-			beanInfo = Introspector.getBeanInfo(type); // 获取类属性
-			obj = type.newInstance(); // 创建 JavaBean 对象
-		} catch (Exception e) {
-			throw new CheckedBusiException("get instance of bean:{} error", new Object[] { type }, e);
-		}
- 
-        // 给 JavaBean 对象的属性赋值 
-        PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
-        for (int i = 0; i< propertyDescriptors.length; i++) { 
-            PropertyDescriptor descriptor = propertyDescriptors[i]; 
-            String propertyName = descriptor.getName(); 
- 
-            for(Entry<String,Object> entry:map.entrySet()){
-            	String key = (String) entry.getKey();
-				String columnName = StringUtils.replace(key, "_", "");
-				if(propertyName.equalsIgnoreCase(columnName)){
-					Object value=entry.getValue();
-					  Object[] args = new Object[1]; 
-		                args[0] = value; 
-		                try{
-		                descriptor.getWriteMethod().invoke(obj, args); 
-		                } catch (Exception e) {
-							throw new CheckedBusiException("invoke bean:{}  method:{} value:{} error",new Object[]{type,propertyName,value},e);
-						} 
-				}
-            }
-        } 
-        return obj; 
+  public static Object convertMapIngoreUnderline(Class type, Map<String, Object> map) throws CheckedBusiException
+  {
+    BeanInfo beanInfo = null;
+    Object obj = null;
+    try
+    {
+      beanInfo = Introspector.getBeanInfo(type); // 获取类属性
+      obj = type.newInstance(); // 创建 JavaBean 对象
+    } catch (Exception e)
+    {
+      throw new CheckedBusiException("get instance of bean:{} error", new Object[] { type }, e);
     }
+
+    // 给 JavaBean 对象的属性赋值
+    PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+    for (int i = 0; i < propertyDescriptors.length; i++)
+    {
+      PropertyDescriptor descriptor = propertyDescriptors[i];
+      String propertyName = descriptor.getName();
+
+      for (Entry<String, Object> entry : map.entrySet())
+      {
+        String key = (String) entry.getKey();
+        String columnName = StringUtils.replace(key, "_", "");
+        if (propertyName.equalsIgnoreCase(columnName))
+        {
+          Object value = entry.getValue();
+          if(value==null)
+            continue;
+          Object[] args = new Object[1];
+          args[0] = value;
+          try
+          {
+            descriptor.getWriteMethod().invoke(obj, args);
+          } catch (Exception e)
+          {
+            throw new CheckedBusiException("invoke bean:{}  method:{} value:{} error", new Object[] { type, propertyName, value }, e);
+          }
+        }
+      }
+    }
+    return obj;
+  }
 
     /** 
      * 将一个 JavaBean 对象转化为一个  Map 
