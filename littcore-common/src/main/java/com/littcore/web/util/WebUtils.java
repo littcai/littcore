@@ -9,8 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -201,6 +203,33 @@ public class WebUtils
     if(values==null || values.length==0 || "".equals(values[0]))
       return ArrayUtils.EMPTY_INTEGER_OBJECT_ARRAY;
     return ArrayUtils.toInteger(values);
+  }
+  
+  /**
+   * 根据名称前缀获得参数数组。
+   * 客户端提交格式：param[0]=0&param[1]=1&param[2]=2
+   * 
+   * 
+   * @param request
+   * @param prefix
+   * @return
+   */
+  public static String[] getParameterValueArrayStartingWith(WebRequest request, String prefix)
+  {
+    Validate.notNull(request, "Request must not be null");
+    Iterator<String> paramNames = request.getParameterNames();
+    List<String> params = new ArrayList<String>();
+    if (prefix == null) {
+      prefix = "";
+    }
+    while (paramNames != null && paramNames.hasNext()) {
+      String paramName = (String) paramNames.next();
+      if ("".equals(prefix) || paramName.startsWith(prefix)) {
+        String value = request.getParameter(paramName);
+        params.add(value);
+      }
+    }
+    return params.toArray(new String[0]);
   }
 
 	/**

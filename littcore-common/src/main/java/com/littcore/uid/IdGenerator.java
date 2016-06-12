@@ -1,5 +1,8 @@
 package com.littcore.uid;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  * Twitter的ID生成器.
@@ -49,7 +52,7 @@ public class IdGenerator {
   public IdGenerator(final long workerId)
   {
     super();
-    if (workerId > this.maxWorkerId || workerId < 0)
+    if (workerId > maxWorkerId || workerId < 0)
     {
       throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", this.maxWorkerId));
     }
@@ -61,7 +64,7 @@ public class IdGenerator {
     long timestamp = this.timeGen();
     if (this.lastTimestamp == timestamp)
     {
-      this.sequence = (this.sequence + 1) & this.sequenceMask;
+      this.sequence = (this.sequence + 1) & sequenceMask;
       if (this.sequence == 0)
       {
         timestamp = this.tilNextMillis(this.lastTimestamp);
@@ -106,14 +109,22 @@ public class IdGenerator {
 
   public static void main(String[] args)
   {
+    IdGenerator worker1 = new IdGenerator(1);
     IdGenerator worker2 = new IdGenerator(2);
     long start = System.currentTimeMillis();
-    //for (long i = 0; i < 1000000; i++)
+    Map<Long, Long> map = new HashMap<Long, Long>();
+    for (long i = 0; i < 100; i++)
     {
       System.out.println(worker2.nextId());
+      map.put(worker2.nextId(), worker2.nextId());
+    }
+    for (long i = 0; i < 100; i++)
+    {
+      //System.out.println(worker2.nextId());
+      map.put(worker1.nextId(), worker1.nextId());
     }
     System.out.println(System.currentTimeMillis() - start);
-
+    System.out.println(map.size());
   }
 
 }

@@ -141,6 +141,7 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 		//如果是业务编码异常，
 		if(ex instanceof BusiCodeException)
 		{
+		  ex.printStackTrace();
 			BusiCodeException busiCodeException = (BusiCodeException)ex;
 			//根据BusiCode获得国际化内容，再转换为
 			Locale locale = com.littcore.web.util.WebUtils.getLocale(request);
