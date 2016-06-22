@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.littcore.common.CoreConstants;
 import com.littcore.common.Utility;
 import com.littcore.security.Captcha;
+import com.littcore.util.StringUtils;
 
 /**
  * 用户登录认证码验证.
@@ -89,7 +90,9 @@ public class LoginCaptchaServlet extends HttpServlet
 			captcha.setCharArray(charArray.toCharArray());
 		captcha.generate(captcha.getRandom());
 		//将认证码存入SESSION
-		session.setAttribute(sessionCaptchaName, captcha.getCaptchaCode());
+		String captchaName = request.getParameter("name");
+		
+		session.setAttribute(StringUtils.isEmpty(captchaName)?sessionCaptchaName:captchaName, captcha.getCaptchaCode());
 		//图片处理
 		ServletOutputStream out = response.getOutputStream();
 		ImageIO.write(captcha.getCaptchaImage(), "jpg", out);
