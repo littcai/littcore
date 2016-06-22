@@ -18,12 +18,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -522,6 +524,13 @@ public class BaseController
     @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)  
     public ModelAndView handleBusiCodeException(BusiCodeException e, Locale locale) {  
         return new ModelAndView().addObject("error", BeanManager.getMessage("error."+e.getErrorCode(), e.getParams(), locale));  
+    }  
+    
+    @ExceptionHandler(TypeMismatchException.class)  
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)  
+    @ResponseBody  
+    public void handleTypeMismatchException(TypeMismatchException ex) {  
+        throw new BusiException("请求参数不合法");
     }  
     
     

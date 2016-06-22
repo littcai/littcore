@@ -9,6 +9,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 import org.springframework.web.util.WebUtils;
@@ -149,6 +150,14 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 				locale = busiCodeException.getLocale();
 			String message = BeanManager.getMessage(busiCodeException.getErrorCode(), busiCodeException.getParams(), locale);
 			ex = new RuntimeException(message);
+		}
+		else if(ex instanceof TypeMismatchException)
+		{
+      //根据BusiCode获得国际化内容，再转换为
+      Locale locale = com.littcore.web.util.WebUtils.getLocale(request);
+      String message = BeanManager.getMessage("error.typeMismatchException", null, locale);
+		  
+		  ex = new IllegalArgumentException(message);
 		}
 		// Expose ModelAndView for chosen error view.
 		String viewName = determineViewName(ex, request);	
