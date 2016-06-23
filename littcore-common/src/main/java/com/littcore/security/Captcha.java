@@ -120,15 +120,15 @@ public class Captcha extends StringRandom
 //            graphics.drawLine(x, y, x + xl, y + yl);
 //        }   
         //设置随机干扰线条颜色 
-//        graphics.setColor(this.getRandColor(50,100)); 
-//        //产生20条干扰线条 
-//        for (int i=0; i<5; i++){ 
-//            int x1 = random.nextInt(this.width * this.captchaCode.length() - 4) + 2; 
-//            int y1 = random.nextInt(this.height - 4) + 2; 
-//            int x2 = random.nextInt(this.width * this.captchaCode.length() - 2 - x1) + x1; 
-//            int y2 = y1; 
-//            graphics.drawLine(x1, y1, x2, y2); 
-//        } 
+        graphics.setColor(this.getRandColor(50,100)); 
+        //产生10条干扰线条 
+        for (int i=0; i<10; i++){ 
+            int x1 = random.nextInt(this.width * this.captchaCode.length() - 4) + 2; 
+            int y1 = random.nextInt(this.height - 4) + 2; 
+            int x2 = random.nextInt(this.width * this.captchaCode.length() - 2 - x1) + x1; 
+            int y2 = y1; 
+            graphics.drawLine(x1, y1, x2, y2); 
+        } 
         //画认证码字符
         for(int i = 0; i < captchaCode.length(); i++)
         {
