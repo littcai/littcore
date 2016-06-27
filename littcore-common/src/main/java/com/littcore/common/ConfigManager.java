@@ -50,6 +50,7 @@ public class ConfigManager {
     {
       File configFile = ResourceUtils.getFile("classpath:config.xml");
       DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder(configFile);
+      builder.setAutoSave(true);
       
       Configuration config = builder.getConfiguration();
       globalConfig.addConfiguration(config);
@@ -152,7 +153,7 @@ public class ConfigManager {
     //Configuration config = ConfigManager.getInstance().loadItem(ResourceUtils.getFile("classpath:system-config.xml"));
     //XMLConfiguration config = new XMLConfiguration(ResourceUtils.getFile("classpath:system-config.xml"));   
     Configuration config = ConfigManager.getInstance().getConfig();
-    System.out.println(config.getString("home.path"));
+    System.out.println(config.getString("apps.engineer.version"));
   }
   
   private static class SingletonClassInstance { 
