@@ -3,6 +3,8 @@ package com.littcore.security;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.util.Random;
@@ -122,17 +124,25 @@ public class Captcha extends StringRandom
         //设置随机干扰线条颜色 
         graphics.setColor(this.getRandColor(50,100)); 
         //产生10条干扰线条 
-        for (int i=0; i<10; i++){ 
-            int x1 = random.nextInt(this.width * this.captchaCode.length() - 4) + 2; 
-            int y1 = random.nextInt(this.height - 4) + 2; 
+        for (int i=0; i<5; i++){ 
+            int x1 = random.nextInt(this.width); 
+            int y1 = random.nextInt(this.height); 
             int x2 = random.nextInt(this.width * this.captchaCode.length() - 2 - x1) + x1; 
             int y2 = y1; 
             graphics.drawLine(x1, y1, x2, y2); 
         } 
-        //画认证码字符
+        //随机干扰点
+        for (int i=0;i<20;i++) {   
+            int x = random.nextInt(width);   
+            int y = random.nextInt(height);   
+            graphics.setColor(this.getRandColor(50,100));  
+            graphics.drawOval(x,y,1,1);   
+        } 
+        
+        //画认证码字符 
         for(int i = 0; i < captchaCode.length(); i++)
         {
-            graphics.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
+            graphics.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));            
             graphics.drawString(captchaCode.substring(i, i + 1), 13 * i + 7, 16);
         }
         graphics.dispose();          
