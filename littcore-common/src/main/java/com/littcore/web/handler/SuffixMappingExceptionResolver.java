@@ -142,14 +142,15 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 		//如果是业务编码异常，
 		if(ex instanceof BusiCodeException)
 		{
-		  ex.printStackTrace();
+		  logger.error(ex);
 			BusiCodeException busiCodeException = (BusiCodeException)ex;
 			//根据BusiCode获得国际化内容，再转换为
 			Locale locale = com.littcore.web.util.WebUtils.getLocale(request);
 			if(locale==null)
 				locale = busiCodeException.getLocale();
 			String message = BeanManager.getMessage(busiCodeException.getErrorCode(), busiCodeException.getParams(), locale);
-			ex = new RuntimeException(message);
+			//将翻译后内容重新封装，同时返回errorCode方便客户端做细分逻辑
+			ex = new BusiCodeException(message).setErrorCode(busiCodeException.getErrorCode());
 		}
 		else if(ex instanceof TypeMismatchException)
 		{
@@ -349,6 +350,12 @@ public class SuffixMappingExceptionResolver extends AbstractHandlerExceptionReso
 		if (this.exceptionAttribute != null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Exposing Exception as model attribute '" + this.exceptionAttribute + "'", ex);
+			}
+			//如果是业务编码类异常，额外返回错误代码，方便客户端做细化的业务处理
+			if(ex instanceof BusiCodeException)
+			{
+			  BusiCodeException busiCodeException = (BusiCodeException)ex;
+			  mv.addObject("errorCode", busiCodeException.getErrorCode());
 			}
 			mv.addObject("className", ex.getClass().getName());
 			mv.addObject(this.exceptionAttribute, ex.getMessage());

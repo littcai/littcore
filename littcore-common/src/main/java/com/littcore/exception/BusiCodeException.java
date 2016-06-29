@@ -164,6 +164,16 @@ public class BusiCodeException extends BusiException {
     this.defaultMessage = defaultMessage;
     return this;
   }
+
+  
+  /**
+   * @param errorCode the errorCode to set
+   */
+  public BusiCodeException setErrorCode(String errorCode)
+  {
+    this.errorCode = errorCode;
+    return this;
+  }
 	
 
 }
