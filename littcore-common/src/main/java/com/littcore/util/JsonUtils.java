@@ -9,6 +9,7 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.type.TypeReference;
 
 /**
  * .
@@ -54,6 +55,15 @@ private static final ObjectMapper objectMapper = new ObjectMapper();
 	{		
 		return objectMapper.readTree(jsonString);
 	}
+	
+	public static Map<String, ?> toMap(String jsonString) throws IOException
+  {   
+	  Map<String, Object> map = new HashMap<String, Object>();
+
+    // convert JSON string to Map
+    map = objectMapper.readValue(jsonString, new TypeReference<Map<String, Object>>(){});
+    return map;
+  }
 
 	/**
 	 * @param args
