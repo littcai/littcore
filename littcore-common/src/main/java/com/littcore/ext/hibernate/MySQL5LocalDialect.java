@@ -25,6 +25,6 @@ public class MySQL5LocalDialect extends MySQL5Dialect {
   public MySQL5LocalDialect(){  
     super();    
     //增加对MySQL的convert函数的支持
-    registerFunction("convert", new SQLFunctionTemplate(StandardBasicTypes.STRING, "convert(?1 using ?2)") ); 
+    registerFunction("convert_gbk", new SQLFunctionTemplate(StandardBasicTypes.STRING, "convert(?1 using gbk)") ); 
   }  
 }
