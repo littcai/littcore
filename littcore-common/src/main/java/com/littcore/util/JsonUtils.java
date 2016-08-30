@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
 
 /**
@@ -55,6 +57,20 @@ private static final ObjectMapper objectMapper = new ObjectMapper();
 	{		
 		return objectMapper.readTree(jsonString);
 	}
+	
+	public static <T> List<T> toList(String jsonString) throws IOException
+  {    
+    List<T> list = objectMapper.readValue(jsonString, new TypeReference<List<T>>(){});
+    return list;
+  }
+	
+	public static <T> List<T> toList(String jsonString, Class<T> clazz) throws IOException
+  {    
+	  JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);// clz.selGenType().getClass()
+	  
+    List<T> list = objectMapper.readValue(jsonString, javaType);
+    return list;
+  }
 	
 	public static Map<String, ?> toMap(String jsonString) throws IOException
   {   
