@@ -79,7 +79,7 @@ public class HttpFileUpload extends ServletFileUpload
      * 文件上传类型限制.
      * 默认：image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/octet-stream
      */
-    private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/msword,application/octet-stream";
+    private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/msword";
 
     /** 是否允许处理非文件域，默认为否. */
     private boolean allowField = false;
@@ -315,7 +315,8 @@ public class HttpFileUpload extends ServletFileUpload
             	failedFiles.add(failedFile);  
             	fileList.add(failedFile);
             	
-            	invalidFileNames.add(fileSimpleName);              	
+            	invalidFileNames.add(fileSimpleName);  
+            	continue;	//无效文件不写磁盘
             }                   
             if (sizeInBytes > this.fileLimitSize)
             {

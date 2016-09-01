@@ -5,8 +5,7 @@ import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -72,7 +71,23 @@ public class XssFilter extends OncePerRequestFilter {
     HttpServletResponse httpResponse = (HttpServletResponse) response;  
     // http信息封装类  
     XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper(httpRequest, this.whitelists);
-
+    //Cookie增加HttpOnly防护
+    Cookie[] cookies = request.getCookies();  
+    
+    if (cookies != null) {  
+       for (Cookie cookie : cookies)
+       {          
+         if("JSESSIONID".equalsIgnoreCase(cookie.getName()))
+         {
+           String value = cookie.getValue();  
+           StringBuilder builder = new StringBuilder();  
+           builder.append("JSESSIONID=" + value + "; ");  
+           builder.append("Secure; ");  
+           builder.append("HttpOnly; ");  
+           response.setHeader("Set-Cookie", builder.toString()); 
+         } 
+       }             
+    }        
     // 对request信息进行封装并进行校验工作，若校验失败（含非法字符），根据配置信息进行日志记录和请求中断处理
     if(enableXssLog)
     {
