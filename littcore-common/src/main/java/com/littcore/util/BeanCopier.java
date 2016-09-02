@@ -44,10 +44,14 @@ public class BeanCopier {
 	}
 	
 	public static <T> T copy(Object srcObject, Class<T> clazz) {
+	  if(srcObject==null)
+	    return null;
 		return instance.map(srcObject, clazz);
 	}
 	
 	public static <T> T copy(Object srcObject, T destObject) {
+	  if(srcObject==null)
+      return null;
 		instance.map(srcObject, destObject);
 		return destObject;
 	}

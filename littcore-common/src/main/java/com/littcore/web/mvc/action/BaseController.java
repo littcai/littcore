@@ -65,7 +65,7 @@ public class BaseController
 	protected Log logger = LogFactory.getLog(this.getClass());
 
 	/** JSON 内容类型. */
-	public static final String CONTENT_TYPE_JSON = "text/javascript;charset=UTF-8";
+	public static final String CONTENT_TYPE_JSON = "application/json;charset=UTF-8";
 
 	/** XML 内容类型. */
 	public static final String CONTENT_TYPE_XML = "application/xml;charset=UTF-8";
@@ -156,7 +156,7 @@ public class BaseController
 	 */
 	protected final void responseJSON(HttpServletResponse response, String json)
 	{
-		response.setContentType(CONTENT_TYPE_HTML);
+		response.setContentType(CONTENT_TYPE_JSON);
 		try
 		{
 			if (logger.isDebugEnabled())

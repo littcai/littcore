@@ -262,14 +262,13 @@ public class BaseHibernateDao extends HibernateDaoSupport
      * @param id 字段值(Serializable)
      * @return Object 对象
      */
-	public <T> T load(Class<T> className,String idenityName,Serializable id)
+	public <T> T load(Class<T> className,String idenityName, final Serializable id)
 	{
 		StringBuffer hql = new StringBuffer("from ");
 		hql.append(className.getName());
 		hql.append(" where ");
 		hql.append(idenityName);
-		hql.append('=');
-		hql.append(id);
+		hql.append("=?");
 		
 		final String temp = hql.toString();
 		return getHibernateTemplate().execute(new HibernateCallback<T>() {
@@ -277,6 +276,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
 			public T doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				Query query = session.createQuery(temp);
+				query.setSerializable(0, id);
 				query.setMaxResults(1);				
 				return (T)query.uniqueResult();
 			}
@@ -290,15 +290,13 @@ public class BaseHibernateDao extends HibernateDaoSupport
      * @param id 字段值(String)
      * @return Object 对象
      */
-	public <T> T load(Class<T> className,String idenityName,String id)
+	public <T> T load(Class<T> className, String idenityName, final String id)
 	{
 		StringBuffer hql = new StringBuffer("from ");
 		hql.append(className.getName());
 		hql.append(" where ");
 		hql.append(idenityName);
-		hql.append("='");
-		hql.append(id);
-		hql.append('\'');
+		hql.append("=?");		
 		
 		final String temp = hql.toString();
 		return getHibernateTemplate().execute(new HibernateCallback<T>() {
@@ -306,6 +304,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
 			public T doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				Query query = session.createQuery(temp);
+				query.setString(0, id);
 				query.setMaxResults(1);				
 				return (T)query.uniqueResult();
 			}
@@ -574,9 +573,8 @@ public class BaseHibernateDao extends HibernateDaoSupport
 		hql.append(className);
 		hql.append(" where ");
 		hql.append(idenityName);
-		hql.append('=');
-		hql.append(id);
-        getHibernateTemplate().bulkUpdate(hql.toString());
+		hql.append("=?");
+    getHibernateTemplate().bulkUpdate(hql.toString(), id);
 //		final String temp = hql.toString();
 //		getHibernateTemplate().execute(new HibernateCallback() {
 //
