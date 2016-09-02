@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.littcore.util.ArrayUtils;
 import com.littcore.util.DateUtils;
+import com.littcore.util.RegexUtils;
 import com.littcore.util.StringUtils;
 
 /** 
@@ -145,6 +146,23 @@ public class CondParam
     {
     	if(StringUtils.isEmpty(sortField) || StringUtils.isEmpty(sortOrder))
     		return;
+      /*
+       * 检查排序字段和方法，防止SQL注入
+       */
+      if(!"asc".equalsIgnoreCase(sortOrder) || !"desc".equalsIgnoreCase(sortOrder))
+      {
+        throw new IllegalArgumentException("Illegal sort order");
+      }
+      
+      if(sortField.length()>20)
+      {
+        throw new IllegalArgumentException("Illegal sort field");
+      }
+      
+      if(RegexUtils.validate(sortField, "^[A-Za-z0-9_\\.]+$"))
+      {
+        throw new IllegalArgumentException("Illegal sort parameter");
+      }
     	this.sortFields = (String[])ArrayUtils.add(sortFields, sortField);
     	this.sortMap.put(sortField, sortOrder);
     }
