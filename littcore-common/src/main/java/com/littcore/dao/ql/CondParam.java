@@ -149,7 +149,7 @@ public class CondParam
       /*
        * 检查排序字段和方法，防止SQL注入
        */
-      if(!"asc".equalsIgnoreCase(sortOrder) || !"desc".equalsIgnoreCase(sortOrder))
+      if(!"asc".equalsIgnoreCase(sortOrder) && !"desc".equalsIgnoreCase(sortOrder))
       {
         throw new IllegalArgumentException("Illegal sort order");
       }
