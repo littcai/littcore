@@ -159,7 +159,7 @@ public class CondParam
         throw new IllegalArgumentException("Illegal sort field");
       }
       
-      if(RegexUtils.validate(sortField, "^[A-Za-z0-9_\\.]+$"))
+      if(!RegexUtils.validateSoft(sortField, "^[A-Za-z0-9_\\.]+$"))
       {
         throw new IllegalArgumentException("Illegal sort parameter");
       }
