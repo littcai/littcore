@@ -26,6 +26,8 @@ public class UploadFile
 {	
 	public static final String ILLEGAL_MIME_TYPE = "ILLEGAL_MIME_TYPE";	//非法的文件类型
 	
+	public static final String ILLEGAL_FILE_EXT = "ILLEGAL_FILE_EXT";	//非法的文件后缀
+	
 	public static final String OUT_OF_SIZE_LIMIT = "OUT_OF_SIZE_LIMIT";		//文件大小超限
 	
 	public static final String STORE_FAILED = "STORE_FAILED";		//保存文件失败

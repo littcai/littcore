@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -80,6 +81,11 @@ public class HttpFileUpload extends ServletFileUpload
      * 默认：image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/octet-stream
      */
     private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/msword";
+    
+    /**
+     * 文件允许上传的后缀名
+     */
+    private String allowFileExts = "jpg,jpeg,gif,png,bmp,xls,xlsx,doc,docx,ppt,pptx,mp4,zip,rar";
 
     /** 是否允许处理非文件域，默认为否. */
     private boolean allowField = false;
@@ -182,11 +188,16 @@ public class HttpFileUpload extends ServletFileUpload
     public void setAllowFileTypes(String allowFileTypes)
     {
         this.allowFileTypes = allowFileTypes;
-    }
-
+    } 
+    
     public void addAllowFileTypes(String allowFileTypes)
     {
         this.allowFileTypes += ("," + allowFileTypes);
+    }
+    
+    public void addAllowFileExts(String allowFileExts)
+    {
+        this.allowFileExts += ("," + allowFileExts);
     }
 
     /**
@@ -293,7 +304,7 @@ public class HttpFileUpload extends ServletFileUpload
         	String fieldName = item.getFieldName();
             String fileName = item.getName();	//这里为全路径名
             String fileSimpleName = Utility.getSimpleFileName(fileName);	//纯文件名                      
-            String fileSuffix = Utility.getFileNameSuffix(fileName);	//后缀名
+            String fileSuffix = FilenameUtils.getExtension(fileName);	//后缀名
             String fileContentType = item.getContentType();
             boolean isInMemory = item.isInMemory();
             if(Utility.isEmpty(fileName) || item.getSize()<=0)
@@ -317,7 +328,24 @@ public class HttpFileUpload extends ServletFileUpload
             	
             	invalidFileNames.add(fileSimpleName);  
             	continue;	//无效文件不写磁盘
-            }                   
+            }  
+            else if (!isAllowFileExt(fileSuffix)) // 不属于允许上传的文件后缀
+            {
+            	UploadFile failedFile = new UploadFile();
+            	failedFile.setErrorCode(UploadFile.ILLEGAL_FILE_EXT);
+            	failedFile.setFieldName(fieldName);
+            	failedFile.setSrcFileName(fileName);
+            	failedFile.setFileName(fileSimpleName);
+            	failedFile.setFileSuffix(fileSuffix);
+            	failedFile.setFileSize(sizeInBytes);
+            	failedFile.setMimeType(fileContentType);  
+            	failedFile.setErrorMessage("Illegal file ext [ " + fileSuffix + " ]");
+            	failedFiles.add(failedFile);  
+            	fileList.add(failedFile);
+            	
+            	invalidFileNames.add(fileSimpleName);  
+            	continue;	//无效文件不写磁盘
+            }  
             if (sizeInBytes > this.fileLimitSize)
             {
             	UploadFile failedFile = new UploadFile();
@@ -411,6 +439,16 @@ public class HttpFileUpload extends ServletFileUpload
     		return true;
     	else if (allowFileTypes.length() > 0 && !Utility.isEmpty(fileType))
             return allowFileTypes.indexOf(fileType.toLowerCase()) != -1;
+        else
+            return false;
+    }    
+    
+    private boolean isAllowFileExt(String fileExt)
+    {
+    	if(allowFileExts == null || Utility.isEmpty(allowFileExts))
+    		return true;
+    	else if (allowFileExts.length() > 0 && !Utility.isEmpty(fileExt))
+            return allowFileExts.indexOf(fileExt.toLowerCase()) != -1;
         else
             return false;
     }    
@@ -510,6 +548,14 @@ public class HttpFileUpload extends ServletFileUpload
 	 */
 	public List<UploadFile> getFileList() {
 		return fileList;
+	}
+
+	public String getAllowFileExts() {
+		return allowFileExts;
+	}
+
+	public void setAllowFileExts(String allowFileExts) {
+		this.allowFileExts = allowFileExts;
 	}
 
 }
