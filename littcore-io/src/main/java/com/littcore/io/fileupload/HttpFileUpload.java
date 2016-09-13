@@ -21,7 +21,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.littcore.common.Utility;
 import com.littcore.io.util.FileUtils;
-import com.littcore.util.ArrayUtils;
 
 /**
  * 
@@ -80,12 +79,15 @@ public class HttpFileUpload extends ServletFileUpload
      * 文件上传类型限制.
      * 默认：image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/octet-stream
      */
-    private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/bmp,application/vnd.ms-excel,application/msword";
+    private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/x-png,image/bmp"
+        + ",application/vnd.ms-excel,application/msword,application/pdf"
+        + ",video/mp4"
+        + ",application/zip,application/gzip,application/x-zip-compressed,application/x-7z-compressed,application/x-rar-compressed";
     
     /**
      * 文件允许上传的后缀名
      */
-    private String allowFileExts = "jpg,jpeg,gif,png,bmp,xls,xlsx,doc,docx,ppt,pptx,mp4,zip,rar";
+    private String allowFileExts = "jpg,jpeg,gif,png,bmp,xls,xlsx,doc,docx,ppt,pptx,pdf,mp4,zip,7z,rar,tar.gz";
 
     /** 是否允许处理非文件域，默认为否. */
     private boolean allowField = false;
@@ -310,10 +312,31 @@ public class HttpFileUpload extends ServletFileUpload
             if(Utility.isEmpty(fileName) || item.getSize()<=0)
             	continue;
            
-            long sizeInBytes = item.getSize();                  
-           
-            if (!isAllowFileType(fileContentType)) // 不属于允许上传的文件类型
+            long sizeInBytes = item.getSize();   
+                  
+            if (!isAllowFileExt(fileSuffix)) // 不属于允许上传的文件后缀
             {
+              UploadFile failedFile = new UploadFile();
+              failedFile.setErrorCode(UploadFile.ILLEGAL_FILE_EXT);
+              failedFile.setFieldName(fieldName);
+              failedFile.setSrcFileName(fileName);
+              failedFile.setFileName(fileSimpleName);
+              failedFile.setFileSuffix(fileSuffix);
+              failedFile.setFileSize(sizeInBytes);
+              failedFile.setMimeType(fileContentType);  
+              failedFile.setErrorMessage("Illegal file ext [ " + fileSuffix + " ]");
+              failedFiles.add(failedFile);  
+              fileList.add(failedFile);
+              
+              invalidFileNames.add(fileSimpleName);  
+              continue; //无效文件不写磁盘
+            }  
+            else if("application/octet-stream".equals(fileContentType) && isAllowFileExt(fileSuffix))
+            {
+              //如果是二进制文件并且文件后缀也是允许的
+            }
+            else if (!isAllowFileType(fileContentType)) // 不属于允许上传的文件类型
+            {              
             	UploadFile failedFile = new UploadFile();
             	failedFile.setErrorCode(UploadFile.ILLEGAL_MIME_TYPE);
             	failedFile.setFieldName(fieldName);
@@ -329,23 +352,7 @@ public class HttpFileUpload extends ServletFileUpload
             	invalidFileNames.add(fileSimpleName);  
             	continue;	//无效文件不写磁盘
             }  
-            else if (!isAllowFileExt(fileSuffix)) // 不属于允许上传的文件后缀
-            {
-            	UploadFile failedFile = new UploadFile();
-            	failedFile.setErrorCode(UploadFile.ILLEGAL_FILE_EXT);
-            	failedFile.setFieldName(fieldName);
-            	failedFile.setSrcFileName(fileName);
-            	failedFile.setFileName(fileSimpleName);
-            	failedFile.setFileSuffix(fileSuffix);
-            	failedFile.setFileSize(sizeInBytes);
-            	failedFile.setMimeType(fileContentType);  
-            	failedFile.setErrorMessage("Illegal file ext [ " + fileSuffix + " ]");
-            	failedFiles.add(failedFile);  
-            	fileList.add(failedFile);
-            	
-            	invalidFileNames.add(fileSimpleName);  
-            	continue;	//无效文件不写磁盘
-            }  
+            
             if (sizeInBytes > this.fileLimitSize)
             {
             	UploadFile failedFile = new UploadFile();
