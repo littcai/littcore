@@ -1,15 +1,22 @@
 package com.littcore.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.littcore.dao.page.IPageList;
 import com.littcore.dao.page.JdbcPageList;
@@ -89,6 +96,27 @@ public class BaseJdbcDao extends NamedParameterJdbcDaoSupport
     public void save(String dynamicSql, CondParam condParam)
     {
     	this.execute(dynamicSql, condParam);
+    }
+    
+    /**
+     * 保存并返回主键.
+     *
+     * @param sql the sql
+     * @param params the params
+     * @return the number
+     */
+    public Number save(final String sql, final Object[] params)
+    {
+      KeyHolder holder = new GeneratedKeyHolder();
+      this.getJdbcTemplate().update(new PreparedStatementCreator() {  
+        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {              
+             PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);  
+             new ArgumentPreparedStatementSetter(params).setValues(ps);
+             return ps;  
+        }  
+      }, holder);  
+    
+      return holder.getKey();
     }
     
     /**
