@@ -81,13 +81,13 @@ public class HttpFileUpload extends ServletFileUpload
      */
     private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/x-png,image/bmp"
         + ",application/vnd.ms-excel,application/msword,application/pdf"
-        + ",video/mp4"
+        + ",video/mp4,video/quicktime"
         + ",application/zip,application/gzip,application/x-zip-compressed,application/x-7z-compressed,application/x-rar-compressed";
     
     /**
      * 文件允许上传的后缀名
      */
-    private String allowFileExts = "jpg,jpeg,gif,png,bmp,xls,xlsx,doc,docx,ppt,pptx,pdf,mp4,zip,7z,rar,tar.gz";
+    private String allowFileExts = "jpg,jpeg,gif,png,bmp,xls,xlsx,doc,docx,ppt,pptx,pdf,mp4,mov,zip,7z,rar,tar.gz";
 
     /** 是否允许处理非文件域，默认为否. */
     private boolean allowField = false;
