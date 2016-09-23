@@ -81,6 +81,9 @@ public class HttpFileUpload extends ServletFileUpload
      */
     private String allowFileTypes ="image/jpeg,image/gif,image/pjpeg,image/png,image/x-png,image/bmp"
         + ",application/vnd.ms-excel,application/msword,application/pdf"
+        + ",application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  //xlsx
+        + ",application/vnd.openxmlformats-officedocument.wordprocessingml.document"  //docx
+        + ",application/vnd.openxmlformats-officedocument.presentationml.presentation"  //pptx
         + ",video/mp4,video/quicktime"
         + ",application/zip,application/gzip,application/x-zip-compressed,application/x-7z-compressed,application/x-rar-compressed";
     
