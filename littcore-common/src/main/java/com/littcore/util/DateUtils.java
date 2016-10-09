@@ -574,6 +574,18 @@ public class DateUtils
         return currentDate.after(beginDateTime) && currentDate.before(endDateTime);
     }
     
+    public static int getBetweenWeeks(Date date1, Date date2)
+    {
+      DateTime dt1 = new DateTime(date1);
+      DateTime dt2 = new DateTime(date2);
+        
+      int years = dt2.getYear() - dt1.getYear();
+      int weeks = dt2.getWeekOfWeekyear() - dt1.getWeekOfWeekyear();
+        
+      return years*48 + weeks;
+    }
+
+    
 	/**
 	 * 得到两个日期间相差的月数.
 	 * 
