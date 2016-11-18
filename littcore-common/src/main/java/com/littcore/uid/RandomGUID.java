@@ -133,6 +133,11 @@ public class RandomGUID {
 		return sb.toString();
 	}
 	
+	public String getId()
+	{
+	  return valueAfterMD5;
+	}
+	
 	/**
 	 * 静态方法获得GUID
 	 * @return

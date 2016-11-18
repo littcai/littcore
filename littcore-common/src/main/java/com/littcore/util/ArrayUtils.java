@@ -3,8 +3,6 @@ package com.littcore.util;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import com.littcore.common.Utility;
 
 /** 

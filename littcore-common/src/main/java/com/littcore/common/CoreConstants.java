@@ -70,7 +70,7 @@ public abstract class CoreConstants
     public static final String DEFAULT_SEARCH_PREFIX = "s_";		
     
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";  
-    public static final String DEFAULT_TIME_FORMAT = " HH:mm:ss";  
+    public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";  
     public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";  
     
     //动态，需运行时设置

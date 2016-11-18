@@ -10,6 +10,8 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -103,6 +105,25 @@ private static final ObjectMapper objectMapper = new ObjectMapper();
 		
 //		HelloWorld newHelloWorld = (HelloWorld)JsonUtils.toObject(jsonString, HelloWorld.class);
 //		System.out.println(newHelloWorld);
+		
+		ObjectMapper mapper = new ObjectMapper();
+    ObjectNode root = mapper.createObjectNode();
+    root.put("trip_id",1);
+    root.put("type","p");
+    root.put("start_time",11);
+    root.put("end_time", 22);
+
+    ObjectNode originPoint = mapper.createObjectNode();
+    originPoint.put("type", "Point");
+
+    ArrayNode arrayNode = mapper.createArrayNode();
+    arrayNode.add(123);
+    arrayNode.add(456);
+
+    originPoint.put("coordinates",arrayNode);
+    root.put("origin", originPoint);
+		
+    System.out.println(root.toString());
 	}
 
 }

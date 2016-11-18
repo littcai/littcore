@@ -112,13 +112,13 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     
     if(ArrayUtils.contains(whitelists, name))
     {
-      try
-      {
-        value = XssUtils.getCleanHtml(value);
-      } catch (CheckedBusiException e)
-      {
-        value = e.getMessage();
-      }      
+//      try
+//      {
+//        value = XssUtils.getCleanHtml(value);
+//      } catch (CheckedBusiException e)
+//      {
+//        value = e.getMessage();
+//      }      
     }
     else 
     {      
