@@ -3,7 +3,7 @@
   <parent>
     <artifactId>littcore</artifactId>
     <groupId>com.littcore</groupId>
-    <version>3.2.6-SNAPSHOT</version>
+    <version>3.2.6</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-log</artifactId>
@@ -11,7 +11,7 @@
   	<dependency>
   		<groupId>com.littcore</groupId>
   		<artifactId>littcore-common</artifactId>
-  		<version>3.2.6-SNAPSHOT</version>
+  		<version>3.2.6</version>
   	</dependency>
   	<dependency>
   		<groupId>javax.servlet</groupId>
