@@ -80,14 +80,18 @@ public class LoginCaptchaServlet extends HttpServlet
 		response.setDateHeader("Expires", 0);
 		//获取初始化参数
 		int authCodeLength = Utility.parseInt(this.getInitParameter("length"),4);
-		String charset = Utility.trimNull(this.getInitParameter("charset"),Captcha.CHARSET_LETTER_NUM);
+		String charset = Utility.trimNull(this.getInitParameter("charset"));
 		String charArray = Utility.trimNull(this.getInitParameter("charArray"));
 		//生成随机认证码
 		Captcha captcha = new Captcha();
 		captcha.setLength(authCodeLength);
-		captcha.setCharset(charset);
+		captcha.setCharset(Captcha.CHARSET_USER_DEFINE);
+		//0,1,2,l,o,z都不适合作为验证码进行识别
+		captcha.setCharArray("3456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXY".toCharArray());
 		if(Captcha.CHARSET_USER_DEFINE.equals(charset))
+		{
 			captcha.setCharArray(charArray.toCharArray());
+		}
 		captcha.generate(captcha.getRandom());
 		//将认证码存入SESSION
 		String captchaName = request.getParameter("name");

@@ -3,7 +3,7 @@
   <parent>
     <artifactId>littcore</artifactId>
     <groupId>com.littcore</groupId>
-    <version>3.2.6</version>
+    <version>3.2.6-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>littcore-io</artifactId>
@@ -29,7 +29,7 @@
   	<dependency>
   		<groupId>com.littcore</groupId>
   		<artifactId>littcore-common</artifactId>
-  		<version>3.2.6</version>
+  		<version>3.2.6-SNAPSHOT</version>
   	</dependency>
   </dependencies>  
 </project>
