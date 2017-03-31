@@ -233,6 +233,24 @@ public class WebUtils
     }
     return params.toArray(new String[0]);
   }
+  
+  public static String[] getParameterValueArrayStartingWith(ServletRequest request, String prefix)
+  {
+    Validate.notNull(request, "Request must not be null");
+    Enumeration<String> paramNames = request.getParameterNames();
+    List<String> params = new ArrayList<String>();
+    if (prefix == null) {
+      prefix = "";
+    }
+    while (paramNames != null && paramNames.hasMoreElements()) {
+      String paramName = (String) paramNames.nextElement();
+      if ("".equals(prefix) || paramName.startsWith(prefix)) {
+        String value = request.getParameter(paramName);
+        params.add(value);
+      }
+    }
+    return params.toArray(new String[0]);
+  }
 
 	/**
 	 * 取得带相同前缀的Request Parameters, copy from spring WebUtils.

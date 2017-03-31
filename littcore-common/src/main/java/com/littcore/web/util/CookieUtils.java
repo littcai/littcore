@@ -93,7 +93,7 @@ public final class CookieUtils
 		Cookie cookie = new Cookie(cookieName,"");
 		cookie.setMaxAge(0);
 		cookie.setPath("/");	//这句很重要，以保证项目所有路径都能访问到该cookie
-		cookie.setSecure(true);
+		//cookie.setSecure(true);
 		response.addCookie(cookie);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Removed cookie with name [" + cookieName + "]");

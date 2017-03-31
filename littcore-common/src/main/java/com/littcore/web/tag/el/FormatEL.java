@@ -125,7 +125,15 @@ public class FormatEL
 		else
 			return Utility.abbreviate(string, substringLen);			
 	}
-	
+
+	public static String formatTimestamp(Long datetime, String pattern)
+{
+	if(datetime==null || datetime.longValue()<=0)
+		return "";
+	else
+		return FormatDateTime.format(new Date(datetime), pattern);
+}
+
 	/**
 	 * 将整型IP地址转换为可读形式.
 	 *
