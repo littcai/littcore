@@ -77,11 +77,11 @@
 	   --> 
 		<repository>
 			<id>nexus-releases</id>
-			<url>http://nexus.littcore.com/content/repositories/releases</url>
+			<url>http://maven.littcore.com/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
-			<url>http://nexus.littcore.com/content/repositories/snapshots</url>
+			<url>http://maven.littcore.com/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 		
 		<site>
