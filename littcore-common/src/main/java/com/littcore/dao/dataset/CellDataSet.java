@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -204,7 +205,8 @@ public class CellDataSet implements IDataSet<DataRow> {
 			@Override
 			public void remove() {
 				rsList.remove(cursor);
-			}			 
+			}
+
 		 };
 		 return iterator;
 	}	

@@ -30,7 +30,7 @@ public class MapBeanConvertUtils {
 			beanInfo = Introspector.getBeanInfo(type);
 			obj = type.newInstance();// 创建 JavaBean 对象 
 		} catch (Exception e){			
-			throw new CheckedBusiException("get instance of bean:{} error",new Object[]{type},e);
+			throw new CheckedBusiException("get instance of bean:{0} error",new Object[]{type},e);
 		}
         // 给 JavaBean 对象的属性赋值 
         PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
@@ -48,7 +48,7 @@ public class MapBeanConvertUtils {
                 try {
 					descriptor.getWriteMethod().invoke(obj, args);
 				} catch (Exception e) {
-					throw new CheckedBusiException("invoke method:{} value:{} error",new Object[]{propertyName,value},e);
+					throw new CheckedBusiException("invoke method:{0} value:{1} error",new Object[]{propertyName,value},e);
 				} 
             } 
         } 
@@ -73,7 +73,7 @@ public class MapBeanConvertUtils {
       obj = type.newInstance(); // 创建 JavaBean 对象
     } catch (Exception e)
     {
-      throw new CheckedBusiException("get instance of bean:{} error", new Object[] { type }, e);
+      throw new CheckedBusiException("get instance of bean:{0} error", new Object[] { type }, e);
     }
 
     // 给 JavaBean 对象的属性赋值
@@ -99,7 +99,7 @@ public class MapBeanConvertUtils {
             descriptor.getWriteMethod().invoke(obj, args);
           } catch (Exception e)
           {
-            throw new CheckedBusiException("invoke bean:{}  method:{} value:{} error", new Object[] { type, propertyName, value }, e);
+            throw new CheckedBusiException("invoke bean:{0}  method:{1} value:{2} error", new Object[] { type, propertyName, value }, e);
           }
         }
       }
@@ -122,7 +122,7 @@ public class MapBeanConvertUtils {
         try{
         beanInfo = Introspector.getBeanInfo(type); 
         } catch (Exception e) {
-			throw new CheckedBusiException("get instance of bean:{} error", new Object[] { type }, e);
+			throw new CheckedBusiException("get instance of bean:{0} error", new Object[] { type }, e);
 		}
         PropertyDescriptor[] propertyDescriptors =  beanInfo.getPropertyDescriptors(); 
         for (int i = 0; i< propertyDescriptors.length; i++) { 
@@ -134,7 +134,7 @@ public class MapBeanConvertUtils {
                 try{
                 result = readMethod.invoke(bean, new Object[0]); 
                 } catch (Exception e) {
-					throw new CheckedBusiException("invoke method:{} bean:{} error",new Object[]{propertyName,bean.toString()},e);
+					throw new CheckedBusiException("invoke method:{0} bean:{1} error",new Object[]{propertyName,bean.toString()},e);
 				} 
                 if (result != null) { 
                     returnMap.put(propertyName, result); 

@@ -12,6 +12,7 @@ import org.mvel2.util.ThisLiteral;
 
 import com.littcore.exception.BusiException;
 import com.littcore.uid.RandomGUID;
+import com.littcore.uid.UUID;
 import com.littcore.util.ArrayUtils;
 
 /**
@@ -120,6 +121,7 @@ public class BaseLoginVo implements ILoginVo, Serializable
 		this.loginId = loginId;
 		this.opName = opName;
 		this.loginIp = loginIp;
+		this.token = UUID.randomUUID().toString();
 	}
 	
 	/**

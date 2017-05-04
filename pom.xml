@@ -65,25 +65,25 @@
 	</repositories>
 	
 	<distributionManagement>
+    <!-- 
 		<snapshotRepository>
-           <id>oss</id>
-           <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-           <id>oss</id>
-           <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-		<!-- 
-	
+       <id>oss</id>
+       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+       <id>oss</id>
+       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>		
+	   --> 
 		<repository>
 			<id>nexus-releases</id>
-			<url>http://nexus.littcore.com:8081/nexus/content/repositories/releases</url>
+			<url>http://nexus.littcore.com/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
-			<url>http://nexus.littcore.com:8081/nexus/content/repositories/snapshots</url>
+			<url>http://nexus.littcore.com/content/repositories/snapshots</url>
 		</snapshotRepository>
-		-->
+		
 		<site>
 			<id>littcore</id>
 			<name>littcore</name>
@@ -183,11 +183,23 @@
 		  			<artifactId>maven-javadoc-plugin</artifactId>
 		  			<version>2.9</version>
 		  			<configuration>  
-		                 <aggregate>true</aggregate>  
-		                 <charset>UTF-8</charset>  
-		                 <encoding>UTF-8</encoding>  
-		                 <docencoding>UTF-8</docencoding>  
-		            </configuration> 
+                 <aggregate>true</aggregate>  
+                 <charset>UTF-8</charset>  
+                 <encoding>UTF-8</encoding>  
+                 <docencoding>UTF-8</docencoding>  
+            </configuration> 
+            <executions>
+              <execution>
+                  <id>attach-javadocs</id>
+                  <phase>package</phase>
+                  <goals>
+                      <goal>jar</goal>
+                  </goals>
+                  <configuration>
+                      <additionalparam>-Xdoclint:none</additionalparam>
+                  </configuration>
+              </execution>
+          </executions>
 		  		</plugin>
 			</plugins>
 		</pluginManagement>
@@ -216,6 +228,9 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                          <additionalparam>-Xdoclint:none</additionalparam>
+                      </configuration>
                     </execution>
                 </executions>
 	  		</plugin>		
