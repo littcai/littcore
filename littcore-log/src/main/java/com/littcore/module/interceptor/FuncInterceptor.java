@@ -117,7 +117,7 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 		Method method = this.getMethod(handler.getClass(), methodName);
 		if(method==null)	//没找到方法
 		{
-			logger.error("Can't find method:{} in controller:{}", new Object[]{methodName, handler.getClass().getName()});
+			logger.debug("Can't find method:{} in controller:{}", new Object[]{methodName, handler.getClass().getName()});
 			return true;
 		}
 		
@@ -169,7 +169,7 @@ public class FuncInterceptor extends BaseControllerInterceptor implements Handle
 		Method method = this.getMethod(handler.getClass(), methodName);
 		if(method==null)	//没找到方法
 		{
-			logger.error("Can't find method:{} in controller:{}", new Object[]{methodName, handler.getClass().getName()});		
+			logger.debug("Can't find method:{} in controller:{}", new Object[]{methodName, handler.getClass().getName()});
 			return;
 		}
 		

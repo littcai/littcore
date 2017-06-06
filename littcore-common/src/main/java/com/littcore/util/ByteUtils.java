@@ -2,8 +2,6 @@ package com.littcore.util;
 
 import java.nio.ByteBuffer;
 
-import com.littcore.common.Utility;
-import com.littcore.util.ByteUtils;
 
 /**
  * 
@@ -49,28 +47,9 @@ public final class ByteUtils
         lowDigits = low;
     }
 	
-	
 	/** 隐藏构造函数，避免生成实例 */
 	private ByteUtils(){};
 	
-	/**
-	 * 二进制字符串转字节数组.
-	 * 
-	 * @param binary
-	 *            二进制字符串
-	 * 
-	 * @return 字节数组
-	 */
-	public static byte[] binaryStringToByteArray(String binary)
-	{
-		String[] strArray = Utility.splitStringAll(binary, 8);
-		byte[] ret = new byte[strArray.length];
-		for(int i=0;i<strArray.length;i++)
-		{
-			ret[i] = Byte.parseByte(strArray[i],2);
-		}
-		return ret;
-	}
 	
 	/** 
 	 * 把16进制字符串转换成字节数组
@@ -217,6 +196,24 @@ public final class ByteUtils
         }
         return out.toString();
     }
+	
+	/**
+	 * 字节转换为16进制字符.
+	 * 
+	 * @param b 字节
+	 * 
+	 * @return 16进制字符
+	 */
+	private static char findHex(byte b) {
+		int t = new Byte(b).intValue();
+		t = t < 0 ? t + 16 : t;
+
+		if ((0 <= t) && (t <= 9)) {
+			return (char) (t + '0');
+		}
+
+		return (char) (t - 10 + 'A');
+	}    
 
 	/**
 	 * int转byte.
@@ -256,26 +253,7 @@ public final class ByteUtils
             value += (byteArray[i] & 0xFF) << shift;
         }
         return value;
-    }
-	
-    /**
-	 * 字节数组转LONG.
-	 * 
-	 * @param byteArray
-	 *            字节数组
-	 * 
-	 * @return int 数值
-	 */   
-	public static long byteArrayToLong(byte[] byteArray) 
-	{
-        int value = 0;
-        for (int i = 0; i < byteArray.length; i++) 
-        {
-            int shift = (byteArray.length - 1 - i) * 8;
-            value += (byteArray[i] & 0xFF) << shift;
-        }
-        return value;
-    } 	
+    } 
 	
 	/**
 	 * BCD码字节数组转为10进制.
@@ -307,33 +285,6 @@ public final class ByteUtils
 	{
 		return (byte)(((b& 0xf0)>>>4) * 10 + (b& 0x0f));
 	}
-	
-    /**
-	 * BCD码二进制字符串转换成十进制.
-	 * 
-	 * @param bcdString
-	 *            BCD编码二进制字符串
-	 * 
-	 * @return 十进制
-	 */   
-    public static int bcdStringToInt(String bcdString) 
-    {    
-        StringBuffer ret = new StringBuffer(4);    
-        
-        int lengthBCD = bcdString.length();    
-        if (lengthBCD % 4 != 0) 
-           throw new IllegalArgumentException("指定的编码不是BCD码！");    
-        String[] bcdArray = Utility.splitStringAll(bcdString, 4);
-        for(int i=0;i<bcdArray.length;i++)
-        {
-        	int v = Integer.parseInt(bcdArray[i], 2);   
-        	if (v > 9) 
-                throw new IllegalArgumentException("不是8421 BCD码,请检查");
-        	ret.append(v);       
-        }        
-        return Integer.parseInt(ret.toString());    
-    } 	
-	
 
 	
 	/**
@@ -353,14 +304,15 @@ public final class ByteUtils
 	    if (mod != 0) {
 	     asc = "0" + asc;
 	     len = asc.length();
-	    }	
-
+	    }
+	
+	    byte abt[] = new byte[len];
 	    if (len >= 2) {
 	     len = len / 2;
 	    }
 	
-	    byte[] bbt = new byte[len];
-	    byte[] abt = asc.getBytes();
+	    byte bbt[] = new byte[len];
+	    abt = asc.getBytes();
 	    int j, k;
 	
 	    for (int p = 0; p < asc.length()/2; p++) {
@@ -404,14 +356,15 @@ public final class ByteUtils
 	    if (mod != 0) {
 	     asc = "0" + asc;
 	     len = asc.length();
-	    }	
-
+	    }
+	
+	    byte abt[] = new byte[len];
 	    if (len >= 2) {
 	     len = len / 2;
 	    }
 	
 	    byte bbt[] = new byte[len];
-	    byte[] abt = asc.getBytes();
+	    abt = asc.getBytes();
 	    int j, k;
 	
 	    for (int p = 0; p < asc.length()/2; p++) {
@@ -460,186 +413,6 @@ public final class ByteUtils
 		}
 		return ascByteArray;
 	} 
-	
-	/**
-	 * ByteBuffer扩容.
-	 * 
-	 * @param src 原缓冲区
-	 * @param size 追加大小
-	 * 
-	 * @return ByteBuffer
-	 */
-	public static ByteBuffer extend(ByteBuffer src,int size)
-	{
-		int remain = src.remaining();		
-		if(remain<size)
-		{
-			int newCapacity = src.capacity() + size - remain;
-			
-			ByteBuffer newBuffer = ByteBuffer.allocate(newCapacity);
-			src.flip();			
-			newBuffer.put(src);			
-			return newBuffer;
-		}
-		else
-		{			
-			return src;
-		}		
-	}	
-	
-	/**
-	 * 追加ByteBuffer.
-	 * @param src 原缓冲区
-	 * @param add 新缓冲区
-	 * @return ByteBuffer
-	 */
-	public static ByteBuffer append(ByteBuffer src,ByteBuffer add)
-	{
-		int remain = src.remaining();
-		int addCapacity = add.capacity();
-		if(remain<addCapacity)
-		{
-			int newCapacity = src.capacity() + addCapacity - remain;
-			
-			ByteBuffer newBuffer = ByteBuffer.allocate(newCapacity);
-			src.flip();
-			add.flip();
-			newBuffer.put(src);
-			newBuffer.put(add);
-			return newBuffer;
-		}
-		else
-		{	
-			add.flip();
-			src.put(add);
-			return src;
-		}
-		
-	}
-	
-    /**
-     * 截取字节某几位的值.
-     * 主要用于1个字节转换后的二进制代码每一位或几位代表一个业务含义。
-     * 如截取字节值为5，二进制为0000 0101，其中从第2位到第1位在一起代表一个值，截取后为10，转换整型后为2
-     * 
-     * @param b 字节
-     * @param begin 开始位置（最高位计7）
-     * @param end 结束位置
-     * 
-     * @return 截取后的值
-     */
-    public static int getBitsValue(byte b,int begin,int end)
-    {
-    	if(begin>7||end<0||end>begin)
-    		throw new IllegalArgumentException("起始位置和结束位置有误！");
-    	
-    	//byte在位移时将转换为int型处理
-    	if(b==0)
-    		return 0;
-    	else
-    	{
-//    		int and = 0;
-//    		for(int i=begin;i>=end;i--)
-//    		{
-//    			and += 1 << i;	    			
-//    		}
-    		int and = (2 << begin) - (1 << end);	//优化后的算法，不用循环     		
-    		return (b & and) >>> end;  	
-    	}    	
-    }
-    
-    /**
-     * 截取字节某几位的值.
-     * 主要用于1个字节转换后的二进制代码每一位或几位代表一个业务含义。
-     * 如截取字节值为5，二进制为0000 0101，其中从第2位到第1位在一起代表一个值，截取后为10，转换整型后为2
-     * 
-     * @param b 字节
-     * @param begin 开始位置（最高位计7）
-     * @param end 结束位置
-     * 
-     * @return 截取后的值
-     */
-    public static int getBitsValue(int b,int begin,int end)
-    {
-    	if(begin>31||end<0||end>begin)
-    		throw new IllegalArgumentException("起始位置和结束位置有误！");
-    	if(b==0)
-    		return 0;
-    	else
-    	{
-    		int and = (2 << begin) - (1 << end);	//优化后的算法，不用循环     		
-    		return (b & and) >>> end;	    	
-    	}    	
-    }   
-    
-    /**
-     * 截取字节某几位的值.
-     * 主要用于1个字节转换后的二进制代码每一位或几位代表一个业务含义。
-     * 如截取字节值为5，二进制为0000 0101，其中从第2位到第1位在一起代表一个值，截取后为10，转换整型后为2
-     * 
-     * @param b 字节
-     * @param begin 开始位置（最高位计7）
-     * @param end 结束位置
-     * 
-     * @return 截取后的值
-     */
-    public static int getBitsValue(short b,int begin,int end)
-    {
-    	if(begin>31||end<0||end>begin)
-    		throw new IllegalArgumentException("起始位置和结束位置有误！");
-    	if(b==0)
-    		return 0;
-    	else
-    	{
-    		int and = (2 << begin) - (1 << end);	//优化后的算法，不用循环     		
-    		return (b & and) >>> end;	    	
-    	}    	
-    }      
-    
-    /**
-     * 截取字节某1位的值.
-     * 主要用于1个字节转换后的二进制代码每一位或几位代表一个业务含义。
-     * 如截取字节值为5，二进制为0000 0101，其中从第2位到第1位在一起代表一个值，截取后为10，转换整型后为2
-     * 
-     * @param b 字节
-     * @param index 索引位置（最高位计7）
-     * 
-     * @return 截取后的值
-     */
-    public static int getBitsValue(byte b,int index)
-    {
-    	return getBitsValue(b, index, index);
-    }
-    
-    /**
-     * 截取字节某1位的值.
-     * 主要用于1个字节转换后的二进制代码每一位或几位代表一个业务含义。
-     * 如截取字节值为5，二进制为0000 0101，其中从第2位到第1位在一起代表一个值，截取后为10，转换整型后为2
-     * 
-     * @param b 字节
-     * @param index 索引位置（最高位计7）
-     * 
-     * @return 截取后的值
-     */
-    public static int getBitsValue(int b,int index)
-    {
-    	return getBitsValue(b, index, index);
-    } 
-   
-    /**
-     * 截取字节某1位的值.
-     * 主要用于1个字节转换后的二进制代码每一位或几位代表一个业务含义。
-     * 如截取字节值为5，二进制为0000 0101，其中从第2位到第1位在一起代表一个值，截取后为10，转换整型后为2
-     * 
-     * @param b 字节
-     * @param index 索引位置（最高位计7）
-     * 
-     * @return 截取后的值
-     */
-    public static int getBitsValue(short b,int index)
-    {
-    	return getBitsValue(b, index, index);
-    }  
 
 	/**
 	 * 内置测试方法
@@ -649,38 +422,9 @@ public final class ByteUtils
 	{
 		// System.out.println(ByteUtils.hexStringToByte("68H"));
 
-//		System.out.println(ByteUtils.byteToString((byte)0x68));	
-//		
-//		System.out.println(Integer.toBinaryString(68));
-//		System.out.println(Byte.parseByte("01000100", 2));
 		
-//		ByteBuffer src = ByteBuffer.allocate(5);
-//		src.putInt(1);
-//		ByteBuffer add = ByteBuffer.allocate(1);
-//		add.put((byte)9);
-//		byte[] target = ByteUtils.append(src, add).array();
-//		System.out.println(target.length);
-//		System.out.println(target[4]);
-		
-		ByteBuffer abc = ByteBuffer.allocate(6);
-		abc.put((byte)0x2A);
-		abc.put((byte)0x17);
-
-		abc.put((byte)0x1C);
-
-		abc.put((byte)0x07);
-
-		abc.put((byte)0x09);
-		abc.put((byte)0x90);
-		
-		
-//		System.out.println(ByteUtils.toHexString(abc));
-//		System.out.println(ByteUtils.toHexString(new byte[]{11,12}));
-//		System.out.println(ByteUtils.toHexString((byte)11));
-		System.out.println(ByteUtils.byteArrayToLong(abc.array()));		
-		//System.out.println(ByteUtils.hexStringToDisplay(ByteUtils.toHexString(abc)));
-		System.out.println(ByteUtils.getBitsValue(1228, 10));
-		
+		System.out.println(Integer.toBinaryString(68));
+		System.out.println(Byte.parseByte("01000100", 2));
 	}
 	
 }

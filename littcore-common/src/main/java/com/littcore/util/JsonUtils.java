@@ -1,20 +1,17 @@
 package com.littcore.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
-import org.codehaus.jackson.type.JavaType;
-import org.codehaus.jackson.type.TypeReference;
 
 /**
  * .
@@ -35,11 +32,14 @@ public class JsonUtils {
 	
 private static final ObjectMapper objectMapper = new ObjectMapper();
 	
-	static {		
-		objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
-		objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	static {
+		//空值不序列化
+		objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-		objectMapper.getDeserializationConfig().withDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+		//objectMapper.getDeserializationConfig().withDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 	}
 	
 	public static String toJSON(Object obj) throws IOException
@@ -55,7 +55,7 @@ private static final ObjectMapper objectMapper = new ObjectMapper();
 	
 	public static <T> T toObject(JsonNode jsonNode, Class<T> clazz) throws IOException
 	{		
-		return objectMapper.readValue(jsonNode, clazz);
+		return objectMapper.readValue(jsonNode.asText(), clazz);
 	}
 	
 	public static JsonNode toJsonNode(String jsonString) throws IOException

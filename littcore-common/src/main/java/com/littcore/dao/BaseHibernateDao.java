@@ -113,10 +113,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	 * 
 	 * @return 更新的结果数量
 	 */
-	public int execute(String hql,Object[] objs)
+	public int execute(String hql, final Object[] params)
 	{		
-		final String temp = hql;	
-		final Object[] params = objs;
+		final String temp = hql;
 		Integer updateCount = getHibernateTemplate().execute(new HibernateCallback<Integer>() {
 
 			public Integer doInHibernate(Session session)
@@ -323,7 +322,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	{
 		DetachedCriteria criteria =  DetachedCriteria.forClass(className);
 		criteria.add(Restrictions.allEq(propertyNameValues));
-		List<T> rsList = getHibernateTemplate().findByCriteria(criteria, 0, 1);
+		List<T> rsList = (List<T>)getHibernateTemplate().findByCriteria(criteria, 0, 1);
 		if(!rsList.isEmpty())
 			return rsList.get(0);
 		else
@@ -517,8 +516,10 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	public void saveOrUpdateBatch(Collection entities)
     {
 		if(entities == null || entities.isEmpty())
-			return; 
-        getHibernateTemplate().saveOrUpdateAll(entities);
+			return;
+		for (Object entry: entities) {
+			getHibernateTemplate().saveOrUpdate(entry);
+		}
     }
 	
     /**
@@ -681,7 +682,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	{
 		DetachedCriteria criteria =  DetachedCriteria.forClass(className);
 		criteria.add(Restrictions.allEq(propertyNameValues));
-		return getHibernateTemplate().findByCriteria(criteria);		
+		return (List<T>)getHibernateTemplate().findByCriteria(criteria);
 	}
     
 	/**
@@ -895,7 +896,6 @@ public class BaseHibernateDao extends HibernateDaoSupport
      * Hibernate分页查询.
      * 
      * @param dynamicHql 动态查询语句
-     * @param dynamicCountHql 动态统计语句
      * @param pageParam 分页参数对象
      * 
      * @return IPageList分页对象
@@ -911,7 +911,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
     /**
      * hibernate 的count 查询
      * @param dynamicHql
-     * @param pageParam
+     * @param condParam
      * @return
      */
     public int count(String dynamicHql, CondParam condParam)
@@ -920,51 +920,6 @@ public class BaseHibernateDao extends HibernateDaoSupport
     	//通过分析原始语句及子查询嵌套的方式，直接生成统计语句
     	String dynamicCountHql = listResult.generateCount();
     	return this.count(dynamicCountHql,listResult.getParams());
-      } 
-    
-    /**
-     * 属性查询.
-     * 注：基本数据类型由于有默认值，会生成默认的查询条件，有可能影响最终条件
-     * 
-     * @param className 实体类
-     * @param condParam 动态查询条件
-     * 
-     * @return T集合
-     */
-    public List<Map<String, Object>> listBy(final SimpleHQLBuilder builder)
-    {    	
-    	return  getHibernateTemplate().executeFind(new  HibernateCallback(){
-                public  Object doInHibernate(Session session)  throws  SQLException,
-                       HibernateException {
-                  Query q  =  session.createQuery(builder.getHql());
-                  Object[] params = builder.getParams();
-                  if(builder.getParams()!=null)
-                  {
-                	  for(int i=0;i<params.length;i++)
-                	  {
-//                		  if(params[i] instanceof java.util.Date)	//对日期型的特别处理
-//                        	  q.setParameter(i, params[i], StandardBasicTypes.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
-//                          else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
-                        	  q.setParameter(i, params[i]);
-                	  }
-                	  
-                  }
-                  
-                  if(builder.getPageIndex()>0 || builder.getPageSize()>0)	//如果分页参数设置不正确，则全查
-                  {
-                	  int startRow = builder.getPageSize() * builder.getPageIndex() - builder.getPageSize();
-                	  
-                	  q.setFirstResult(startRow);
-                      q.setMaxResults(builder.getPageSize());                	  
-              	  } 
-                  if(builder.getTransformer()!=null)
-                  {
-                	  q.setResultTransformer(builder.getTransformer());
-                  }
-                  return  q.list();
-                }   
-           });      
-    			
     }
     
     /**

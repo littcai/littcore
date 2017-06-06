@@ -35,7 +35,7 @@ import com.littcore.common.Utility;
 import com.littcore.exception.BusiCodeException;
 import com.littcore.exception.BusiException;
 import com.littcore.exception.NotLoginException;
-import com.littcore.pojo.ISystemInfoVo;
+import com.littcore.vo.ISystemInfoVo;
 import com.littcore.shield.security.SecurityContext;
 import com.littcore.shield.security.SecurityContextHolder;
 import com.littcore.shield.vo.ILoginVo;
