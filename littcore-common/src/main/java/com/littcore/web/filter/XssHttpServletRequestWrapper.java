@@ -131,7 +131,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         value = e.getMessage();
       }      
     }
-    return value;
+    return value.trim();
   }
   
   
