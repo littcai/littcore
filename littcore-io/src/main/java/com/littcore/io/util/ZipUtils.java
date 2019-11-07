@@ -142,16 +142,20 @@ public class ZipUtils
         for(int i=0;i<files.length;i++)
         {
         	srcFile = files[i];
-        	out.putNextEntry(new ZipEntry(srcFile.getName()));
-			FileInputStream in = new FileInputStream(srcFile);
-			int len;	
-			byte[] buf = new byte[BUFFERED_SIZE];
-			while ( (len = in.read(buf)) >0) 
-			{
-				out.write(buf,0,len);
+        	if(srcFile.isFile()) {
+				out.putNextEntry(new ZipEntry(srcFile.getName()));
+				FileInputStream in = new FileInputStream(srcFile);
+				int len;
+				byte[] buf = new byte[BUFFERED_SIZE];
+				while ((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				out.closeEntry();
+				in.close();
 			}
-			out.closeEntry();
-			in.close();
+			else {
+				zip(out, srcFile, "");
+			}
         }
 		out.close();
 	}

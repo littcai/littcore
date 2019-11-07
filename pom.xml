@@ -4,7 +4,7 @@
 	<groupId>com.littcore</groupId>
 	<artifactId>littcore</artifactId>
 	<packaging>pom</packaging>
-	<version>3.2.6-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<name>littcore</name>
 	<url>https://github.com/littcai/littcore</url>	
 	<description>Basic framework for JavaEE project</description>
@@ -347,29 +347,7 @@
 		 			 -->           
 		        </configuration>  
 			</plugin>
-		    <plugin>
-		    	<groupId>org.apache.maven.plugins</groupId>
-		    	<artifactId>maven-checkstyle-plugin</artifactId>
-		    	<version>2.9.1</version>
-		    </plugin>
-		    <!-- The JXR plugin produces a cross-reference of the project's sources. 
-		    		The generated reports make it easier for the user to reference or find specific lines of code. 
-		    		It is also handy when used with the PMD plugin （and checkstyle plugin）for referencing errors found in the code. -->
-		    <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
-            </plugin>
-            <plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>taglist-maven-plugin</artifactId>
-		        <version>2.4</version>
-		        <configuration>
-		          <encoding>UTF-8</encoding>
-		          <sourceFileLocale>en</sourceFileLocale>
-		          <emptyComments>false</emptyComments>
-		         </configuration> 
-		    </plugin>
+
 		</plugins>
 	</reporting>
 	

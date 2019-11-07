@@ -109,7 +109,6 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	 * 直接执行更新操作的HQL语句.
 	 * 
 	 * @param hql 需要执行的HQL语句
-	 * @param params 参数数组
 	 * 
 	 * @return 更新的结果数量
 	 */
@@ -323,9 +322,9 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	{
 		DetachedCriteria criteria =  DetachedCriteria.forClass(className);
 		criteria.add(Restrictions.allEq(propertyNameValues));
-		List<T> rsList = getHibernateTemplate().findByCriteria(criteria, 0, 1);
+		List<?> rsList = getHibernateTemplate().findByCriteria(criteria, 0, 1);
 		if(!rsList.isEmpty())
-			return rsList.get(0);
+			return (T)rsList.get(0);
 		else
 			return null;
 	}
@@ -517,8 +516,11 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	public void saveOrUpdateBatch(Collection entities)
     {
 		if(entities == null || entities.isEmpty())
-			return; 
-        getHibernateTemplate().saveOrUpdateAll(entities);
+			return;
+		for (Object obj:entities) {
+			getHibernateTemplate().saveOrUpdate(obj);
+		}
+
     }
 	
     /**
@@ -681,7 +683,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
 	{
 		DetachedCriteria criteria =  DetachedCriteria.forClass(className);
 		criteria.add(Restrictions.allEq(propertyNameValues));
-		return getHibernateTemplate().findByCriteria(criteria);		
+		return (List<T>)getHibernateTemplate().findByCriteria(criteria);
 	}
     
 	/**
@@ -895,7 +897,6 @@ public class BaseHibernateDao extends HibernateDaoSupport
      * Hibernate分页查询.
      * 
      * @param dynamicHql 动态查询语句
-     * @param dynamicCountHql 动态统计语句
      * @param pageParam 分页参数对象
      * 
      * @return IPageList分页对象
@@ -911,7 +912,6 @@ public class BaseHibernateDao extends HibernateDaoSupport
     /**
      * hibernate 的count 查询
      * @param dynamicHql
-     * @param pageParam
      * @return
      */
     public int count(String dynamicHql, CondParam condParam)
@@ -922,50 +922,7 @@ public class BaseHibernateDao extends HibernateDaoSupport
     	return this.count(dynamicCountHql,listResult.getParams());
       } 
     
-    /**
-     * 属性查询.
-     * 注：基本数据类型由于有默认值，会生成默认的查询条件，有可能影响最终条件
-     * 
-     * @param className 实体类
-     * @param condParam 动态查询条件
-     * 
-     * @return T集合
-     */
-    public List<Map<String, Object>> listBy(final SimpleHQLBuilder builder)
-    {    	
-    	return  getHibernateTemplate().executeFind(new  HibernateCallback(){
-                public  Object doInHibernate(Session session)  throws  SQLException,
-                       HibernateException {
-                  Query q  =  session.createQuery(builder.getHql());
-                  Object[] params = builder.getParams();
-                  if(builder.getParams()!=null)
-                  {
-                	  for(int i=0;i<params.length;i++)
-                	  {
-//                		  if(params[i] instanceof java.util.Date)	//对日期型的特别处理
-//                        	  q.setParameter(i, params[i], StandardBasicTypes.TIMESTAMP);	//Hibernate.DATE 是net.sf.hibernate.type.DateType 它返回的插入到sql中的值是'yyyy-mm-dd'
-//                          else			//Hibernate.TIMESTAMPnet.sf.hibernate.type.TimestampType它返回的插入到sql中的值 "yyyy-MM-dd HH:mm:ss";
-                        	  q.setParameter(i, params[i]);
-                	  }
-                	  
-                  }
-                  
-                  if(builder.getPageIndex()>0 || builder.getPageSize()>0)	//如果分页参数设置不正确，则全查
-                  {
-                	  int startRow = builder.getPageSize() * builder.getPageIndex() - builder.getPageSize();
-                	  
-                	  q.setFirstResult(startRow);
-                      q.setMaxResults(builder.getPageSize());                	  
-              	  } 
-                  if(builder.getTransformer()!=null)
-                  {
-                	  q.setResultTransformer(builder.getTransformer());
-                  }
-                  return  q.list();
-                }   
-           });      
-    			
-    }
+
     
     /**
      * 属性查询.

@@ -162,7 +162,7 @@ public class GenericHibernateDao<T extends Serializable,PK extends Serializable>
 	 * @return the list
 	 */
 	public List<T> listByIds(PK[] ids) {  
-    return super.getHibernateTemplate().findByCriteria(this.createDetachedCriteria(Restrictions.in(getIdName(), ids)));  
+    return (List<T>)super.getHibernateTemplate().findByCriteria(this.createDetachedCriteria(Restrictions.in(getIdName(), ids)));
 	}  
 	
 	/**
