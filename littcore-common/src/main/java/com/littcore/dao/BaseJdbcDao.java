@@ -278,7 +278,7 @@ public class BaseJdbcDao extends NamedParameterJdbcDaoSupport
 		{
 			logger.debug("调用的SQL语句 - "+countSql);
 		}
-        return getJdbcTemplate().queryForInt(countSql);
+        return getJdbcTemplate().queryForObject(countSql, Integer.class);
 	}
     
 	/**
@@ -293,7 +293,7 @@ public class BaseJdbcDao extends NamedParameterJdbcDaoSupport
 		{
 			logger.debug("调用的SQL语句 - "+countSql);
 		}
-        return getJdbcTemplate().queryForInt(countSql,params);
+        return getJdbcTemplate().queryForObject(countSql, params, Integer.class);
 	} 
     
 	/**
